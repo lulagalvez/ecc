@@ -7,7 +7,7 @@
 2. Crear ambiente virtual con python3 -m venv .venv
 3. Activar ambiente virtual con source .venv/bin/activate
 4. Instalar flask dentro del ambiente virtual
-5. FLASK_APP=src
+5. export FLASK_APP=src
 6. flask shell
 7. \>\>\>from src.extensions import db
 8. \>\>\>from src.models.user import User
