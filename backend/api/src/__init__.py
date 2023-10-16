@@ -17,8 +17,12 @@ def create_app(config_class=Config):
     from src.users import bp as users_bp
     app.register_blueprint(users_bp, url_prefix='/users')
 
-    @app.route('/test/')
-    def test_page():
-        return '<h1>Testing the Flask Application Factory Pattern</h1>'
+    from src.entrytimes import bp as entrytimes_bp
+    app.register_blueprint(entrytimes_bp, url_prefix='/entrytimes')
+
+    from src.exittimes import bp as exittimes_bp
+    app.register_blueprint(exittimes_bp, url_prefix='/exittimes')
+
+    
 
     return app
