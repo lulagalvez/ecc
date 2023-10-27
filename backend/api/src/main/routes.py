@@ -1,6 +1,8 @@
-from flask import render_template
+from flask import render_template, request
 from src.main import bp
 
-@bp.route('/')
+@bp.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    print(request.get_json())
+    
+    return request.get_json()

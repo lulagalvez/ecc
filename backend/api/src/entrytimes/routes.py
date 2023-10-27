@@ -6,13 +6,18 @@ from src.models.entrytime import EntryTime
 from flask import request, jsonify
 
 @bp.route('', methods=['POST'])
-def get_entrytimes():
-    id_user = request.args.get('id_user')
+def post_entrytime():
+    data = request.get_json()
     
-    if id_user is None:
+    user = data['id_user']
+    if user is None:
         return jsonify({'error': 'No se ha especificado el id del usuario'}), 400
     
     #TODO cambiar a estado activo
-    entry_time = EntryTime(id_user=id_user)
+    entry_time = EntryTime(id_user=user)
     db.session.add(entry_time)
     db.session.commit()
+    
+    return jsonify({'message': 'Se ha registrado la entrada del usuario'}), 200
+    
+    
