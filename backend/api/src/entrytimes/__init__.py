@@ -2,5 +2,4 @@ from flask import Blueprint
 
 bp = Blueprint('entrytimes', __name__)
 
-
-from src.exittimes import routes
+from src.entrytimes import routes
