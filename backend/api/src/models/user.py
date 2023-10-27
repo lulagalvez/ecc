@@ -8,6 +8,7 @@ class User(db.Model):
     user_name = db.Column(db.String(25), nullable=False)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(50), nullable=False)
+    state = db.Column(db.Integer, nullable=False, default=0)
     #TODO crear estados (activo, inactivo, emergencia)
     #TODO crear llamada para activo de activo a emergencia y viceversa
 

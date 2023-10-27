@@ -35,7 +35,8 @@ def get_users():
             'last_name': user.last_name,
             'role': user.role,
             'user_name': user.user_name,
-            'email': user.email
+            'email': user.email,
+            'state': user.state
         })
     return jsonify(user_list)
 
@@ -51,7 +52,8 @@ def get_user_by_id(user_id):
         'last_name': user.last_name,
         'role': user.role,
         'user_name': user.user_name,
-        'email': user.email
+        'email': user.email,
+        'state': user.state
     }
     return jsonify(user_data)
 
@@ -72,6 +74,8 @@ def update_user(user_id):
         user.user_name = request.json['user_name']
     if 'email' in request.json:
         user.email = request.json['email']
+    if 'state' in request.json:
+        user.state = request.json['state']
 
     db.session.commit()
     return jsonify({'message': 'Bombero parcheado exitosamente'})
@@ -103,3 +107,28 @@ def delete_user(user_id):
     db.session.commit()
     return jsonify({'message': 'Bombero eliminado exitosamente'})
 
+
+# Obtener lista de bomberos por estado
+# 0 : Inactivo
+# 1 : Activo
+# 2 : En emergencia
+# 3 : Conductor
+@bp.route('/users_by_state/<int:state>', methods=['GET'])
+def get_users_by_state(state):
+    # Query the User table to filter users by the specified state
+    users = User.query.filter_by(state=state).all()
+    
+    # Create a list of user data
+    user_list = []
+    for user in users:
+        user_list.append({
+            'id': user.id,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'role': user.role,
+            'user_name': user.user_name,
+            'email': user.email,
+            'state': user.state
+        })
+    
+    return jsonify(user_list)
