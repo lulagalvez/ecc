@@ -15,16 +15,17 @@ const LoginPage = () => {
       transition={{ duration: 0.3 }}
     >
       <Container className="login-container">
-        <Row className="justify-content-center align-items-center login-row flex-column ">
-          <Col className="fila-1">
+        <Row className="justify-content-center align-items-center flex-column login-row ">
+          <Col md = {12} className="mx-2">
             <Image
               src={Logo}
               className="logo"
               alt="Logo"
-              style={{ maxWidth: "25%" }}
+              style={{ maxWidth: "60%" }}
             />
           </Col>
-          <Col className="fila-2">
+
+          <Col md={12} className="fila-2" >
             <Form>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Numero de Bombero</Form.Label>
@@ -43,11 +44,13 @@ const LoginPage = () => {
               </Form.Group>
             </Form>
           </Col>
-          <Col className="fila-3">
-            <Button variant="primary" type="submit">
+
+          <Col md = {12} className="fila-3 ">
+            <Button variant="primary" type="submit" size="lg" className="">
               iniciar sesion
             </Button>
           </Col>
+
         </Row>
       </Container>
     </motion.div>

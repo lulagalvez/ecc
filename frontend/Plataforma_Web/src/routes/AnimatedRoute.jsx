@@ -2,6 +2,7 @@ import { useRoutes, Navigate, Outlet } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import LoginPage from "../views/LoginPage";
+import RegistroHoras from "../views/RegistroHoras";
 
 function AnimatedRoutes() {
   //  Agregar rutas privadas , segun previa verificacion
@@ -12,6 +13,13 @@ function AnimatedRoutes() {
       path: "/",
       element: <LoginPage />,
     },
+
+    {
+      path: "/RegistroHoras",
+      element: <RegistroHoras />,
+    },
+
+
   ]);
 
   return (

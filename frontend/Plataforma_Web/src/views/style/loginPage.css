@@ -10,13 +10,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    width: 25% !important; /* 50% del ancho de la ventana */
   }
 
   .login-row {
     text-align: center;
     background-color: #EE2E2E;;
-    border-radius: 30px;
+    border-radius: 4vh;
   }
 
   /*
@@ -35,5 +35,3 @@ body {
    background-color: yellow; 
   }
   */
-  
-  
