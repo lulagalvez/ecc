@@ -14,7 +14,10 @@ const LoginPage = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Container className="login-container">
+      <Container fluid className="background">
+
+
+      <Container className="login-container ">
         <Row className="justify-content-center align-items-center flex-column login-row ">
           <Col md = {12} className="mx-2">
             <Image
@@ -52,6 +55,9 @@ const LoginPage = () => {
           </Col>
 
         </Row>
+      </Container>
+
+
       </Container>
     </motion.div>
   );

@@ -1,9 +1,12 @@
-body {
+
+  .background
+  {
     background-image: url("../../image/login-image.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
   }
+  
 
   .login-container {
     height: 100vh; /* 100% del alto de la ventana */
@@ -11,6 +14,8 @@ body {
     align-items: center;
     justify-content: center;
     width: 25% !important; /* 50% del ancho de la ventana */
+
+    
   }
 
   .login-row {
