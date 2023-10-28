@@ -5,7 +5,7 @@ from src.models.entrytime import EntryTime
 
 from flask import request, jsonify
 
-@bp.route('', methods=['POST'])
+@bp.route('/', methods=['POST'])
 def post_entrytime():
     data = request.get_json()
     
