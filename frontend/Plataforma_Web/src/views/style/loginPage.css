@@ -1,0 +1,39 @@
+body {
+    background-image: url("../../image/login-image.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .login-container {
+    height: 100vh; /* 100% del alto de la ventana */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .login-row {
+    text-align: center;
+    background-color: #EE2E2E;;
+    border-radius: 30px;
+  }
+
+  /*
+  .fila-1
+  {
+    background-color: black
+  }
+
+  .fila-2
+  {
+    background-color: azure;
+  }
+
+  .fila-3
+  {
+   background-color: yellow; 
+  }
+  */
+  
+  
