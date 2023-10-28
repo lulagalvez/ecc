@@ -15,12 +15,12 @@ def create_app(config_class=Config):
     app.register_blueprint(main_bp)
 
     from src.users import bp as users_bp
-    app.register_blueprint(users_bp, url_prefix='/users')
+    app.register_blueprint(users_bp, url_prefix='/user')
 
     from src.entrytimes import bp as entrytimes_bp
-    app.register_blueprint(entrytimes_bp, url_prefix='/entrytimes')
+    app.register_blueprint(entrytimes_bp, url_prefix='/entrytime')
 
     from src.exittimes import bp as exittimes_bp
-    app.register_blueprint(exittimes_bp, url_prefix='/exittimes')
+    app.register_blueprint(exittimes_bp, url_prefix='/exittime')
 
     return app
