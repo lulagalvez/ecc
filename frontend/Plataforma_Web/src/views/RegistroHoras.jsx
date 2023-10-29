@@ -5,6 +5,7 @@ const RegistroHoras = () => {
   return (
     <>
     <p>diusahduiashduiash</p>
+    dasdas
     </>
 
   );

@@ -2,9 +2,14 @@ import "./style/LoginPage.css";
 
 import { motion } from "framer-motion";
 
-import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Image} from "react-bootstrap";
+
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 import Logo from "../image/shield-image.png";
+
+
 
 const LoginPage = () => {
   return (
@@ -17,9 +22,9 @@ const LoginPage = () => {
       <Container fluid className="background">
 
 
-      <Container className="login-container ">
+      <Container className="page-container ">
         <Row className="justify-content-center align-items-center flex-column login-row ">
-          <Col md = {12} className="mx-2">
+          <Col md = {12}>
             <Image
               src={Logo}
               className="logo"
@@ -28,28 +33,27 @@ const LoginPage = () => {
             />
           </Col>
 
-          <Col md={12} className="fila-2" >
+          <Col md={12}>
             <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Numero de Bombero</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                  No compartas esta información con nadie
-                </Form.Text>
+              <Form.Group className="mb-5 mt-5" controlId="formBasicEmail">
+                <div className="user">
+                <AiOutlineUserAdd className="icono"/>
+                <Form.Control className="formulario-control" type="email" placeholder="Numero de bombero"/>
+                </div>
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-              </Form.Group>
+
+              <Form.Group className="password mb-5" controlId="formBasicPassword">
+              <div className="user">
+              <RiLockPasswordLine className="icono"/>
+                <Form.Control className="formulario-control "type="password" placeholder="Contraseña" />
+                </div>
+              </Form.Group>        
             </Form>
           </Col>
 
           <Col md = {12} className="fila-3 ">
-            <Button variant="primary" type="submit" size="lg" className="">
+            <Button variant="dark" type="submit" size="lg" className="mb-2">
               iniciar sesion
             </Button>
           </Col>

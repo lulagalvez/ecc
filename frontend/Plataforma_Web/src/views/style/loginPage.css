@@ -8,35 +8,51 @@
   }
   
 
-  .login-container {
+  .page-container {
     height: 100vh; /* 100% del alto de la ventana */
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 25% !important; /* 50% del ancho de la ventana */
-
-    
+    width: 30% !important; /* 50% del ancho de la ventana */
   }
 
   .login-row {
     text-align: center;
-    background-color: #EE2E2E;;
-    border-radius: 4vh;
+    background-color: #ca5555da; /* Cambio a un tono de rojo más claro */
+    border-radius: 8vh;
+    padding: 3vh;
+
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Sombra un poco más pronunciada */
   }
 
-  /*
-  .fila-1
-  {
-    background-color: black
-  }
+ .user
+ {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1vh;
+ }
 
-  .fila-2
-  {
-    background-color: azure;
-  }
+ .icono
+ {
+  margin-right: 1vh;
+  width: 2vh;
+  height: 3vh;
 
+ }
+
+ .formulario-control
+ {
+  width: 65% !important; /*mejores */
+  height: 4vh;
+ }
+
+  
   .fila-3
   {
-   background-color: yellow; 
+   display: flex;
+   justify-content: center;
+   align-items: center;
   }
-  */
+  
+
