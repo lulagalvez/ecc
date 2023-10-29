@@ -18,12 +18,19 @@
 
   .login-row {
     text-align: center;
-    background-color: #ca5555da; /* Cambio a un tono de rojo más claro */
+    background-color: #ca5555d3; /* Cambio a un tono de rojo más claro */
     border-radius: 8vh;
     padding: 3vh;
 
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Sombra un poco más pronunciada */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    transition: box-shadow 0.3s ease-in-out; /* Agregada una transición suave */
+  
+    /* Animación de sombreado al pasar el mouse */
+    &:hover {
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    }
   }
+  
 
  .user
  {
