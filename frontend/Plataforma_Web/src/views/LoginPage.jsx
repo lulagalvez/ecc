@@ -24,16 +24,16 @@ const LoginPage = () => {
 
       <Container className="page-container ">
         <Row className="justify-content-center align-items-center flex-column login-row ">
-          <Col md = {12}>
+          <Col md = {12} className="fila-1">
             <Image
               src={Logo}
               className="logo"
               alt="Logo"
-              style={{ maxWidth: "60%" }}
+              style={{ maxWidth: "100%" }}
             />
           </Col>
 
-          <Col md={12}>
+          <Col md={12} className="fila-2">
             <Form>
               <Form.Group className="mb-5 mt-5" controlId="formBasicEmail">
                 <div className="user">

@@ -1,65 +1,69 @@
+.background
+{
+  background-image: url("../../image/login-image.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-  .background
-  {
-    background-image: url("../../image/login-image.png");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-  }
-  
 
-  .page-container {
-    height: 100vh; /* 100% del alto de la ventana */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30% !important; /* 50% del ancho de la ventana */
-  }
-
-  .login-row {
-    text-align: center;
-    background-color: #ca5555d3; /* Cambio a un tono de rojo más claro */
-    border-radius: 8vh;
-    padding: 3vh;
-
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
-    transition: box-shadow 0.3s ease-in-out; /* Agregada una transición suave */
-  
-    /* Animación de sombreado al pasar el mouse */
-    &:hover {
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-    }
-  }
-  
-
- .user
- {
+.page-container {
+  height: 100vh; /* 100% del alto de la ventana */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1vh;
- }
+  width: 30% !important; /* 50% del ancho de la ventana */
+}
 
- .icono
- {
-  margin-right: 1vh;
-  width: 2vh;
-  height: 3vh;
+.login-row {
+  text-align: center;
+  background-color: #ca5555d3; /* Cambio a un tono de rojo más claro */
+  border-radius: 8vh;
+  padding: 3vh;
 
- }
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+  transition: box-shadow 0.3s ease-in-out; /* Agregada una transición suave */
 
- .formulario-control
- {
-  width: 65% !important; /*mejores */
-  height: 4vh;
- }
-
-  
-  .fila-3
-  {
-   display: flex;
-   justify-content: center;
-   align-items: center;
+  /* Animación de sombreado al pasar el mouse */
+  &:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
   }
-  
+}
 
+.logo
+{
+  height: 30vh !important;
+  width: 45vh !important;
+}
+
+
+.user
+{
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 1vh;
+}
+
+.icono
+{
+margin-right: 1vh;
+width: 2vh;
+height: 3vh;
+
+}
+
+.formulario-control
+{
+width: 65% !important; /*mejores */
+height: 4vh;
+}
+
+
+
+.fila-3
+{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}

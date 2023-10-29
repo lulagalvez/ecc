@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 
 import LoginPage from "../views/LoginPage";
 import RegistroHoras from "../views/RegistroHoras"
+import Menupage from "../views/menupage";
 
 function AnimatedRoutes() {
   //  Agregar rutas privadas , segun previa verificacion
@@ -16,6 +17,10 @@ function AnimatedRoutes() {
     {
       path: "/registro-horas",
       element: <RegistroHoras />,
+    },
+    {
+      path: "/Menupage",
+      element: <Menupage/>
     },
 
   ]);
