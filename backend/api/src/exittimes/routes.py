@@ -9,12 +9,12 @@ from flask import request, jsonify
 @bp.route('', methods=['POST'])
 def post_exittime():
     data = request.get_json()
-    user = data['id_user']
+    user = data['user_id']
     
     if user is None:
         return jsonify({'error': 'No se ha especificado el id del usuario'}), 400
     
-    related_entry_time = db.session.query(EntryTime).filter(EntryTime.id_user == user).last()
+    related_entry_time = db.session.query(EntryTime).filter(EntryTime.user_id == user).last()
     
     if related_entry_time is None:
         return jsonify({'error': 'No se ha registrado la hora de entrada'}), 400
@@ -23,7 +23,7 @@ def post_exittime():
         return jsonify({'error': 'No se ha iniciado un turno'}), 400
     
     #TODO cambiar a estado inactivo
-    exit_time = ExitTime(id_user=user, entry_time_id=related_entry_time.id)
+    exit_time = ExitTime(entry_time_id=related_entry_time.id)
     
     db.session.add(exit_time)
     db.session.commit()
