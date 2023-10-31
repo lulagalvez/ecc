@@ -2,6 +2,7 @@ from src.entrytimes import bp
 from src.extensions import db
 
 from src.models.entrytime import EntryTime
+from src.models.user import User
 
 from flask import request, jsonify
 
@@ -9,14 +10,13 @@ from flask import request, jsonify
 def post_entrytime():
     data = request.get_json()
     
-    user = data['user_id']
-    if user is None:
-        return jsonify({'error': 'No se ha especificado el id del usuario'}), 400
+    user_name = data['user_name']
     
-    #no se puede crear una entrada si ya existe una entrada sin salida
+    user = db.get_or_404(db.select(User).filter_by(user_name=user_name))
 
-    #TODO cambiar a estado activo
-    entry_time = EntryTime(user_id=user)
+    entry_time = EntryTime(user_id=user_name)
+    user.state = 1
+    
     db.session.add(entry_time)
     db.session.commit()
     
