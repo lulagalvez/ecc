@@ -1,8 +1,8 @@
 from flask import Flask
+from flask_cors import CORS
 from config import Config
 from src.extensions import db
 from src.extensions import jwt
-
 
 
 def create_app(config_class=Config):
@@ -11,12 +11,12 @@ def create_app(config_class=Config):
 
     # Initialize Flask extensions here
     db.init_app(app)
+
     jwt.init_app(app)
-    
     with app.app_context():
         create_database()
 
-
+    cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
     # Register blueprints here
     from src.main import bp as main_bp
