@@ -155,7 +155,7 @@ def login():
 def register():
     data = request.get_json()
     username = data.get('user_name')
-    password = data.get('password')
+    password = data.get('password') 
 
     # Verificar si el usuario ya existe
     existing_user = User.query.filter_by(user_name=username).first()
