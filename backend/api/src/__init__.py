@@ -5,18 +5,16 @@ from src.extensions import jwt
 
 
 
-
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
     # Initialize Flask extensions here
     db.init_app(app)
-
+    jwt.init_app(app)
     
     with app.app_context():
         create_database()
-    jwt.init_app(app)
 
 
 
