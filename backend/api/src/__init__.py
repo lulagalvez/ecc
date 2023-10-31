@@ -9,6 +9,9 @@ def create_app(config_class=Config):
 
     # Initialize Flask extensions here
     db.init_app(app)
+    
+    with app.app_context():
+        create_database()
 
     # Register blueprints here
     from src.main import bp as main_bp
@@ -24,3 +27,10 @@ def create_app(config_class=Config):
     app.register_blueprint(exittimes_bp, url_prefix='/exittime')
 
     return app
+
+def create_database():
+    from src.models.user import User
+    from src.models.entrytime import EntryTime
+    from src.models.exittime import ExitTime
+    
+    db.create_all()

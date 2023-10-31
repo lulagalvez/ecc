@@ -10,16 +10,20 @@ from flask import request, jsonify
 def post_entrytime():
     data = request.get_json()
     
-    user_name = data['user_name']
+    user_id = data['user_id']
     
-    user = db.get_or_404(db.select(User).filter_by(user_name=user_name))
+    user = db.get_or_404(User, user_id, description='No existe el usuario')
 
-    entry_time = EntryTime(user_id=user_name)
+    entry_time = EntryTime(user_id=user_id)
     user.state = 1
     
     db.session.add(entry_time)
     db.session.commit()
     
-    return jsonify({'message': 'Se ha registrado la entrada del usuario'}), 200
+    return jsonify({
+        'message': 'Se ha registrado la entrada del usuario',
+        'id': entry_time.id,
+        'date_time': entry_time.date_time
+        }), 200
     
     
