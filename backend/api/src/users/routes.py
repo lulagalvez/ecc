@@ -2,6 +2,9 @@ from flask import render_template, request, url_for, redirect, jsonify
 from src.users import bp
 from src.extensions import db
 from src.models.user import User
+from flask_jwt_extended import create_access_token, jwt_required
+
+
 
 """ @bp.route('/')
 def index():
@@ -132,3 +135,42 @@ def get_users_by_state(state):
         })
     
     return jsonify(user_list)
+
+@bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    user_name = data.get('user_name')
+    password = data.get('password')
+    
+    user = User.query.filter_by(user_name=user_name).first()
+
+    if user and user.check_password(password):
+        access_token = create_access_token(identity=user.id)
+        return jsonify({'access_token': access_token}), 200
+    else:
+        return jsonify({'error': 'Usuario o contraseña incorrectos'}), 401
+
+
+@bp.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    username = data.get('user_name')
+    password = data.get('password')
+
+    # Verificar si el usuario ya existe
+    existing_user = User.query.filter_by(user_name=username).first()
+    if existing_user:
+        return jsonify({'error': 'El nombre de usuario ya está en uso'}), 400
+
+    user = User(user_name=username, email=data.get('email'), first_name=data.get('first_name'), last_name=data.get('last_name'), role=data.get('role'))
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({'message': 'Usuario registrado con éxito'}), 201
+
+@bp.route('/protected-route', methods=['GET'])
+@jwt_required()
+def protected_route():
+    # Esta es una ruta protegida que requiere autenticación
+    return jsonify({'message': 'Has accedido a una ruta protegida'}), 200
