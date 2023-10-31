@@ -7,11 +7,12 @@ class User(db.Model):
     first_name = db.Column(db.String(150), nullable=False)
     last_name = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(10), nullable=False)
-    user_name = db.Column(db.String(25), nullable=False)
-    password = db.Column(db.String(128), nullable=False)
+
+    user_name = db.Column(db.String(25), nullable=False, unique=True)
+    password = db.Column(db.String(80), nullable=False)
+
     email = db.Column(db.String(50), nullable=False)
     state = db.Column(db.Integer, nullable=False, default=0)
-    #TODO crear estados (activo, inactivo, emergencia)
     #TODO crear llamada para activo de activo a emergencia y viceversa
 
     
