@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect, jsonify
 from src.users import bp
 from src.extensions import db
-from src.models.user import User
+from src.models.user import User    
 from flask_jwt_extended import create_access_token, jwt_required
 
 
