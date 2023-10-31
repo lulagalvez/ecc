@@ -14,6 +14,11 @@ def post_entrytime():
     
     user = db.get_or_404(User, user_id, description='No existe el usuario')
 
+    last_entrytime = db.one_or_404(db.select(EntryTime).where(EntryTime.user_id==user_id).last())
+    
+    if last_entrytime.exit_time is None:
+        return jsonify({'message': 'No se ha marcado la Salida'}), 400
+
     entry_time = EntryTime(user_id=user_id)
     user.state = 1
     

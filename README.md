@@ -10,9 +10,9 @@
 5. export FLASK_APP=src
 6. flask shell
 7. \>\>\>from src.extensions import db
-8. \>\>\>from src.models.user import User
-9. \>\>\>from src.models.entrytime import EntryTime
-10. \>\>\>from src.models.exittime import ExitTime
+8. \>\>\>from models.user import User
+9. \>\>\>from models.entrytime import EntryTime
+10. \>\>\>from models.exittime import ExitTime
 11. \>\>\>db.create_all()
 12. \>\>\>exit()
 13. flask run

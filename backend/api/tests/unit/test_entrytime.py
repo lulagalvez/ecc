@@ -21,4 +21,7 @@ def test_error_post_entrytime_with_same_id_without_exittime(test_client):
     THEN return an error
     """
     
-    pass
+    response = test_client.post('/entrytime/', json={'user_id': 1})
+    
+    assert response.status_code == 400
+    

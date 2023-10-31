@@ -29,7 +29,6 @@ def create_data(test_client):
         email = 'seba@sanhue.cl'
         )
     db.session.add(test_user) 
-    
     db.session.commit()
 
     yield
