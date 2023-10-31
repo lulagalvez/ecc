@@ -19,7 +19,7 @@
   text-align: center;
   background-color: #ca5555d3; /* Cambio a un tono de rojo más claro */
   border-radius: 8vh;
-  padding: 3vh;
+  padding: 4vh;
 
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
   transition: box-shadow 0.3s ease-in-out; /* Agregada una transición suave */
@@ -33,7 +33,7 @@
 .logo
 {
   height: 30vh !important;
-  width: 45vh !important;
+  width: 35vh !important;
 }
 
 
@@ -55,7 +55,7 @@ height: 3vh;
 
 .formulario-control
 {
-width: 65% !important; /*mejores */
+width: 70% !important; /*mejores */
 height: 4vh;
 }
 
