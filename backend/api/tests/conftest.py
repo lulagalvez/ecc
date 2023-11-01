@@ -5,6 +5,7 @@ from src import create_app
 from src.extensions import db
 from src.models.user import User
 from src.models.entrytime import EntryTime
+from src.entrytimes import routes
 from config import TestingConfig
 
 FAKE_DATE_TIME = datetime.datetime(2000, 2, 19, 0, 0, 0)
@@ -20,7 +21,7 @@ def test_client():
 @pytest.fixture(scope='module')
 def create_data(test_client):
     test_user = User(
-        id = 1,
+        id = 1902,
         first_name='Sebastian', 
         last_name='Sanhueza', 
         role='firefighter', 
@@ -29,20 +30,24 @@ def create_data(test_client):
         email = 'seba@sanhue.cl'
         )
     db.session.add(test_user) 
-    
     db.session.commit()
 
     yield
     
     db.drop_all()
 
-@pytest.fixture(scope='module')
-def create_entrytime(test_client, create_user):
-    test_entrytime = EntryTime(1)
+@pytest.fixture(scope='function')
+def exittime_fixture(test_client, create_data):
+    user = db.get_or_404(User, 1902)
+    test_entrytime = routes.create_entrytime(user)
     
     db.session.add(test_entrytime)
     db.session.commit()
     
+    yield
+    
+    db.session.delete(test_entrytime)
+    db.session.commit()
     
 @pytest.fixture
 def date_time_mock(monkeypatch):
