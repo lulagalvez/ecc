@@ -12,4 +12,4 @@ class User(db.Model):
     #TODO crear llamada para activo de activo a emergencia y viceversa
 
     def __repr__(self):
-        return f'<User "{self.username}">'
+        return f'<User "{self.user_name}">'

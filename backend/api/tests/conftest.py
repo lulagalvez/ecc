@@ -20,7 +20,7 @@ def test_client():
 @pytest.fixture(scope='module')
 def create_data(test_client):
     test_user = User(
-        id = 1,
+        id = 1902,
         first_name='Sebastian', 
         last_name='Sanhueza', 
         role='firefighter', 
@@ -35,13 +35,14 @@ def create_data(test_client):
     
     db.drop_all()
 
-@pytest.fixture(scope='module')
-def create_entrytime(test_client, create_user):
-    test_entrytime = EntryTime(1)
+@pytest.fixture(scope='function')
+def exittime_fixture(test_client, create_data):
+    test_entrytime = EntryTime(user_id=1902)
     
     db.session.add(test_entrytime)
     db.session.commit()
     
+    yield
     
 @pytest.fixture
 def date_time_mock(monkeypatch):

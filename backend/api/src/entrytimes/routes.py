@@ -10,14 +10,18 @@ from flask import request, jsonify
 def post_entrytime():
     data = request.get_json()
     
-    user_id = data['user_id']
+    try:
+        user_id = data['user_id']
+    except KeyError:
+        return jsonify({'message': 'No se ha ingresado el id del usuario'}), 400
     
     user = db.get_or_404(User, user_id, description='No existe el usuario')
 
-    last_entrytime = db.one_or_404(db.select(EntryTime).where(EntryTime.user_id==user_id).last())
-    
-    if last_entrytime.exit_time is None:
-        return jsonify({'message': 'No se ha marcado la Salida'}), 400
+    last_entrytime = db.session.query(EntryTime).order_by(EntryTime.id.desc()).filter_by(user_id = user.id).first()
+                 
+    if last_entrytime is not None:
+        if last_entrytime.exit_time is None:
+            return jsonify({'message': 'No se ha marcado la Salida'}), 400
 
     entry_time = EntryTime(user_id=user_id)
     user.state = 1

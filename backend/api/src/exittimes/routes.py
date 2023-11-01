@@ -6,18 +6,16 @@ from src.models.entrytime import EntryTime
 
 from flask import request, jsonify
 
-@bp.route('', methods=['POST'])
+@bp.route('/', methods=['POST'])
 def post_exittime():
     data = request.get_json()
-    user = data['user_id']
     
-    if user is None:
-        return jsonify({'error': 'No se ha especificado el id del usuario'}), 400
+    try:
+        user_id = data['user_id']
+    except KeyError:
+        return jsonify({'message': 'No se ha ingresado el id del usuario'}), 400
     
-    related_entry_time = db.session.query(EntryTime).filter(EntryTime.user_id == user).last()
-    
-    if related_entry_time is None:
-        return jsonify({'error': 'No se ha registrado la hora de entrada'}), 400
+    related_entry_time = db.get_or_404(EntryTime, user_id) 
     
     if related_entry_time.exit_time is not None:
         return jsonify({'error': 'No se ha iniciado un turno'}), 400

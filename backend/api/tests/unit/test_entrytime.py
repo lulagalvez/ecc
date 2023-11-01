@@ -9,19 +9,50 @@ def test_request_post_entrytime(test_client, create_data):
     WHEN a POST request is made to /entrytime/
     THEN check that the response is valid
     """
-    response = test_client.post('/entrytime/', json={'user_id': 1})
+    response = test_client.post('/entrytime/', json={'user_id': 1902})
     
     assert response.status_code == 200
 
 
-def test_error_post_entrytime_with_same_id_without_exittime(test_client):
+def test_error_post_entrytime_with_same_id_without_exittime(test_client, create_data):
     """
     GIVEN a user_id 
     WHEN there is a entrytime with the same user_id without exittime
     THEN return an error
     """
-    
-    response = test_client.post('/entrytime/', json={'user_id': 1})
+    response = test_client.post('/entrytime/', json={'user_id': 1902})
     
     assert response.status_code == 400
     
+def test_error_no_user_id_argument(test_client, create_data):
+    """
+    GIVEN nothing
+    WHEN a POST request is made to /entrytime/
+    THEN check that the response is valid
+    """
+    
+    response = test_client.post('/entrytime/', json={})
+    
+    assert response.status_code == 400
+    
+def test_error_user_id_is_not_an_integer(test_client, create_data):
+    """
+    GIVEN a user_id that is not an integer
+    WHEN a POST request is made to /entrytime/
+    THEN check that the response is valid
+    """
+    
+    response = test_client.post('/entrytime/', json={'user_id': '1902'})
+    
+    assert response.status_code == 400
+    
+def test_error_no_user_with_user_id(test_client, create_data):
+    """
+    GIVEN a user_id that is not an integer
+    WHEN a POST request is made to /entrytime/
+    THEN check that the response is valid
+    """
+    
+    response = test_client.post('/entrytime/', json={'user_id': 1001})
+    
+    assert response.status_code == 404
