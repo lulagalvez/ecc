@@ -161,4 +161,4 @@ cython_debug/
 
 # db
 
-api/app.db
+*.db
