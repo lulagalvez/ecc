@@ -45,7 +45,7 @@ def test_error_post_no_user_id_argument(test_client, create_data):
     WHEN a POST request is made to /entrytime/
     THEN check that the response is valid
     """
-    
+
     response = test_client.post('/entrytime/', json={})
     
     assert response.status_code == 400

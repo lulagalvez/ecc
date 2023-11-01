@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect, jsonify
 from src.users import bp
 from src.extensions import db
-from src.models.user import User
+from src.models.user import User    
 from flask_jwt_extended import create_access_token, jwt_required
 
 
@@ -155,7 +155,7 @@ def login():
 def register():
     data = request.get_json()
     username = data.get('user_name')
-    password = data.get('password')
+    password = data.get('password') 
 
     # Verificar si el usuario ya existe
     existing_user = User.query.filter_by(user_name=username).first()

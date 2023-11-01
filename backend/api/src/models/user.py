@@ -21,6 +21,7 @@ class User(db.Model):
     state = db.Column(db.Integer, nullable=False, default=STATES['Inactive'])
     #TODO crear llamada para activo de activo a emergencia y viceversa
 
+
     
 
     def set_password(self, password):
@@ -28,7 +29,9 @@ class User(db.Model):
         self.password = hashed_password.decode('utf-8')
 
     def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     def __repr__(self):
         return f'<User "{self.user_name}">'
+    
+    

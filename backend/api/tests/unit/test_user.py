@@ -24,9 +24,11 @@ def test_new_user():
     assert user.user_name == 'johndoe123'
     assert user.password == 'YourPasswordHere'
 
+
 def test_role_assignment():
     user = User(
         email="johndoe@example.com",
         role="Admin"
     )
     assert user.role == 'Admin'
+
