@@ -15,6 +15,7 @@ class User(db.Model):
     state = db.Column(db.Integer, nullable=False, default=0)
     #TODO crear llamada para activo de activo a emergencia y viceversa
 
+
     
 
     def set_password(self, password):
