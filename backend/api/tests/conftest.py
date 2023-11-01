@@ -5,6 +5,7 @@ from src import create_app
 from src.extensions import db
 from src.models.user import User
 from src.models.entrytime import EntryTime
+from src.entrytimes import routes
 from config import TestingConfig
 
 FAKE_DATE_TIME = datetime.datetime(2000, 2, 19, 0, 0, 0)
@@ -37,12 +38,16 @@ def create_data(test_client):
 
 @pytest.fixture(scope='function')
 def exittime_fixture(test_client, create_data):
-    test_entrytime = EntryTime(user_id=1902)
+    user = db.get_or_404(User, 1902)
+    test_entrytime = routes.create_entrytime(user)
     
     db.session.add(test_entrytime)
     db.session.commit()
     
     yield
+    
+    db.session.delete(test_entrytime)
+    db.session.commit()
     
 @pytest.fixture
 def date_time_mock(monkeypatch):

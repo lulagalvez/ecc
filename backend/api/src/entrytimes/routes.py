@@ -23,11 +23,7 @@ def post_entrytime():
         if last_entrytime.exit_time is None:
             return jsonify({'message': 'No se ha marcado la Salida'}), 400
 
-    entry_time = EntryTime(user_id=user_id)
-    user.state = 1
-    
-    db.session.add(entry_time)
-    db.session.commit()
+    entry_time = create_entrytime(user)
     
     return jsonify({
         'message': 'Se ha registrado la entrada del usuario',
@@ -35,4 +31,11 @@ def post_entrytime():
         'date_time': entry_time.date_time
         }), 200
     
+def create_entrytime(user):
+    entry_time = EntryTime(user_id=user.id)
+    user.state = User.STATES['Active']
     
+    db.session.add(entry_time)
+    db.session.commit()
+
+    return entry_time

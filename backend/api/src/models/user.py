@@ -1,6 +1,13 @@
 from src.extensions import db
 
+
 class User(db.Model):
+    STATES = {
+    'Inactive': 0,
+    'Active': 1,
+    'Emergency': 2
+    }
+    
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(150), nullable=False)
     last_name = db.Column(db.String(150), nullable=False)
@@ -8,7 +15,7 @@ class User(db.Model):
     user_name = db.Column(db.String(25), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    state = db.Column(db.Integer, nullable=False, default=0)
+    state = db.Column(db.Integer, nullable=False, default=STATES['Inactive'])
     #TODO crear llamada para activo de activo a emergencia y viceversa
 
     def __repr__(self):
