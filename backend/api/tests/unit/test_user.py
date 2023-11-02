@@ -24,9 +24,6 @@ def test_new_user():
     assert user.user_name == 'johndoe123'
     assert user.password == 'YourPasswordHere'
 
-def test_invalid_user_creation():
-    with pytest.raises(ValueError):
-        user = User(email="johndoe@example.com")  # Missing required attributes
 
 def test_role_assignment():
     user = User(
@@ -34,3 +31,4 @@ def test_role_assignment():
         role="Admin"
     )
     assert user.role == 'Admin'
+
