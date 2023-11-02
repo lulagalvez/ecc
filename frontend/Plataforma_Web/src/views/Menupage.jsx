@@ -6,15 +6,7 @@ import NavBar from "../glovalComponent/components/NavBar";
 
 import { motion } from "framer-motion";
 
-import { useState } from 'react';
-
 const Menupage = () => {
-
-const [showOffcanvas, setShowOffcanvas] = useState(false);
-
-  const onOffcanvasShow = () => setShowOffcanvas(true);
-  const onOffcanvasClose = () => setShowOffcanvas(false);
-
 
     return(
         <motion.div
@@ -29,9 +21,6 @@ const [showOffcanvas, setShowOffcanvas] = useState(false);
                 <Col className="w-100 col-1" xs={12} md={2}>
                     <NavBar
                     usuario="Joseeeeee"
-                    onOffcanvasShow={onOffcanvasShow}
-                    onOffcanvasClose={onOffcanvasClose}
-                    showOffcanvas={showOffcanvas}
                     ></NavBar>
                 </Col>
 
