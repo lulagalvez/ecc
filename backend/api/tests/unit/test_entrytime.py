@@ -2,7 +2,35 @@ import pytest
 from src.models.user import User
 from src.extensions import db
 from src.entrytimes import routes
+  
+def test_get_all_entrytimes_with_no_entrytimes(test_client, create_data):
+    """
+    GIVEN a GET request to /entrytime/all
+    WHEN entrytime table is empty
+    THEN return an empty json
+    """
+    response = test_client.get('/entrytime/all')
+    data = response.get_json()
 
+    
+    assert response.status_code == 200
+    assert data == []
+    
+def test_get_all_entrytimes(test_client, create_data, get_entrytime_fixture):
+    """
+    GIVEN a GET request to /entrytime/all
+    WHEN entrytime table is not empty
+    THEN return a json with all the entrytimes
+    """
+    response = test_client.get('/entrytime/all')
+    data = response.get_json()
+
+    
+    assert response.status_code == 200
+    assert data[0]['user_id'] == 1902
+    assert data[0]['id'] == 1
+    assert data[1]['id'] == 2
+    
 def test_create_entrytime(test_client, create_data):
     """
     GIVEN a user
@@ -71,3 +99,5 @@ def test_error_post_no_user_with_user_id(test_client, create_data):
     response = test_client.post('/entrytime/', json={'user_id': 1001})
     
     assert response.status_code == 404
+    
+

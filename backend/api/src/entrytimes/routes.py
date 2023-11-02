@@ -39,3 +39,9 @@ def create_entrytime(user):
     db.session.commit()
 
     return entry_time
+
+@bp.route('/all', methods=['GET'])
+def get_all_entrytimes():
+    entrytimes = db.session.query(EntryTime).order_by(EntryTime.date_time).all()
+    
+    return jsonify([entrytime.serialize() for entrytime in entrytimes]), 200

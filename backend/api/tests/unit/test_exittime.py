@@ -18,6 +18,8 @@ def test_create_exittime(test_client, create_data, exittime_fixture):
     exit_time = routes.create_exittime(user, entry_time)
     
     assert user.state == User.STATES['Inactive']
+    assert entry_time.exit_time.id == exit_time.id
+    assert exit_time.entry_time_id == entry_time.id
 
 def test_post_exittime(test_client, create_data, exittime_fixture):
     """

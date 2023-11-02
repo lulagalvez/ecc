@@ -12,3 +12,10 @@ class EntryTime(db.Model):
 
     def __repr__(self):
         return f'<EntryTime {self.id}>'
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'date_time': self.date_time
+        }
