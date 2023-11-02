@@ -53,15 +53,15 @@ def exittime_fixture(test_client):
     db.session.commit()
     
 @pytest.fixture(scope='function')
-def get_entrytime_fixture(test_client):
+def pairs_entrytime_exittime(test_client):
     user = db.get_or_404(User, test_user_id)
     
     for i in range(3):
         entry_time = entrytime_routes.create_entrytime(user)
         db.session.add(entry_time)   
         db.session.add(exittime_routes.create_exittime(user, entry_time))
-   
-    
+  
+
 @pytest.fixture
 def date_time_mock(monkeypatch):
     

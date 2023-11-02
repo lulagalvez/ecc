@@ -16,7 +16,7 @@ def test_get_all_entrytimes_with_no_entrytimes(test_client, create_data):
     assert response.status_code == 200
     assert data == []
     
-def test_get_all_entrytimes(test_client, create_data, get_entrytime_fixture):
+def test_get_all_entrytimes(test_client, create_data, pairs_entrytime_exittime):
     """
     GIVEN a GET request to /entrytime/all
     WHEN entrytime table is not empty
@@ -56,6 +56,7 @@ def test_post_entrytime(test_client, create_data):
     response = test_client.post('/entrytime/', json={'user_id': user_id})
     
     assert response.status_code == 200
+    
     
 def test_error_post_entrytime_with_same_id_without_exittime(test_client, create_data):
     """
