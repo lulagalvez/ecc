@@ -2,7 +2,7 @@ from flask import render_template, request, url_for, redirect, jsonify
 from src.users import bp
 from src.extensions import db
 from src.models.user import User    
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 
 
@@ -152,7 +152,23 @@ def login():
 
 
 @bp.route('/register', methods=['POST'])
+@jwt_required(optional=True)
 def register():
+    
+     # Verificar si hay usuarios en la base de datos
+    if User.query.first():
+        # Si hay usuarios, obtener la identidad del usuario autenticado
+        user_id = get_jwt_identity()
+        if not user_id:
+            return jsonify({'error': 'Autenticación requerida'}), 401
+
+        current_user = User.query.get(user_id)
+
+        # Verificar si el usuario tiene el rol de "administrador"
+        if current_user.role != "administrador":
+            return jsonify({'error': 'No tienes permiso para realizar esta acción'}), 403
+
+
     data = request.get_json()
     username = data.get('user_name')
     password = data.get('password') 
