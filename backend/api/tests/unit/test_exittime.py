@@ -5,7 +5,7 @@ from src.models.entrytime import EntryTime
 from src.exittimes import routes
 from tests.conftest import FAKE_DATE_TIME
 
-def test_create_exittime(test_client, create_data, exittime_fixture):
+def test_create_exittime(test_client, create_data, pairs_entrytime_exittime, exittime_fixture):
     """
     GIVEN a user and a entrytime
     WHEN a POST request is made to /exittime/
@@ -18,6 +18,8 @@ def test_create_exittime(test_client, create_data, exittime_fixture):
     exit_time = routes.create_exittime(user, entry_time)
     
     assert user.state == User.STATES['Inactive']
+    assert entry_time.exit_time.id == exit_time.id
+    assert exit_time.entry_time_id == entry_time.id
 
 def test_post_exittime(test_client, create_data, exittime_fixture):
     """

@@ -33,8 +33,8 @@ def post_exittime():
 
 def create_exittime(user, entry_time):
     exit_time = ExitTime(entry_time_id=entry_time.id)
-    user.state = User.STATES['Inactive']
     
+    user.state = User.STATES['Inactive']
     db.session.add(exit_time)
     db.session.commit()
 

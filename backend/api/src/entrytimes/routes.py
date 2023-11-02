@@ -40,6 +40,13 @@ def create_entrytime(user):
 
     return entry_time
 
+
+@bp.route('/all', methods=['GET'])
+def get_all_entrytimes():
+    entrytimes = db.session.query(EntryTime).order_by(EntryTime.date_time).all()
+    
+    return jsonify([entrytime.serialize() for entrytime in entrytimes]), 200
+
 @bp.route('/entrytimes_by_user/<int:user_id>', methods=['GET'])
 def get_entrytimes_by_user(user_id):
     user = User.query.get(user_id)
@@ -80,4 +87,3 @@ def get_exittime_by_entrytime(entrytime_id):
             return jsonify({'message': 'Ningun exit time asociado a este entry time'}), 404
     else:
         return jsonify({'message': 'Exit time no encontrado'}), 404
-
