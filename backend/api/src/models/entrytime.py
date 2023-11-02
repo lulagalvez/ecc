@@ -18,5 +18,5 @@ class EntryTime(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'date_time': self.date_time,
-            'exit_time': self.exit_time.id
+            'exit_time': self.exit_time.serialize() if self.exit_time else {}
         }

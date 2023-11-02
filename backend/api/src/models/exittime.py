@@ -14,6 +14,6 @@ class ExitTime(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'user_id': self.entrytime.user_id,
+            'user_id': self.entry_time.user_id,
             'date_time': self.date_time
         }
