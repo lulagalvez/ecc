@@ -17,5 +17,6 @@ class EntryTime(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'date_time': self.date_time
+            'date_time': self.date_time,
+            'exit_time': self.exit_time.id
         }

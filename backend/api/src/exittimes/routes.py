@@ -18,17 +18,24 @@ def post_exittime():
     
     user = db.get_or_404(User, user_id, description='No existe el usuario')
     
-    related_entry_time = db.session.query(EntryTime).filter_by(user_id=user_id).order_by(EntryTime.id.desc()).first() 
+    related_entry_time = db.session.execute(db.select(EntryTime).where(EntryTime.user_id == user_id).order_by(EntryTime.id.desc())).first()
+    related_entry_time = related_entry_time[0]
     
-    if related_entry_time is None or related_entry_time.exit_time is not None:
+    if related_entry_time is None:
         return jsonify({'error': 'No se ha iniciado un turno'}), 400
+        
+    if related_entry_time.exit_time is not None:
+        return jsonify({'error': 'No se ha iniciado un turno'}), 400
+        
+        
     
-    exit_time = create_exittime(related_entry_time, user)
+    exit_time = create_exittime(user, related_entry_time)
     
     return jsonify({
         'message': 'Se ha registrado la salida del usuario',
         'id': exit_time.id,
-        'date_time': exit_time.date_time
+        'date_time': exit_time.date_time,
+        'entry_time_id': related_entry_time.id
         }), 200
 
 def create_exittime(user, entry_time):
