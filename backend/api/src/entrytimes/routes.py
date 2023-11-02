@@ -77,7 +77,7 @@ def get_exittime_by_entrytime(entrytime_id):
 
             return jsonify(exittime_data), 200
         else:
-            return jsonify({'message': 'No entry time associated with this exit time'}), 404
+            return jsonify({'message': 'Ningun exit time asociado a este entry time'}), 404
     else:
-        return jsonify({'message': 'Exit time not found'}), 404
+        return jsonify({'message': 'Exit time no encontrado'}), 404
 
