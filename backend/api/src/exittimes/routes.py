@@ -39,3 +39,40 @@ def create_exittime(user, entry_time):
     db.session.commit()
 
     return exit_time
+
+@bp.route('/', methods=['GET'])
+def get_all_exittimes():
+    exittimes = ExitTime.query.all()
+
+    exittime_list = []
+    for exittime in exittimes:
+        exittime_data = {
+            'id': exittime.id,
+            'entry_time_id': exittime.entry_time_id,
+            'date_time': exittime.date_time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        exittime_list.append(exittime_data)
+
+    return jsonify(exittime_list), 200
+
+
+# Obtener entrytime de la exittime entregada
+@bp.route('/entrytime/<int:exittime_id>', methods=['GET'])
+def get_entrytime_by_exittime(exittime_id):
+    exittime = ExitTime.query.get(exittime_id)
+    
+    if exittime is not None:
+        related_entry_time = exittime.entrytime
+
+        if related_entry_time is not None:
+            entrytime_data = {
+                'id': related_entry_time.id,
+                'user_id': related_entry_time.user_id,
+                'date_time': related_entry_time.date_time.strftime('%Y-%m-%d %H:%M:%S')
+            }
+
+            return jsonify(entrytime_data), 200
+        else:
+            return jsonify({'message': 'Ningun entry time asociado con este exit time'}), 404
+    else:
+        return jsonify({'message': 'Entry time no encontrado'}), 404
