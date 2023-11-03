@@ -8,14 +8,7 @@
 3. Activar ambiente virtual con source .venv/bin/activate
 4. Instalar flask dentro del ambiente virtual
 5. export FLASK_APP=src
-6. flask shell
-7. \>\>\>from src.extensions import db
-8. \>\>\>from models.user import User
-9. \>\>\>from models.entrytime import EntryTime
-10. \>\>\>from models.exittime import ExitTime
-11. \>\>\>db.create_all()
-12. \>\>\>exit()
-13. flask run
+6. flask run
 
 ### Integrantes:
  - José Rojas
