@@ -87,3 +87,51 @@ def get_exittime_by_entrytime(entrytime_id):
             return jsonify({'message': 'Ningun exit time asociado a este entry time'}), 404
     else:
         return jsonify({'message': 'Exit time no encontrado'}), 404
+
+from flask import request
+from datetime import datetime, timedelta
+from src.models.entrytime import EntryTime
+from src.models.exittime import ExitTime
+from src.models.user import User
+from src.extensions import db
+
+@bp.route('/summary/<int:user_id>/<int:num_days>', methods=['GET'])
+def entrytimes_summary(user_id, num_days):
+    user = User.query.get(user_id)
+    
+    if user is not None:
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=num_days)
+
+        entrytimes = EntryTime.query.filter_by(user_id=user.id) \
+            .filter(EntryTime.date_time >= start_date, EntryTime.date_time <= end_date) \
+            .order_by(EntryTime.date_time) \
+            .all()
+
+        entrytime_list = []
+        total_hours = 0
+        entry_count = 0
+
+        for entrytime in entrytimes:
+            if entrytime.exit_time:
+                time_difference = entrytime.exit_time.date_time - entrytime.date_time
+                total_hours += time_difference.total_seconds() / 3600
+                entry_count += 1
+
+            entrytime_list.append({
+                'id': entrytime.id,
+                'user_id': entrytime.user_id,
+                'date_time': entrytime.date_time.strftime('%Y-%m-%d %H:%M:%S')
+            })
+
+        summary = {
+            'user_id': user_id,
+            'entry_count': entry_count,
+            'total_hours_worked': total_hours,
+            'entrytimes': entrytime_list
+        }
+
+        return jsonify(summary), 200
+    else:
+        return jsonify({'message': 'User not found'}), 404
+
