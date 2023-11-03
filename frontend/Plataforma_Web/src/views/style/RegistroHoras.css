@@ -1,0 +1,67 @@
+.page{
+    display: flex;
+}
+
+/* Estilo para el contenedor de la tabla */
+/* Estilo para la tabla */
+.table-container {
+  margin: 10px auto; /* Margen superior e inferior establecido a 0 y margen izquierdo y derecho automático para centrar la tabla */
+  width: 90%; /* Ancho del 90% para ocupar el 90% del ancho de la página */
+}
+
+/* Estilo para las celdas */
+.table-container td, .table-container th {
+  width: 18%; /* Establece el ancho de las celdas a automático (expansión automática) */
+}
+/* Estilo para las filas impares */
+.table-container tr:nth-child(odd) {
+  background-color: #f2f2f2; /* Fondo claro */
+}
+
+/* Estilo para las filas pares */
+.table-container tr:nth-child(even) {
+  background-color: #ccc; /* Fondo oscuro */
+}
+
+
+/* Estilo para las casillas de encabezado de la tabla */
+.table-container th {
+  font-weight: normal;
+  padding: 1%;
+}
+
+.table-container th:first-child {
+  border-radius: 10px 0 0 10px; /* Restablece el borde circular solo en las esquinas derechas de la última casilla */
+}
+
+/* Estilo para las casillas de encabezado de la tabla (última casilla) */
+.table-container th:last-child {
+  border-radius: 0 10px 10px 0; /* Restablece el borde circular solo en las esquinas derechas de la última casilla */
+}
+
+.filter-button-container {
+  display: flex;
+  justify-content: flex-end; /* Alinea al extremo derecho */
+  padding-right: 68px; /* Agrega espacio entre los botones y el límite derecho */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Distribuye los botones uniformemente en el contenedor */
+    margin-top: 110px; /* Añade espacio debajo de los botones */
+    margin-left: 5%;
+}
+
+.enter-button-container {  
+padding-inline:40%;
+}
+
+.fila-3 {
+ display: flex;
+ justify-content: center;
+ align-items: right;
+}
+
+.margin {
+  padding-top:5%;
+}
