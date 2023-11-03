@@ -5,6 +5,7 @@ from src.models.entrytime import EntryTime
 from src.models.user import User
 
 from flask import request, jsonify
+import datetime
 
 @bp.route('/', methods=['POST'])
 def post_entrytime():
@@ -32,7 +33,7 @@ def post_entrytime():
         }), 200
     
 def create_entrytime(user):
-    entry_time = EntryTime(user_id=user.id)
+    entry_time = EntryTime(user_id=user.id, date_time=datetime.now())
     user.state = User.STATES['Active']
     
     db.session.add(entry_time)

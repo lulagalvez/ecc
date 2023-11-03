@@ -7,7 +7,7 @@ class EntryTime(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref='entrytimes')
-    date_time = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
+    date_time = db.Column(db.DateTime, nullable=False)
     exit_time = db.relationship('ExitTime', back_populates='entry_time', uselist=False)
 
     def __repr__(self):

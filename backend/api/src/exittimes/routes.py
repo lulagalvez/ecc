@@ -6,6 +6,7 @@ from src.models.entrytime import EntryTime
 from src.models.user import User
 
 from flask import request, jsonify
+from datetime import datetime
 
 @bp.route('/', methods=['POST'])
 def post_exittime():
@@ -39,7 +40,7 @@ def post_exittime():
         }), 200
 
 def create_exittime(user, entry_time):
-    exit_time = ExitTime(entry_time_id=entry_time.id)
+    exit_time = ExitTime(entry_time_id=entry_time.id, date_time=datetime.now())
     
     user.state = User.STATES['Inactive']
     db.session.add(exit_time)
@@ -56,6 +57,8 @@ def get_all_exittimes():
         exittime_data = {
             'id': exittime.id,
             'entry_time_id': exittime.entry_time_id,
+            'entry_time_date_time':exittime.entry_time.date_time,
+            'entry_time_user_name':exittime.entry_time.user.user_name,
             'date_time': exittime.date_time.strftime('%Y-%m-%d %H:%M:%S')
         }
         exittime_list.append(exittime_data)
@@ -69,12 +72,13 @@ def get_entrytime_by_exittime(exittime_id):
     exittime = ExitTime.query.get(exittime_id)
     
     if exittime is not None:
-        related_entry_time = exittime.entrytime
+        related_entry_time = exittime.entry_time
 
         if related_entry_time is not None:
             entrytime_data = {
                 'id': related_entry_time.id,
                 'user_id': related_entry_time.user_id,
+                'user_name': related_entry_time.user.user_name,
                 'date_time': related_entry_time.date_time.strftime('%Y-%m-%d %H:%M:%S')
             }
 

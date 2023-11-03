@@ -6,7 +6,7 @@ class ExitTime(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     entry_time_id = db.Column(db.Integer, db.ForeignKey('entrytime.id'), unique=True)
     entry_time = db.relationship('EntryTime', back_populates='exit_time')
-    date_time = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
+    date_time = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
         return f'<ExitTime {self.id}>'
