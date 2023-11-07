@@ -60,10 +60,10 @@ const RegistroHoras = () => {
             {exittimes.map((exittime, index) => (
               <tr key={exittime.id}>
                 <td>{index + 1}</td>
-                <td>{exittime.entry_time_user_name}</td>
+                <td>{exittime.first_name} {exittime.last_name}</td>
                 <td>{exittime.entry_time_date_time}</td>
-                <td>{exittime.date_time}</td>
-                <td>{exittime.time_difference}</td>
+                <td>{exittime.exit_time_date_time}</td>
+                <td>{exittime.time_spent}</td>
                 <td className="table-cell button-cell">
                   <Button variant="primary" type="reset" size="sm">
                     <span>
