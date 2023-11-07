@@ -1,12 +1,12 @@
 import { Container,Row,Col } from "react-bootstrap";
-import "./style/menupage.css";
+import "./style/MenuPage.css";
 
-import NavBar from "../glovalComponent/components/NavBar";
+import NavBar from "../globalComponent/components/NavBar";
 
 
 import { motion } from "framer-motion";
 
-const Menupage = () => {
+const MenuPage = () => {
 
     return(
         <motion.div
@@ -43,4 +43,4 @@ const Menupage = () => {
     );
 };
 
-export default Menupage;
+export default MenuPage;

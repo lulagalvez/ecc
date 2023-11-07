@@ -3,7 +3,7 @@ import { Container, Row, Col, DropdownButton, ButtonGroup, Dropdown, Button, Pag
 import { BiFilter, BiMessageSquareAdd } from "react-icons/bi";
 import { AiFillEdit } from "react-icons/ai";
 import { motion } from "framer-motion";
-import NavBar from "../glovalComponent/components/NavBar";
+import NavBar from "../globalComponent/components/NavBar";
 
 const RegistroHoras = () => {
   const [exittimes, setExittimes] = useState([]);

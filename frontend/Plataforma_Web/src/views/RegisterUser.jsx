@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col } from "react-bootstrap";
 import "./style/RegisterUser.css";
-import NavBar from "../glovalComponent/components/NavBar";
+import NavBar from "../globalComponent/components/NavBar";
 import { motion } from "framer-motion";
 
 function RegisterUser() {
