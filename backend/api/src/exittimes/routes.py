@@ -54,12 +54,17 @@ def get_all_exittimes():
 
     exittime_list = []
     for exittime in exittimes:
+        entry_time = exittime.entry_time.date_time
+        exit_time = exittime.date_time
+        time_spent = exit_time - entry_time
         exittime_data = {
             'id': exittime.id,
             'entry_time_id': exittime.entry_time_id,
-            'entry_time_date_time':exittime.entry_time.date_time,
-            'entry_time_user_name':exittime.entry_time.user.user_name,
-            'date_time': exittime.date_time.strftime('%Y-%m-%d %H:%M:%S')
+            'entry_time_date_time':exittime.entry_time.date_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'exit_time_date_time': exittime.date_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'first_name':exittime.entry_time.user.first_name,
+            'last_name':exittime.entry_time.user.last_name,
+            'time_spent':str(time_spent)
         }
         exittime_list.append(exittime_data)
 
@@ -87,3 +92,5 @@ def get_entrytime_by_exittime(exittime_id):
             return jsonify({'message': 'Ningun entry time asociado con este exit time'}), 404
     else:
         return jsonify({'message': 'Entry time no encontrado'}), 404
+
+

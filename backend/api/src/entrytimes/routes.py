@@ -110,29 +110,34 @@ def entrytimes_summary(user_id, num_days):
             .all()
 
         entrytime_list = []
-        total_hours = 0
+        total_seconds = 0
         entry_count = 0
 
         for entrytime in entrytimes:
             if entrytime.exit_time:
                 time_difference = entrytime.exit_time.date_time - entrytime.date_time
-                total_hours += time_difference.total_seconds() / 3600
+                total_seconds += time_difference.total_seconds()
                 entry_count += 1
 
             entrytime_list.append({
                 'id': entrytime.id,
-                'user_id': entrytime.user_id,
-                'date_time': entrytime.date_time.strftime('%Y-%m-%d %H:%M:%S')
+                'entry_date_time': entrytime.date_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'exit_date_time': entrytime.exit_time.date_time.strftime('%Y-%m-%d %H:%M:%S')
             })
+
+        time_delta = timedelta(seconds=total_seconds)
+        base_date = datetime(1900, 1, 1)
+        result_datetime = base_date + time_delta
+        formatted_time = result_datetime.strftime("%H:%M:%S")
 
         summary = {
             'user_id': user_id,
             'entry_count': entry_count,
-            'total_hours_worked': total_hours,
+            'total_hours_worked': formatted_time,
             'entrytimes': entrytime_list
         }
 
         return jsonify(summary), 200
     else:
-        return jsonify({'message': 'User not found'}), 404
+        return jsonify({'message': 'Usuario no encontrado'}), 404
 
