@@ -1,0 +1,27 @@
+.pagination-list {
+    list-style: none;
+    display: inline;
+    /* Make the list items inline */
+    margin: 0;
+    padding: 0;
+}
+
+.pagination-list li {
+    display: inline-block;
+    /* Make the list items inline-block to display them horizontally */
+    margin: 0;
+    padding: 0;
+}
+
+.pagination-list li.active button {
+    font-weight: bold;
+    /* Optional: Highlight the active page button */
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+}

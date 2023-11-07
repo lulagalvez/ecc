@@ -1,15 +1,18 @@
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { BiFilter, BiMessageSquareAdd } from 'react-icons/bi';
+import { AiFillEdit } from 'react-icons/ai';
+import { motion } from 'framer-motion';
+import NavBar from '../globalComponent/components/NavBar';
 import "./style/RegistroHoras.css";
-import { Container, Row, Col, DropdownButton, ButtonGroup, Dropdown, Button, Pagination, Table } from "react-bootstrap"; import React, { useState, useEffect } from 'react';
-import { BiFilter, BiMessageSquareAdd } from "react-icons/bi";
-import { AiFillEdit } from "react-icons/ai";
-import { motion } from "framer-motion";
-import NavBar from "../globalComponent/components/NavBar";
+import "./style/PaginationList.css";
 
 const RegistroHoras = () => {
   const [exittimes, setExittimes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(20); // Number of items to display per page
 
   useEffect(() => {
-    // Fetch exittimes from the API when the component mounts
     fetchExittimes();
   }, []);
 
@@ -25,6 +28,14 @@ const RegistroHoras = () => {
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = exittimes.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -44,7 +55,27 @@ const RegistroHoras = () => {
         </Container>
       </motion.div>
 
-      <div className="table-container" style={{ marginTop: '200px' }}>
+
+      {/* Pagination */}
+      <div className='pagination-container' style={{ marginTop: '160px' }}>
+        <div className="pagination">
+          {exittimes.length > itemsPerPage && (
+            <ul className="pagination-list">
+              {Array(Math.ceil(exittimes.length / itemsPerPage))
+                .fill()
+                .map((_, index) => (
+                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                    <button onClick={() => paginate(index + 1)} className="page-link">
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+      </div>
+
+      <div className="table-container">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -57,9 +88,9 @@ const RegistroHoras = () => {
             </tr>
           </thead>
           <tbody>
-            {exittimes.map((exittime, index) => (
+            {currentItems.map((exittime, index) => (
               <tr key={exittime.id}>
-                <td>{index + 1}</td>
+                <td>{indexOfFirstItem + index + 1}</td>
                 <td>{exittime.first_name} {exittime.last_name}</td>
                 <td>{exittime.entry_time_date_time}</td>
                 <td>{exittime.exit_time_date_time}</td>
@@ -77,26 +108,24 @@ const RegistroHoras = () => {
         </Table>
       </div>
 
-      <div className="margin">
-        <Pagination className="fila-3" size="sm">
-          <Pagination.First />
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Ellipsis />
-
-          <Pagination.Item>{10}</Pagination.Item>
-          <Pagination.Item>{11}</Pagination.Item>
-          <Pagination.Item active>{12}</Pagination.Item>
-          <Pagination.Item>{13}</Pagination.Item>
-          <Pagination.Item>{14}</Pagination.Item>
-
-          <Pagination.Ellipsis />
-          <Pagination.Item>{20}</Pagination.Item>
-          <Pagination.Next />
-          <Pagination.Last />
-        </Pagination>
+      {/* Pagination */}
+      <div className='pagination-container'>
+        <div className="pagination">
+          {exittimes.length > itemsPerPage && (
+            <ul className="pagination-list">
+              {Array(Math.ceil(exittimes.length / itemsPerPage))
+                .fill()
+                .map((_, index) => (
+                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                    <button onClick={() => paginate(index + 1)} className="page-link">
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
       </div>
-
     </>
   );
 }
