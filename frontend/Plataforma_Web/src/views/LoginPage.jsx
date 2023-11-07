@@ -1,15 +1,9 @@
 import "./style/LoginPage.css";
-
 import { motion } from "framer-motion";
-
 import { Container, Row, Col, Form, Button, Image} from "react-bootstrap";
-
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
-
 import Logo from "../image/shield-image.png";
-
-
 
 const LoginPage = () => {
   return (

@@ -1,9 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
-import "./style/MenuPage.css";
+import "./style/LogPage.css";
 import NavBar from "../globalComponent/components/NavBar";
 import { motion } from "framer-motion";
 
-const MenuPage = () => {
+const LogPage = () => {
 
     return (
         <motion.div
@@ -27,9 +27,7 @@ const MenuPage = () => {
                 </Row>
             </Container>
         </motion.div>
-
-
     );
 };
 
-export default MenuPage;
+export default LogPage;

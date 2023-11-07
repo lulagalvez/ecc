@@ -1,5 +1,5 @@
 import "./style/RegistroHoras.css";
-import { Container, Row, Col, DropdownButton, ButtonGroup, Dropdown, Button, Pagination, Table } from "react-bootstrap";import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, DropdownButton, ButtonGroup, Dropdown, Button, Pagination, Table } from "react-bootstrap"; import React, { useState, useEffect } from 'react';
 import { BiFilter, BiMessageSquareAdd } from "react-icons/bi";
 import { AiFillEdit } from "react-icons/ai";
 import { motion } from "framer-motion";

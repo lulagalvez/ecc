@@ -1,0 +1,14 @@
+.page
+{
+    display: flex;
+}
+
+.col-1
+{
+background-color: blanchedalmond;
+}
+
+.col-2
+{
+    background-color: white;
+}

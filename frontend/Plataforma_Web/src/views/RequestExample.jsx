@@ -7,7 +7,7 @@ const RequestExample = () => {
 
   useEffect(() => {
     // URL de la API, en este caso la API esta viviendo en localhost:5000
-    const apiUrl = 'http://localhost:5000/user/'; 
+    const apiUrl = 'http://localhost:5000/user/';
 
     // fetch para realizar la petición
     fetch(apiUrl)
