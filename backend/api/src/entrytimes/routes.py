@@ -134,7 +134,7 @@ def entrytimes_summary(user_id, num_days):
             'user_id': user_id,
             'entry_count': entry_count,
             'total_hours_worked': formatted_time,
-            'entrytimes': entrytime_list
+            'entries': entrytime_list
         }
 
         return jsonify(summary), 200
