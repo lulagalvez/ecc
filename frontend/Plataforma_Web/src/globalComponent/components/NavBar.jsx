@@ -52,7 +52,7 @@ const NavBar = ({ usuario }) => {
             <Form className="d-flex">
                   <Form.Control
                     type="search"
-                    placeholder="matricula"
+                    placeholder="Matricula"
                     className="me-2"
                     aria-label="Search"           
                   />
