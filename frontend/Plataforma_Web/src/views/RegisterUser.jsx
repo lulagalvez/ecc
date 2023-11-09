@@ -5,6 +5,8 @@ import NavBar from "../globalComponent/components/NavBar";
 import { motion } from "framer-motion";
 
 function RegisterUser() {
+    const token = localStorage.getItem('access_token');
+
     const [userData, setUserData] = useState({
         user_name: '',
         email: '',
@@ -18,11 +20,16 @@ function RegisterUser() {
         e.preventDefault();
 
         try {
+            const headers = {
+                'Content-Type': 'application/json',
+              };
+              
+              if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+              }
             const response = await fetch('http://localhost:5000/user/register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers,
                 body: JSON.stringify(userData),
             });
 
