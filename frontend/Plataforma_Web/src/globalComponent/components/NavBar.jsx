@@ -1,15 +1,16 @@
-import React from "react";
+
 import "../styles/NavBar.css";
 import Logo from "../../image/shield-image.png";
 import styled from 'styled-components';
+
 import { Link } from "react-router-dom";
-import { Container, Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Image, Nav, Navbar, NavDropdown ,Form,Button} from "react-bootstrap";
 import { FaBell, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa'; // Importa los íconos de FontAwesome
 
 const CircleWithLetter = styled.div`
   background-color: red;
-  width: 3vw;
-  height: 3vw;
+  width: 1vh;
+  height: 1vh;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -36,18 +37,30 @@ function CircleIcon({ letter }) {
 
 const NavBar = ({ usuario }) => {
   return (
-    <Container fluid>
-      <Navbar fluid as={Container} variant="dark" fixed="top" expand="md" bg="dark" data-bs-theme="dark" className="barra-navegacion">
-        <Navbar.Brand href="#home" as={Image} src={Logo} alt="Logo" style={{ maxWidth: "100%" }} className="logo-baner ms-4 me-4" />
+      <Navbar fluid as={Container} className="barra-navegacion" variant="dark" fixed="top" expand="md" bg="dark" data-bs-theme="dark">
+        <Navbar.Brand  as={Link} to={"/menupage"}>
+          <Image src={Logo} alt="Logo" style={{ maxWidth: "100%", maxHeight:"%100%" }} className="logo-baner ms-4 me-4"></Image>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto ms-4 menus">
+        <Nav className="me-auto ms-4 menus">
             <Nav.Link className="me-2" as={Link} to="/bitacoras">Bitácora</Nav.Link>
             <Nav.Link as={Link} to="/registro-horas">Historial</Nav.Link>
             <Nav.Link as={Link} to="/registrar-usuario">Crear Usuario</Nav.Link>
           </Nav>
+          <Nav className="me-auto">
+            <Form className="d-flex">
+                  <Form.Control
+                    type="search"
+                    placeholder="Matricula"
+                    className="me-2"
+                    aria-label="Search"           
+                  />
+                  <Button variant="outline-success">Buscar</Button>
+                </Form>
+          </Nav>
           <Nav>
-            <NavDropdown title={<FaBell className="icono-notificaciones" />} id="collapsible-nav-dropdown" className="ms-4 me-4" >
+            <NavDropdown title={<FaBell className="icono-notificaciones" />} id="collapsible-nav-dropdown" className="ms-4 me-4 mt-2" >
               <NavDropdown.Item href="#action/3.1" className="icono-con-texto">
                 <FaBell style={{ marginRight: '0.5rem' }}/> Notificaciones
               </NavDropdown.Item>
@@ -80,7 +93,6 @@ const NavBar = ({ usuario }) => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-    </Container>
   );
 };
 
