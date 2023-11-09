@@ -1,18 +1,17 @@
+
 /* Estilo para la logotipo */
 .logo-baner {
-    height: auto;
-    width: 6vw;
-    min-width: 8vh;
+    width: 8vh;
 }
 
 /* Estilo para los íconos del menú */
 .menus {
-    font-size: 2vw; /* Utilizamos un porcentaje del ancho de la ventana (viewport width) */
+    font-size: 3vh;
 }
 
 /* Estilo para el ícono de notificaciones */
 .icono-notificaciones {
-    font-size: 2.5vw;
+    font-size: 3vh;
 }
 
 /* Estilo para proporcionar espacio entre el ícono y el texto en NavDropdown */
@@ -20,7 +19,6 @@
     margin-right: 1rem; /* Margen derecho para separar el ícono del texto */
 
 }
-
 
 
 

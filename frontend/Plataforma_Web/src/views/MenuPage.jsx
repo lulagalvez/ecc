@@ -1,35 +1,59 @@
 import { Container, Row, Col } from "react-bootstrap";
-import "./style/MenuPage.css";
-import NavBar from "../globalComponent/components/NavBar";
 import { motion } from "framer-motion";
 
-const MenuPage = () => {
+import NavBar from "../globalComponent/components/NavBar.jsx";
+import Cards from "../globalComponent/components/Cards.jsx";
 
-    return (
-        <motion.div
-            initial={{ opacity: 0 }} // Ver tema de opacidad en transicion
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-        >
+import "./style/MenuPage.css";
 
-            <Container fluid>
-                <Row className="flex-column page ">
-                    <Col className="w-100 col-1" xs={12} md={2}>
-                        <NavBar
-                            usuario="Joseeeeee"
-                        ></NavBar>
-                    </Col>
+const Menupage = () => {
+  // Hardcodeado , aca se consultara desde la api la informacion 
+  const cardData = [
+    { id: 1, estado: "DISPONIBLE", ocupacion: "Ayudante" , nombre:"Jose Toledo Arcic" },
+    { id: 2, estado: "AUSENTE", ocupacion: "Conductor" , nombre:"Jose Toledo Arcic" },
+    { id: 3, estado: "DISPONIBLE", ocupacion: "Ayudante" , nombre:"Jose Toledo Arcic" },
+    { id: 4, estado: "AUSENTE", ocupacion: "Conductor" , nombre:"Jose Toledo Arcic" },
+    { id: 5, estado: "DISPONIBLE", ocupacion: "Conductor" , nombre:"Jose Toledo Arcic" },
+    { id: 6, estado: "DISPONIBLE", ocupacion: "Ayudante" , nombre:"Jose Toledo Arcic" },
+    { id: 7, estado: "AUSENTE", ocupacion: "Conductor" , nombre:"Jose Toledo Arcic" },
+    { id: 8, estado: "EMERGENCIA", ocupacion: "Conductor" , nombre:"Jose Toledo Arcic" },
+    { id: 9, estado: "EMERGENCIA", ocupacion: "Conductor" , nombre:"Jose Toledo Arcic" },
+    { id: 10, estado: "AUSENTE", ocupacion: "Conductor" , nombre:"Jose Toledo Arcic" },
+    // Agrega datos similares para las otras Cards
+  ];
 
-                    <Col className="w-100 col-2" xs={12} md={10}>
-                        <p>diuashdsa</p>
-                    </Col>
-                </Row>
-            </Container>
-        </motion.div>
+  // Función para renderizar las Cards
+  const renderCards = () => {
+    return cardData.map((card) => (
+      <Col key={card.id} xs={12} md={4} lg={2} className="my-4 ">
+        <Cards estado={card.estado} ocupacion={card.ocupacion} nombre={card.nombre} />
+      </Col>
+    ));
+  };
 
-
-    );
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Container fluid className="pagina">
+        <Row className="d-flex">
+          <Col xs={12} md={12} className="p-0 col-1 my-5">
+            <NavBar></NavBar>
+          </Col>
+          <Col xs={12} md={12} className="col-2">
+            <Row>{renderCards()}</Row>
+          </Col>
+          <Col xs={12} md={12} className="p-0 col-3">
+            {/* Agrega tu contenido en la tercera columna si es necesario */}
+          </Col>
+        </Row>
+      </Container>
+    </motion.div>
+  );
 };
 
-export default MenuPage;
+export default Menupage;
+

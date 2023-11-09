@@ -1,8 +1,3 @@
-.page
-{
-    display: flex;
-}
-
 .col-1
 {
 background-color: blanchedalmond;
@@ -10,5 +5,13 @@ background-color: blanchedalmond;
 
 .col-2
 {
-    background-color: black;
+    background-color: #333; /* O cualquier otro valor de gris oscuro que prefieras */
+    padding: 3vh 3vh 6vh 3vh; /* Relleno: arriba, derecha, abajo, izquierda */
 }
+
+.col-3
+{
+    background-color: rgb(82, 82, 82);
+}
+
+
