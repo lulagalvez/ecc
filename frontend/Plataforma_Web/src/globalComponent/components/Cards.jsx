@@ -1,22 +1,22 @@
-import ImagenPrueba from '../../image/prueba-imagen.jpg';
-import { Card } from 'react-bootstrap';
-import '../styles/Cards.css';
+import ImagenPrueba from "../../image/prueba-imagen.jpg";
+import { Card } from "react-bootstrap";
+import "../styles/Cards.css";
 
-function BasicExample({ estado, ocupacion, nombre }) {
+function Cards({ estado, ocupacion, nombre }) {
   // Determina el color de fondo según el estado
   let backgroundColor;
   switch (estado) {
-    case 'DISPONIBLE':
-      backgroundColor = 'green';
+    case "DISPONIBLE":
+      backgroundColor = "green";
       break;
-    case 'AUSENTE':
-      backgroundColor = 'gray';
+    case "AUSENTE":
+      backgroundColor = "gray";
       break;
-    case 'EMERGENCIA':
-      backgroundColor = 'red';
+    case "EMERGENCIA":
+      backgroundColor = "red";
       break;
     default:
-      backgroundColor = 'dark';
+      backgroundColor = "dark";
   }
 
   return (
@@ -25,7 +25,7 @@ function BasicExample({ estado, ocupacion, nombre }) {
       bg="dark"
       border="dark"
       text="white"
-      style={{ width: '18rem' }}
+      style={{ width: "18rem" }}
     >
       <Card.Img variant="top" src={ImagenPrueba} />
       <Card.Body>
@@ -42,4 +42,4 @@ function BasicExample({ estado, ocupacion, nombre }) {
   );
 }
 
-export default BasicExample;
+export default Cards;
