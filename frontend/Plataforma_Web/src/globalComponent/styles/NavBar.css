@@ -1,26 +1,19 @@
-
 /* Estilo para la logotipo */
 .logo-baner {
-    width: 8vh;
-}
-
-/* Estilo para los íconos del menú */
-.menus {
-    font-size: 3vh;
-}
-
-/* Estilo para el ícono de notificaciones */
-.icono-notificaciones {
-    font-size: 3vh;
-}
-
-/* Estilo para proporcionar espacio entre el ícono y el texto en NavDropdown */
-.icono-con-texto {
-    margin-right: 1rem; /* Margen derecho para separar el ícono del texto */
-
-}
-
-
-
-
-
+    width: 3.5em; /* Cambiado a em */
+  }
+  
+  /* Estilo para los íconos del menú */
+  .menus {
+    font-size: 1.25em; /* Cambiado a em */
+  }
+  
+  /* Estilo para el ícono de notificaciones */
+  .icono-notificaciones {
+    font-size: 1.25em; /* Cambiado a em */
+  }
+  
+  /* Estilo para proporcionar espacio entre el ícono y el texto en NavDropdown */
+  .icono-con-texto {
+    margin-right: 1em; /* Margen derecho para separar el ícono del texto */
+  };
