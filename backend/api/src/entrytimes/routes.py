@@ -113,17 +113,23 @@ def entrytimes_summary(user_id, num_days):
         total_seconds = 0
         entry_count = 0
 
+        # Inside the entrytimes_summary function
+
         for entrytime in entrytimes:
             if entrytime.exit_time:
+                exit_date_time = entrytime.exit_time.date_time.strftime('%Y-%m-%d %H:%M:%S')
                 time_difference = entrytime.exit_time.date_time - entrytime.date_time
                 total_seconds += time_difference.total_seconds()
                 entry_count += 1
+            else:
+                exit_date_time = ''  # If there's no exit time, set the string as empty
 
             entrytime_list.append({
                 'id': entrytime.id,
                 'entry_date_time': entrytime.date_time.strftime('%Y-%m-%d %H:%M:%S'),
-                'exit_date_time': entrytime.exit_time.date_time.strftime('%Y-%m-%d %H:%M:%S')
+                'exit_date_time': exit_date_time  # Use the conditional string for exit time
             })
+
 
         time_delta = timedelta(seconds=total_seconds)
         base_date = datetime(1900, 1, 1)
