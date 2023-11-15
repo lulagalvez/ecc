@@ -7,8 +7,10 @@ from src.models.user import User
 
 from flask import request, jsonify
 from datetime import datetime
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 @bp.route('/', methods=['POST'])
+@jwt_required()
 def post_exittime():
     data = request.get_json()
     

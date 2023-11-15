@@ -3,11 +3,12 @@ from src.extensions import db
 
 from src.models.entrytime import EntryTime
 from src.models.user import User
-
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask import request, jsonify
 import datetime
 
 @bp.route('/', methods=['POST'])
+@jwt_required()
 def post_entrytime():
     data = request.get_json()
     
