@@ -230,7 +230,7 @@ def change_password():
 
     # Validar la nueva contraseña
     if not is_valid_password(new_password):
-        return jsonify({'error': 'Nueva contraseña no cumple con los requisitos. Debe tener minimo 8 caracteres y contener al menos una letra mayúscula.'}), 400
+        return jsonify({'error': 'Nueva contraseña no cumple con los requisitos. Debe tener minimo 8 caracteres, contener algun numero y poseer al menos una letra mayúscula.'}), 400
 
     # Actualizar con la nueva contraseña
     user.set_password(new_password)
