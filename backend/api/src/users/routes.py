@@ -204,3 +204,44 @@ def logout():
     db.session.add(revoked_token)
     db.session.commit()
     return jsonify({"msg": "Sesión cerrada con éxito"}), 200
+
+
+@bp.route('/change-password', methods=['POST'])
+@jwt_required()
+def change_password():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if user is None:
+        return jsonify({'error': 'Usuario no encontrado'}), 404
+
+    data = request.get_json()
+    current_password = data.get('current_password')
+    new_password = data.get('new_password')
+
+    # Verificar la contraseña actual
+    if not user.check_password(current_password):
+        return jsonify({'error': 'Contraseña actual incorrecta'}), 401
+
+       # Verificar si la nueva contraseña es igual a la actual
+    if user.check_password(new_password):
+        return jsonify({'error': 'La nueva contraseña no puede ser igual a la actual'}), 400
+
+
+    # Validar la nueva contraseña
+    if not is_valid_password(new_password):
+        return jsonify({'error': 'Nueva contraseña no cumple con los requisitos. Debe tener minimo 8 caracteres y contener al menos una letra mayúscula.'}), 400
+
+    # Actualizar con la nueva contraseña
+    user.set_password(new_password)
+    db.session.commit()
+
+    return jsonify({'message': 'Contraseña cambiada con éxito'}), 200
+
+def is_valid_password(password):
+    # Verifica que la contraseña tenga al menos 8 caracteres y sea alfanumérica
+    if len(password) < 8 or not password.isalnum():
+        return False
+
+    # Verifica que haya al menos una letra mayúscula
+    return any(char.isupper() for char in password)
