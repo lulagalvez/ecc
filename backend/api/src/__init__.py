@@ -3,6 +3,8 @@ from flask_cors import CORS
 from config import Config
 from src.extensions import db
 from src.extensions import jwt
+from src.models.tokenblacklist import TokenBlacklist
+from flask import Flask, jsonify
 
 
 def create_app(config_class=Config):
@@ -13,6 +15,20 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     jwt.init_app(app)
+
+    @jwt.token_in_blocklist_loader #Verifica el token en cada solicitud a una ruta protegida, osea con autenticacion
+    def check_if_token_is_revoked(jwt_header, jwt_payload):
+        jti = jwt_payload["jti"]
+        token = TokenBlacklist.query.filter_by(jti=jti).first()
+        return token is not None
+    
+    @jwt.invalid_token_loader ##en caso de que el token sea invalido
+    def invalid_token_callback(error):  # error es proporcionado por Flask-JWT-Extended
+        return jsonify({
+            'msg': 'Token inválido',
+            'error': str(error)
+        }), 401
+
     with app.app_context():
         create_database()
 

@@ -2,7 +2,9 @@ from flask import render_template, request, url_for, redirect, jsonify
 from src.users import bp
 from src.extensions import db
 from src.models.user import User    
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
+from datetime import timedelta
+from src.models.tokenblacklist import TokenBlacklist
 
 
 
@@ -145,7 +147,8 @@ def login():
     user = User.query.filter_by(user_name=user_name).first()
 
     if user and user.check_password(password):
-        access_token = create_access_token(identity=user.id)
+        expires = timedelta(days=30)
+        access_token = create_access_token(identity=user.id, expires_delta=expires)
         return jsonify({'access_token': access_token}), 200
     else:
         return jsonify({'error': 'Usuario o contraseña incorrectos'}), 401
@@ -190,3 +193,14 @@ def register():
 def protected_route():
     # Esta es una ruta protegida que requiere autenticación
     return jsonify({'message': 'Has accedido a una ruta protegida'}), 200
+
+
+
+@bp.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    jti = get_jwt()['jti']  # Obtener JTI del token actual
+    revoked_token = TokenBlacklist(jti=jti)
+    db.session.add(revoked_token)
+    db.session.commit()
+    return jsonify({"msg": "Sesión cerrada con éxito"}), 200
