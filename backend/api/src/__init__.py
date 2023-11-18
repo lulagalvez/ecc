@@ -5,7 +5,8 @@ from src.extensions import db
 from src.extensions import jwt
 from src.models.tokenblacklist import TokenBlacklist
 from flask import Flask, jsonify
-
+from src.extensions import scheduler
+from .scheduled_tasks import delete_expired_tokens
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -28,6 +29,14 @@ def create_app(config_class=Config):
             'msg': 'Token inválido',
             'error': str(error)
         }), 401
+
+    scheduler.init_app(app)
+    scheduler.start()
+
+    @scheduler.task('cron', id='delete_expired_tokens', day='*', hour='0')
+    def scheduled_task():
+        with app.app_context():
+            delete_expired_tokens()
 
     with app.app_context():
         create_database()

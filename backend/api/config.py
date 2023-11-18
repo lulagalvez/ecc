@@ -12,6 +12,7 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_RECORDS_QUERY = True
+    SCHEDULER_API_ENABLED = True
     
 class TestingConfig(Config):
     TESTING = True
