@@ -174,14 +174,19 @@ def register():
 
     data = request.get_json()
     username = data.get('user_name')
-    password = data.get('password') 
+    password = "ecc" + username
 
     # Verificar si el usuario ya existe
     existing_user = User.query.filter_by(user_name=username).first()
     if existing_user:
         return jsonify({'error': 'El nombre de usuario ya está en uso'}), 400
 
-    user = User(user_name=username, email=data.get('email'), first_name=data.get('first_name'), last_name=data.get('last_name'), role=data.get('role'))
+    user = User(user_name=username,
+                email=data.get('email'),
+                first_name=data.get('first_name'),
+                last_name=data.get('last_name'), 
+                role=data.get('role')
+            )
     user.set_password(password)
     db.session.add(user)
     db.session.commit()
