@@ -4,8 +4,6 @@ from src.extensions import db
 from src.models.user import User    
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-
-
 """ @bp.route('/')
 def index():
     users = User.query.all()
@@ -190,3 +188,16 @@ def register():
 def protected_route():
     # Esta es una ruta protegida que requiere autenticación
     return jsonify({'message': 'Has accedido a una ruta protegida'}), 200
+
+@bp.route('/<int:user_id>/emergency', methods=['PUT'])
+def change_emergency_state(user_id):
+    user = db.get_or_404(User, user_id)    
+    current_state = user.state
+    
+    if current_state == User.STATES['Inactive']:
+        return jsonify({'message': 'el usuario se encuentra inactivo'}), 200
+    
+    user.state = User.STATES['Emergency'] if user.state == User.STATES['Active'] else User.STATES['ACTIVE']
+    db.commit()
+
+    return jsonify({'message': 'Se cambio el estado correctamente'}), 200
