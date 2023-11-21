@@ -31,11 +31,22 @@ def create_app(config_class=Config):
     from src.exittimes import bp as exittimes_bp
     app.register_blueprint(exittimes_bp, url_prefix='/exittime')
 
+    from src.logs import bp as logs_bp
+    app.register_blueprint(logs_bp, url_prefix='/logs')
+    
+    from src.trucks import bp as trucks_bp
+    app.register_blueprint(trucks_bp, url_prefix='/trucks')
+    
+    
+
     return app
 
 def create_database():
     from src.models.user import User
     from src.models.entrytime import EntryTime
     from src.models.exittime import ExitTime
+    from src.models.log import Log
+    from src.models.truck import Truck
+    
     
     db.create_all()

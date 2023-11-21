@@ -1,14 +1,15 @@
-import os
+
 import pytest
 import datetime
-import time
+
 from src import create_app
 from src.extensions import db
 from src.models.user import User
-from src.models.entrytime import EntryTime
+
 from src.entrytimes import routes as entrytime_routes
 from src.exittimes import routes as exittime_routes
 from config import TestingConfig
+from src.models.truck import Truck
 
 FAKE_DATE_TIME = datetime.datetime(2000, 2, 19, 0, 0, 0)
 test_user_id = 1902
@@ -71,3 +72,18 @@ def date_time_mock(monkeypatch):
             return FAKE_DATE_TIME
     
     monkeypatch.setattr(datetime, 'datetime', MyDateTime)
+    
+
+
+@pytest.fixture(scope='function')
+def truck_fixture(test_client):
+    # Crear un camión de prueba
+    test_truck = Truck(patent='TEST01')
+    db.session.add(test_truck)
+    db.session.commit()
+
+    yield test_truck
+
+    # Limpiar después de la prueba
+    db.session.delete(test_truck)
+    db.session.commit()
