@@ -31,6 +31,10 @@ def getpost():
     
 @bp.route('/', methods=['GET'])
 def get_users():
+    """
+    Obtiene una lista de todos los usuarios registrados en la base de datos.
+
+    """
     users = User.query.all()
     user_list = []
     for user in users:
@@ -48,6 +52,10 @@ def get_users():
 # GET user by ID
 @bp.route('/<int:user_id>', methods=['GET'])
 def get_user_by_id(user_id):
+    """
+    Obtiene los detalles de un usuario específico por su ID.
+
+    """
     user = User.query.get(user_id)
     if user is None:
         return jsonify({'error': 'Bombero no encontrado'}), 404
@@ -65,6 +73,12 @@ def get_user_by_id(user_id):
 # Parchear bombero
 @bp.route('/<int:user_id>', methods=['PATCH'])
 def update_user(user_id):
+    """
+    Actualiza los detalles de un usuario existente.
+
+    Permite modificar atributos específicos de un usuario ya existente en la base de datos.
+
+    """
     user = User.query.get(user_id)
     if user is None:
         return jsonify({'error': 'Bombero no encontrado'}), 404
@@ -88,6 +102,12 @@ def update_user(user_id):
 # Reemplazar bombero
 @bp.route('/<int:user_id>', methods=['PUT'])
 def replace_user(user_id):
+    """
+    Reemplaza los detalles de un usuario existente.
+
+    Sustituye todos los atributos del usuario especificado con nuevos valores.
+
+    """
     user = User.query.get(user_id)
     if user is None:
         return jsonify({'error': 'User not found'}), 404
@@ -104,6 +124,10 @@ def replace_user(user_id):
 # Eliminar bombero por id
 @bp.route('/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
+    """
+    Elimina un usuario de la base de datos por su ID.
+
+    """
     user = User.query.get(user_id)
     if user is None:
         return jsonify({'error': 'User not found'}), 404
@@ -120,6 +144,11 @@ def delete_user(user_id):
 # 3 : Conductor
 @bp.route('/users_by_state/<int:state>', methods=['GET'])
 def get_users_by_state(state):
+
+    """
+    Obtiene una lista de usuarios filtrados por su estado.
+
+    """
     # Query the User table to filter users by the specified state
     users = User.query.filter_by(state=state).all()
     
@@ -140,6 +169,15 @@ def get_users_by_state(state):
 
 @bp.route('/login', methods=['POST'])
 def login():
+    """
+    Autentica a un usuario y genera un token de acceso JWT.
+
+    La función verifica las credenciales del usuario y, si son válidas,
+    retorna un token JWT que se puede usar para acceder a rutas protegidas.
+
+    Returns:
+        JSON response: Token de acceso y código de estado HTTP.
+    """
     data = request.get_json()
     user_name = data.get('user_name')
     password = data.get('password')
@@ -157,7 +195,15 @@ def login():
 @bp.route('/register', methods=['POST'])
 @jwt_required(optional=True)
 def register():
-    
+    """
+    Registra un nuevo usuario en el sistema.
+
+    Solo los administradores pueden registrar nuevos usuarios. Si no hay usuarios en la base de datos,
+    se esta asumiendo que el primer registrado será un administrador. Si existe mas de un usuario se requiere el rol de administrador.
+
+    Returns:
+        JSON response: Mensaje de éxito y código de estado HTTP.
+    """
      # Verificar si hay usuarios en la base de datos
     if User.query.first():
         # Si hay usuarios, obtener la identidad del usuario autenticado
@@ -204,6 +250,13 @@ def protected_route():
 @bp.route('/logout', methods=['POST'])
 @jwt_required()
 def logout():
+    """
+    Cierra la sesión del usuario actual revocando su token JWT.
+    Se marca el token JWT actual como revocado, lo que impide su uso en futuras solicitudes.
+
+    Returns:
+        JSON response: Mensaje de éxito y código de estado HTTP.
+    """
     jti = get_jwt()['jti']  # Obtener JTI del token actual
     revoked_token = TokenBlacklist(jti=jti)
     db.session.add(revoked_token)
@@ -214,6 +267,14 @@ def logout():
 @bp.route('/change-password', methods=['POST'])
 @jwt_required()
 def change_password():
+    """
+    Cambia la contraseña del usuario actual.
+    Requiere que el usuario esté autenticado y permite cambiar su contraseña
+    después de validar la contraseña actual. La nueva contraseña debe cumplir con los requisitos explayados en los mensajes de error.
+
+    Returns:
+        JSON response: Mensaje de éxito y código de estado HTTP.
+    """
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
 
@@ -244,6 +305,16 @@ def change_password():
     return jsonify({'message': 'Contraseña cambiada con éxito'}), 200
 
 def is_valid_password(password):
+
+    """
+    Verifica si la contraseña cumple con los criterios establecidos.
+
+    Args:
+        password (str): La contraseña a verificar.
+
+    Returns:
+        bool: True si la contraseña es válida, False en caso contrario.
+    """
     # Verifica que la contraseña tenga al menos 8 caracteres y sea alfanumérica
     if len(password) < 8 or not password.isalnum():
         return False
