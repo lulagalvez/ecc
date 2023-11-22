@@ -10,6 +10,13 @@ import datetime
 @bp.route('/', methods=['POST'])
 @jwt_required()
 def post_entrytime():
+    """
+    Crea un nuevo registro de entrytime para un usuario.
+
+    Requiere autenticación JWT y recibe el ID del usuario como parte de los datos
+    de la solicitud. Registra el momento actual como el tiempo de entrada del usuario.
+
+    """
     data = request.get_json()
     
     try:
@@ -34,6 +41,10 @@ def post_entrytime():
         }), 200
     
 def create_entrytime(user):
+    """
+    Crea un registro de entrytime para un usuario específico.
+
+    """
     entry_time = EntryTime(user_id=user.id, date_time=datetime.now())
     user.state = User.STATES['Active']
     
@@ -45,12 +56,20 @@ def create_entrytime(user):
 
 @bp.route('/all', methods=['GET'])
 def get_all_entrytimes():
+    """
+    Obtiene todos los registros de tiempos de entrada en la base de datos.
+
+    """
     entrytimes = db.session.query(EntryTime).order_by(EntryTime.date_time).all()
     
     return jsonify([entrytime.serialize() for entrytime in entrytimes]), 200
 
 @bp.route('/entrytimes_by_user/<int:user_id>', methods=['GET'])
 def get_entrytimes_by_user(user_id):
+    """
+    Obtiene los entrytime registrados para un usuario específico.
+
+    """
     user = User.query.get(user_id)
     if user is not None:
         entrytimes = user.entrytimes
@@ -69,9 +88,12 @@ def get_entrytimes_by_user(user_id):
         return jsonify({'message': 'User not found'}), 404
 
 
-# Obtener exittime de la entrytime entregada
 @bp.route('/exittime/<int:entrytime_id>', methods=['GET'])
 def get_exittime_by_entrytime(entrytime_id):
+    """
+    Obtiene exittime de la entrytime entregada
+
+    """
     entrytime = EntryTime.query.get(entrytime_id)
     
     if entrytime is not None:
@@ -99,6 +121,10 @@ from src.extensions import db
 
 @bp.route('/summary/<int:user_id>/<int:num_days>', methods=['GET'])
 def entrytimes_summary(user_id, num_days):
+    """
+    Proporciona un resumen de los tiempos de entrada y salida para un usuario en un período de tiempo.
+
+    """
     user = User.query.get(user_id)
     
     if user is not None:

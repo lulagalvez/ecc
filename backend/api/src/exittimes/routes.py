@@ -12,6 +12,13 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 @bp.route('/', methods=['POST'])
 @jwt_required()
 def post_exittime():
+    """
+    Registra un nuevo tiempo de salida (exittime) para un usuario.
+
+    Requiere autenticación JWT y espera recibir el ID del usuario como parte
+    de los datos de la solicitud. Registra el momento actual como el tiempo de salida.
+
+    """
     data = request.get_json()
     
     try:
@@ -42,6 +49,10 @@ def post_exittime():
         }), 200
 
 def create_exittime(user, entry_time):
+    """
+    Crea un registro de tiempo de salida para un tiempo de entrada específico.
+
+    """
     exit_time = ExitTime(entry_time_id=entry_time.id, date_time=datetime.now())
     
     user.state = User.STATES['Inactive']
@@ -52,8 +63,13 @@ def create_exittime(user, entry_time):
 
 @bp.route('/', methods=['GET'])
 def get_all_exittimes():
+    """
+    Obtiene todos los registros de tiempos de salida en la base de datos.
+    
+    """
     exittimes = ExitTime.query.all()
 
+    # Formatea los tiempos de salida para la respuesta JSON.
     exittime_list = []
     for exittime in exittimes:
         entry_time = exittime.entry_time.date_time
@@ -76,6 +92,11 @@ def get_all_exittimes():
 # Obtener entrytime de la exittime entregada
 @bp.route('/entrytime/<int:exittime_id>', methods=['GET'])
 def get_entrytime_by_exittime(exittime_id):
+
+    """
+    Obtiene el tiempo de entrada asociado con un tiempo de salida específico.
+    
+    """
     exittime = ExitTime.query.get(exittime_id)
     
     if exittime is not None:
