@@ -36,7 +36,7 @@ def create_data(test_client):
     db.session.add(test_user) 
     db.session.commit()
 
-    yield
+    yield test_user
     
     db.drop_all()
 
@@ -75,7 +75,7 @@ def date_time_mock(monkeypatch):
     
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def truck_fixture(test_client):
     # Crear un camión de prueba
     test_truck = Truck(patent='TEST01')
@@ -83,7 +83,3 @@ def truck_fixture(test_client):
     db.session.commit()
 
     yield test_truck
-
-    # Limpiar después de la prueba
-    db.session.delete(test_truck)
-    db.session.commit()

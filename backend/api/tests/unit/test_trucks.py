@@ -16,22 +16,6 @@ def test_update_truck(test_client, truck_fixture):
     response = test_client.put(f'/trucks/{truck_fixture.patent}', json={'patent': 'UPDT01', 'oil_level': 1/3, 'water_level': 2/3, 'fuel_level': 1})
     assert response.status_code == 200
 
-
-
-def test_delete_truck(test_client, truck_fixture):
-    response = test_client.delete(f'/trucks/{truck_fixture.patent}')
-    assert response.status_code == 200
-
-    
-def test_create_truck_invalid_data(test_client):
-    response = test_client.post('/trucks', json={'patent': ''})
-    assert response.status_code == 400
-    assert 'error' in response.json
-    
-def test_get_nonexistent_truck(test_client):
-    response = test_client.get('/trucks/INVALID')
-    assert response.status_code == 404
-
 def test_update_truck_invalid_data(test_client, truck_fixture):
     response = test_client.put(f'/trucks/{truck_fixture.patent}', json={'patent': 'INVALID'})
     assert response.status_code == 400
@@ -50,5 +34,20 @@ def test_update_nonexistent_truck(test_client):
 def test_delete_nonexistent_truck(test_client):
     response = test_client.delete('/trucks/INVALID')
     assert response.status_code == 404
+
+def test_delete_truck(test_client, truck_fixture):
+    response = test_client.delete(f'/trucks/{truck_fixture.patent}')
+    assert response.status_code == 200
+
+    
+def test_create_truck_invalid_data(test_client):
+    response = test_client.post('/trucks', json={'patent': ''})
+    assert response.status_code == 400
+    assert 'error' in response.json
+    
+def test_get_nonexistent_truck(test_client):
+    response = test_client.get('/trucks/INVALID')
+    assert response.status_code == 404
+
 
 
