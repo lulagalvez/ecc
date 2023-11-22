@@ -9,30 +9,45 @@ from src.extensions import scheduler
 from .scheduled_tasks import delete_expired_tokens
 
 def create_app(config_class=Config):
+
+    """
+    Crea y configura una instancia de la aplicación Flask.
+
+    Args:
+        config_class (Config): La clase de configuración que se utilizará para
+                               configurar la instancia de Flask.
+
+    Returns:
+        app: La instancia de la aplicación Flask configurada.
+    """
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # Initialize Flask extensions here
-    db.init_app(app)
+    # Inicialización de extensiones de Flask.
+    db.init_app(app)# Inicializa SQLAlchemy.
+    jwt.init_app(app) # Inicializa JWT Manager para manejar tokens JWT
 
-    jwt.init_app(app)
-
-    @jwt.token_in_blocklist_loader #Verifica el token en cada solicitud a una ruta protegida, osea con autenticacion
+    #Verifica si un token pertenece a la lista de tokens revocados en cada solicitud a una ruta protegida, osea con autenticacion.
+    @jwt.token_in_blocklist_loader 
     def check_if_token_is_revoked(jwt_header, jwt_payload):
         jti = jwt_payload["jti"]
         token = TokenBlacklist.query.filter_by(jti=jti).first()
         return token is not None
     
-    @jwt.invalid_token_loader ##en caso de que el token sea invalido
-    def invalid_token_callback(error):  # error es proporcionado por Flask-JWT-Extended
+    # Manejador de errores para tokens JWT inválidos.
+    @jwt.invalid_token_loader 
+    def invalid_token_callback(error): 
         return jsonify({
             'msg': 'Token inválido',
             'error': str(error)
         }), 401
-
+    
+  # Inicialización y configuración del planificador de tareas APScheduler.
     scheduler.init_app(app)
     scheduler.start()
 
+    # Tarea programada para eliminar tokens JWT revocados y expirados.
+    # Se ejecuta diariamente a medianoche.
     @scheduler.task('cron', id='delete_expired_tokens', day='*', hour='0')
     def scheduled_task():
         with app.app_context():
@@ -43,7 +58,7 @@ def create_app(config_class=Config):
 
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-    # Register blueprints here
+    #  # Registro de blueprints para diferentes rutas de la aplicación
     from src.main import bp as main_bp
     app.register_blueprint(main_bp)
 
