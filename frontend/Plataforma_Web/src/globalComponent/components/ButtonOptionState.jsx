@@ -55,8 +55,8 @@ function ToggleButtonExample({ radioValue, setRadioValue }) {
       </ButtonGroup>
 
       <Badge
-        bg="light"
-        text="dark "
+        bg="secondary"
+        text="light "
         style={{ padding: "0.8em", fontSize: "1.4em" }}
       >
         {selectedRadio?.badgeText}

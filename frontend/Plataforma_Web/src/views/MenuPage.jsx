@@ -71,8 +71,6 @@ const Menupage = () => {
       console.log("Usuarios activos: ", activeUsers);
       console.log("Usuarios en emergencia: ", emergencyUsers);
       console.log("Usuarios conductores: ", driverUsers);
-
-      // Dependiendo de tus necesidades, puedes hacer más cosas aquí.
     }
 
     // Limpia la variable al desmontar el componente
@@ -124,9 +122,10 @@ const Menupage = () => {
     return currentUsers.map((user) => (
       <Col key={user.id} xs={12} md={4} lg={6} className="my-4">
         <Cards
-          estado={user.state}
-          ocupacion={user.role}
-          nombre={`${user.first_name} ${user.last_name}`}
+          state={user.state}
+          role={user.role}
+          fullName={`${user.first_name} ${user.last_name}`}
+          email={user.email}
         />
       </Col>
     ));

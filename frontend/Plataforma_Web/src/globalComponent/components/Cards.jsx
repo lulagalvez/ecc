@@ -4,26 +4,34 @@ import ImagenPrueba from "../../image/prueba-imagen.jpg";
 
 import "../styles/Cards.css";
 
-function Cards({ estado, ocupacion, nombre }) {
+function Cards({ state, role, fullName, email }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
-  // Determina el color de fondo según el estado
-  let backgroundColor;
-  switch (estado) {
-    case 0: // Cambié "DISPONIBLE" a 0 según la estructura de datos
-      backgroundColor = "green";
-      break;
-    case 1: // Cambié "AUSENTE" a 1 según la estructura de datos
+  // Determina el color de fondo y el texto del título según el estado
+  let backgroundColor, titleText;
+  switch (state) {
+    case 0: // 0 : Inactivo
       backgroundColor = "gray";
+      titleText = "Ausente";
       break;
-    case 2: // Cambié "EMERGENCIA" a 2 según la estructura de datos
+    case 1: // 1 : Activo
+      backgroundColor = "green";
+      titleText = "DISPONIBLE";
+      break;
+    case 2: //2 : En emergencia
       backgroundColor = "red";
+      titleText = "EMERGENCIA";
+      break;
+    case 3: // 3 : Conductor
+      backgroundColor = "blue";
+      titleText = "CONDUCTOR";
       break;
     default:
       backgroundColor = "dark";
+      titleText = "";
   }
 
   return (
@@ -39,36 +47,21 @@ function Cards({ estado, ocupacion, nombre }) {
         <Card.Img variant="top" src={ImagenPrueba} />
         <Card.Body>
           <Card.Title className="my-3 py-2" style={{ backgroundColor }}>
-            {estado === 0
-              ? "DISPONIBLE"
-              : estado === 1
-              ? "AUSENTE"
-              : "EMERGENCIA"}
+            {titleText}
           </Card.Title>
-          <Card.Text className="mb-2">{ocupacion}</Card.Text>
+          <Card.Text className="mb-2">{role}</Card.Text>
           <div className="mb-2 custom-divider border-top"></div>
-          {/* Puedes cambiar el valor duro "13221312" por la información real si es necesario */}
-          <Card.Text className="mb-2">{"13221312"}</Card.Text>
+          <Card.Text className="mb-2">{email}</Card.Text>
           <div className="mb-2 custom-divider border-top"></div>
-          <Card.Text className="mb-2">{nombre}</Card.Text>
+          <Card.Text className="mb-2">{fullName}</Card.Text>
         </Card.Body>
       </Card>
 
       <Modal centered size="lg" show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{nombre}</Modal.Title>
+          <Modal.Title>{fullName}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>
-            Estado:{" "}
-            {estado === 0
-              ? "DISPONIBLE"
-              : estado === 1
-              ? "AUSENTE"
-              : "EMERGENCIA"}
-          </p>
-          <p>Ocupación: {ocupacion}</p>
-        </Modal.Body>
+        <Modal.Body></Modal.Body>
         <Modal.Footer>
           <Button variant="dark" onClick={handleClose}>
             Cerrar
