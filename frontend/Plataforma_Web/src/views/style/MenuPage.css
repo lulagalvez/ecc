@@ -3,6 +3,12 @@
 background-color: blanchedalmond;
 }
 
+.pagina
+{
+    background-color: #333 ;
+
+}
+
 .col-2
 {
     background-color: #333 !important; /* O cualquier otro valor de gris oscuro que prefieras */
@@ -15,6 +21,12 @@ background-color: blanchedalmond;
     display: flex;
     text-align: center;
     justify-content: center;
+}
+
+.col-4
+{
+    
+    background-color: #1c1c1db7 ;
 }
 
   

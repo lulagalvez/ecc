@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Container, Row, Col, Pagination } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { getUsersByState } from "../functionsApi/UserApi.jsx";
 
 import NavBar from "../globalComponent/components/NavBar.jsx";
 import Cards from "../globalComponent/components/Cards.jsx";
-
+import ButtonOptionsState from "../globalComponent/components/ButtonOptionState.jsx";
 import "./style/MenuPage.css";
 
 const Menupage = () => {
@@ -13,11 +13,13 @@ const Menupage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [loadComplete, setLoadComplete] = useState(false);
+  const [radioValue, setRadioValue] = useState("5");
 
-  const [inactiveUsers, setInactiveUsers] = useState([]);
-  const [activeUsers, setActiveUsers] = useState([]);
-  const [emergencyUsers, setEmergencyUsers] = useState([]);
-  const [driverUsers, setDriverUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]); //1
+  const [activeUsers, setActiveUsers] = useState([]); //2
+  const [emergencyUsers, setEmergencyUsers] = useState([]); //3
+  const [driverUsers, setDriverUsers] = useState([]); //4
+  const [inactiveUsers, setInactiveUsers] = useState([]); //5
 
   useEffect(() => {
     // Realiza la solicitud HTTP para obtener la lista de bomberos por estado
@@ -76,34 +78,60 @@ const Menupage = () => {
     };
   }, [loadComplete, inactiveUsers, activeUsers, emergencyUsers, driverUsers]);
 
-  // Calcular la cantidad total de páginas
-  const totalPages = Math.ceil(inactiveUsers.length / pageSize);
+  // Función memoizada para renderizar las Cards según radioValue
+  const memoizedRenderCards = useMemo(() => {
+    let usersToRender = [];
 
-  // Función para calcular el índice inicial y final de las Cards a mostrar en la página actual
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, inactiveUsers.length);
-  const currentUsers = inactiveUsers.slice(startIndex, endIndex);
+    switch (radioValue) {
+      case "2":
+        usersToRender = activeUsers;
+        break;
+      case "3":
+        usersToRender = emergencyUsers;
+        break;
+      case "4":
+        usersToRender = driverUsers;
+        break;
+      case "5":
+        usersToRender = inactiveUsers;
+        break;
+      default:
+        usersToRender = inactiveUsers; // Por defecto, muestra inactivos
+    }
 
-  // Función para renderizar las Cards
-  const renderCards = () => {
-    return inactiveUsers.map((user) => {
-      console.log("Bombero inactivo:", user);
-      return (
-        <Col key={user.id} xs={12} md={4} lg={6} className="my-4">
-          <Cards
-            estado={user.state}
-            ocupacion={user.role}
-            nombre={`${user.first_name} ${user.last_name}`}
-          />
-        </Col>
-      );
-    });
-  };
+    // Calcular la cantidad total de páginas para los usuarios específicos
+    const totalPages = Math.ceil(usersToRender.length / pageSize);
+
+    // Calcular el índice inicial y final de las Cards a mostrar en la página actual
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, usersToRender.length);
+    const currentUsers = usersToRender.slice(startIndex, endIndex);
+
+    return currentUsers.map((user) => (
+      <Col key={user.id} xs={12} md={4} lg={6} className="my-4">
+        <Cards
+          estado={user.state}
+          ocupacion={user.role}
+          nombre={`${user.first_name} ${user.last_name}`}
+        />
+      </Col>
+    ));
+  }, [
+    radioValue,
+    activeUsers,
+    emergencyUsers,
+    driverUsers,
+    inactiveUsers,
+    currentPage,
+    pageSize,
+  ]);
 
   // Función para manejar el cambio de página
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const totalPages = Math.ceil(memoizedRenderCards.length / pageSize);
 
   return (
     <motion.div
@@ -120,9 +148,19 @@ const Menupage = () => {
           <Col
             xs={12}
             md={12}
+            className="col-4 my-0 py-4 d-flex align-items-center justify-content-between"
+          >
+            <ButtonOptionsState
+              radioValue={radioValue}
+              setRadioValue={setRadioValue}
+            ></ButtonOptionsState>
+          </Col>
+          <Col
+            xs={12}
+            md={12}
             className="col-2 d-flex flex-column align-items-center justify-content-center"
           >
-            <Row className="mb-3">{renderCards()}</Row>
+            <Row className="mb-3">{memoizedRenderCards}</Row>
             <Pagination size="md">
               {[...Array(totalPages)].map((_, index) => (
                 <Pagination.Item
