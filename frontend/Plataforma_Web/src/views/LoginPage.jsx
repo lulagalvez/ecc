@@ -2,55 +2,54 @@ import "./style/LoginPage.css";
 import { motion } from "framer-motion";
 import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState } from "react";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { loginUser } from "../functionsApi/UserApi";
 import Logo from "../image/shield-image.png";
-import React from "react";
-import axios from 'axios';
+import axios from "axios";
 
 const LoginPage = () => {
   const [loginForm, setloginForm] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
   const navigate = useNavigate();
 
-  function logMeIn(event) {
-    axios({
-      method: "POST",
-      url: "http://localhost:5000/user/login",
-      data: {
-        user_name: loginForm.email,
-        password: loginForm.password
-      }
-    })
-      .then((response) => {
-        console.log("here");
-        localStorage.setItem("access_token", response.data.access_token);
-        navigate("/menu", {replace: true});
-      }).catch((error) => {
-        if (error.response) {
-          console.log(error.response)
-          console.log(error.response.status)
-          console.log(error.response.headers)
-        }
-      })
+  const logMeIn = async (event) => {
+    try {
+      // Llama a la función de inicio de sesión
+      const response = await loginUser(loginForm.email, loginForm.password);
 
-    setloginForm(({
+      const { access_token } = response;
+
+      // Guarda el token y el ID del usuario en el localStorage
+      localStorage.setItem("access_token", access_token);
+
+      // Redirige a la página del menú
+      navigate("/menupage", { replace: true });
+    } catch (error) {
+      if (error.response) {
+        console.error(error.response);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      }
+    }
+
+    setloginForm({
       email: "",
-      password: ""
-    }))
-    event.preventDefault()
-  }
+      password: "",
+    });
+    event.preventDefault();
+  };
 
   function handleChange(event) {
-    const { value, name } = event.target
-    setloginForm(prevNote => ({
-      ...prevNote, [name]: value
-    })
-    )
+    const { value, name } = event.target;
+    setloginForm((prevNote) => ({
+      ...prevNote,
+      [name]: value,
+    }));
   }
 
   return (
@@ -61,8 +60,6 @@ const LoginPage = () => {
       transition={{ duration: 0.3 }}
     >
       <Container fluid className="background">
-
-
         <Container className="page-container ">
           <Row className="justify-content-center align-items-center flex-column login-row ">
             <Col md={12} className="fila-1">
@@ -90,7 +87,10 @@ const LoginPage = () => {
                   </div>
                 </Form.Group>
 
-                <Form.Group className="password mb-5" controlId="formBasicPassword">
+                <Form.Group
+                  className="password mb-5"
+                  controlId="formBasicPassword"
+                >
                   <div className="user">
                     <RiLockPasswordLine className="icono" />
                     <Form.Control
@@ -104,47 +104,22 @@ const LoginPage = () => {
                   </div>
                 </Form.Group>
 
-                <Button variant="dark" type="submit" size="lg" className="mb-2" onClick={logMeIn}>
+                <Button
+                  variant="dark"
+                  type="submit"
+                  size="lg"
+                  className="mb-2"
+                  onClick={logMeIn}
+                >
                   Iniciar Sesión
                 </Button>
               </Form>
-
             </Col>
           </Row>
         </Container>
-
-
       </Container>
     </motion.div>
   );
 };
 
 export default LoginPage;
-
-
-/* 
-const LoginPage = () => {
-  return (
-    <div>
-      <h1>Login</h1>
-      <form className="login">
-        <input onChange={handleChange}
-          type="email"
-          text={loginForm.email}
-          name="email"
-          placeholder="Email"
-          value={loginForm.email} />
-        <input onChange={handleChange}
-          type="password"
-          text={loginForm.password}
-          name="password"
-          placeholder="Password"
-          value={loginForm.password} />
-
-        <button onClick={logMeIn}>Submit</button>
-      </form>
-    </div>
-  );
-};
-
-export default LoginPage; */

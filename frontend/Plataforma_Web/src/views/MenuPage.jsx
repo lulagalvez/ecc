@@ -1,14 +1,23 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Pagination } from "react-bootstrap";
 import { motion } from "framer-motion";
+import { getUsersByState } from "../functionsApi/UserApi.jsx";
+
 import NavBar from "../globalComponent/components/NavBar.jsx";
 import Cards from "../globalComponent/components/Cards.jsx";
+
 import "./style/MenuPage.css";
 
 const Menupage = () => {
   const pageSize = 12; // Cantidad de Cards por página
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [loadComplete, setLoadComplete] = useState(false);
+
+  const [inactiveUsers, setInactiveUsers] = useState([]);
+  const [activeUsers, setActiveUsers] = useState([]);
+  const [emergencyUsers, setEmergencyUsers] = useState([]);
+  const [driverUsers, setDriverUsers] = useState([]);
 
   const cardData = [
     {
@@ -193,6 +202,63 @@ const Menupage = () => {
     },
     // Agrega más datos similares para las otras Cards
   ];
+
+  useEffect(() => {
+    // Realiza la solicitud HTTP para obtener la lista de bomberos por estado
+
+    // Variable para indicar si la carga ha finalizado
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        const inactiveResponse = await getUsersByState(0);
+        isMounted && setInactiveUsers(inactiveResponse);
+
+        const activeResponse = await getUsersByState(1);
+        isMounted && setActiveUsers(activeResponse);
+
+        const emergencyResponse = await getUsersByState(2);
+        isMounted && setEmergencyUsers(emergencyResponse);
+
+        const driverResponse = await getUsersByState(3);
+        isMounted && setDriverUsers(driverResponse);
+      } catch (error) {
+        console.error(
+          "Error al obtener la lista de bomberos por estado:",
+          error
+        );
+      } finally {
+        // Cuando la carga ha finalizado, actualiza el estado de carga
+        isMounted && setLoadComplete(true);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+
+    // Se ejecuta solo al montar el componente
+  }, []);
+
+  // Este useEffect se ejecutará una vez que la carga ha finalizado
+  useEffect(() => {
+    if (loadComplete) {
+      console.log("Usuarios inactivos: ", inactiveUsers);
+      console.log("Usuarios activos: ", activeUsers);
+      console.log("Usuarios en emergencia: ", emergencyUsers);
+      console.log("Usuarios conductores: ", driverUsers);
+
+      // Dependiendo de tus necesidades, puedes hacer más cosas aquí.
+    }
+
+    // Limpia la variable al desmontar el componente
+    return () => {
+      // Restablece loadComplete al desmontar
+      setLoadComplete(false);
+    };
+  }, [loadComplete, inactiveUsers, activeUsers, emergencyUsers, driverUsers]);
 
   // Calcular la cantidad total de páginas
   const totalPages = Math.ceil(cardData.length / pageSize);

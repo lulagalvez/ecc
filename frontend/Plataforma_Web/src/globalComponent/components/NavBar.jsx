@@ -1,7 +1,12 @@
 import "../styles/NavBar.css";
+
 import Logo from "../../image/shield-image.png";
 import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import jwtDecode from "jwt-decode";
 
+import { getUserById, logoutUser } from "../../functionsApi/UserApi";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -38,7 +43,96 @@ function CircleIcon({ letter }) {
   return <CircleWithLetter>{letter}</CircleWithLetter>;
 }
 
-const NavBar = ({ usuario }) => {
+const NavBar = () => {
+  const [userData, setUserData] = useState(null);
+  const [loadComplete, setLoadComplete] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      console.log("El token es :", decodedToken); // token del usuario
+
+      let Id = decodedToken.sub;
+      let isMounted = true;
+
+      /*
+    exp: El tiempo de expiración del token.
+    fresh: Un indicador de si el token es fresco o no.
+    iat: La marca de tiempo en la que el token fue emitido.
+    jti: Un identificador único para el token.
+    nbf: Tiempo antes del cual el token no debe considerarse válido.
+    sub: El sujeto del token, que parece ser el identificador del usuario.
+    type: El tipo de token.
+*/
+
+      // Realiza la solicitud HTTP para obtener los detalles del usuario
+      // Variable para indicar si la carga ha finalizado
+
+      const fetchData = async () => {
+        try {
+          const dataUser = await getUserById(Id);
+          isMounted && setUserData(dataUser);
+        } catch (error) {
+          console.error(
+            "Error al obtener la lista de bomberos por estado:",
+            error
+          );
+        } finally {
+          // Cuando la carga ha finalizado, actualiza el estado de carga
+          isMounted && setLoadComplete(true);
+        }
+      };
+
+      fetchData();
+
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    // Se ejecuta solo al montar el componente
+  }, []);
+
+  // Este useEffect se ejecutará una vez que la carga ha finalizado
+  useEffect(() => {
+    if (loadComplete) {
+      console.log("Informacion del administrador ", userData);
+    }
+
+    // Limpia la variable al desmontar el componente
+    return () => {
+      // Restablece loadComplete al desmontar
+      setLoadComplete(false);
+    };
+  }, [loadComplete]);
+
+  const firstLetter = userData?.user_name?.charAt(0).toUpperCase();
+
+  const handleLogout = async () => {
+    try {
+      // Llama a la función de logout
+      await logoutUser();
+
+      // Elimina el token del almacenamiento local
+      localStorage.removeItem("access_token");
+
+      console.log(
+        "Información del usuario después de cerrar sesión:",
+        userData
+      );
+
+      // Redirigir a la página del menú
+      navigate("/menupage", { replace: true });
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      // Puedes mostrar un mensaje de error al usuario si lo deseas
+    }
+  };
+
   return (
     <Navbar
       fluid
@@ -104,19 +198,23 @@ const NavBar = ({ usuario }) => {
           </NavDropdown>
 
           <CustomNavDropdown
-            title={<CircleIcon letter="J" />}
+            title={<CircleIcon letter={firstLetter} />}
             id="collapsible-nav-dropdown"
             className="me-5"
           >
             <NavDropdown.Item href="#action/3.1" className="icono-con-texto">
-              <FaUser style={{ marginRight: "0.5rem" }} /> Jose Toledo
+              <FaUser style={{ marginRight: "0.5rem" }} />{" "}
+              {userData?.first_name}
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="#action/3.3" className="icono-con-texto">
               <FaCog style={{ marginRight: "0.5rem" }} /> Ajustes
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4" className="icono-con-texto">
+            <NavDropdown.Item
+              onClick={handleLogout}
+              className="icono-con-texto"
+            >
               <FaSignOutAlt style={{ marginRight: "0.5rem" }} />
               Cerrar sesión
             </NavDropdown.Item>
