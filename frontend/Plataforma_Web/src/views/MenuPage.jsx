@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Container, Row, Col, Pagination } from "react-bootstrap";
 import { motion } from "framer-motion";
-import { getUsersByState } from "../functionsApi/UserApi.jsx";
+import { getUsersByState, allUser } from "../functionsApi/UserApi.jsx";
 
 import NavBar from "../globalComponent/components/NavBar.jsx";
 import Cards from "../globalComponent/components/Cards.jsx";
@@ -29,6 +29,9 @@ const Menupage = () => {
 
     const fetchData = async () => {
       try {
+        const allUserResponse = await allUser();
+        isMounted && setAllUsers(allUserResponse);
+
         const inactiveResponse = await getUsersByState(0);
         isMounted && setInactiveUsers(inactiveResponse);
 
@@ -63,6 +66,7 @@ const Menupage = () => {
   // Este useEffect se ejecutará una vez que la carga ha finalizado
   useEffect(() => {
     if (loadComplete) {
+      console.log("Todos los usuarios", allUsers);
       console.log("Usuarios inactivos: ", inactiveUsers);
       console.log("Usuarios activos: ", activeUsers);
       console.log("Usuarios en emergencia: ", emergencyUsers);
@@ -76,13 +80,23 @@ const Menupage = () => {
       // Restablece loadComplete al desmontar
       setLoadComplete(false);
     };
-  }, [loadComplete, inactiveUsers, activeUsers, emergencyUsers, driverUsers]);
+  }, [
+    loadComplete,
+    inactiveUsers,
+    activeUsers,
+    emergencyUsers,
+    driverUsers,
+    allUsers,
+  ]);
 
   // Función memoizada para renderizar las Cards según radioValue
   const memoizedRenderCards = useMemo(() => {
     let usersToRender = [];
 
     switch (radioValue) {
+      case "1":
+        usersToRender = allUsers;
+        break;
       case "2":
         usersToRender = activeUsers;
         break;
@@ -124,6 +138,7 @@ const Menupage = () => {
     inactiveUsers,
     currentPage,
     pageSize,
+    allUsers,
   ]);
 
   // Función para manejar el cambio de página
