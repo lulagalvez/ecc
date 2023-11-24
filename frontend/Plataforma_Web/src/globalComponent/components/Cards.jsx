@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-
-import ImagenPrueba from "../../image/prueba-imagen.jpg";
-
 import { Card, Modal, Button } from "react-bootstrap";
+import ImagenPrueba from "../../image/prueba-imagen.jpg";
 
 import "../styles/Cards.css";
 
@@ -15,13 +13,13 @@ function Cards({ estado, ocupacion, nombre }) {
   // Determina el color de fondo según el estado
   let backgroundColor;
   switch (estado) {
-    case "DISPONIBLE":
+    case 0: // Cambié "DISPONIBLE" a 0 según la estructura de datos
       backgroundColor = "green";
       break;
-    case "AUSENTE":
+    case 1: // Cambié "AUSENTE" a 1 según la estructura de datos
       backgroundColor = "gray";
       break;
-    case "EMERGENCIA":
+    case 2: // Cambié "EMERGENCIA" a 2 según la estructura de datos
       backgroundColor = "red";
       break;
     default:
@@ -41,12 +39,17 @@ function Cards({ estado, ocupacion, nombre }) {
         <Card.Img variant="top" src={ImagenPrueba} />
         <Card.Body>
           <Card.Title className="my-3 py-2" style={{ backgroundColor }}>
-            {estado}
+            {estado === 0
+              ? "DISPONIBLE"
+              : estado === 1
+              ? "AUSENTE"
+              : "EMERGENCIA"}
           </Card.Title>
           <Card.Text className="mb-2">{ocupacion}</Card.Text>
-          <div className="mb-2  custom-divider border-top"></div>
+          <div className="mb-2 custom-divider border-top"></div>
+          {/* Puedes cambiar el valor duro "13221312" por la información real si es necesario */}
           <Card.Text className="mb-2">{"13221312"}</Card.Text>
-          <div className="mb-2  custom-divider border-top"></div>
+          <div className="mb-2 custom-divider border-top"></div>
           <Card.Text className="mb-2">{nombre}</Card.Text>
         </Card.Body>
       </Card>
@@ -56,7 +59,14 @@ function Cards({ estado, ocupacion, nombre }) {
           <Modal.Title>{nombre}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Estado: {estado}</p>
+          <p>
+            Estado:{" "}
+            {estado === 0
+              ? "DISPONIBLE"
+              : estado === 1
+              ? "AUSENTE"
+              : "EMERGENCIA"}
+          </p>
           <p>Ocupación: {ocupacion}</p>
         </Modal.Body>
         <Modal.Footer>
