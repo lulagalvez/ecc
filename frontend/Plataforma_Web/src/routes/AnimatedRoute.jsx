@@ -1,8 +1,8 @@
-import { useRoutes, Navigate, Outlet } from "react-router-dom";
+import { useRoutes, Outlet } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import LoginPage from "../views/LoginPage";
-import RegistroHoras from "../views/RegistroHoras"
+import RegistroHoras from "../views/RegistroHoras";
 import MenuPage from "../views/MenuPage";
 import RegisterUser from "../views/RegisterUser";
 import LogPage from "../views/LogPage";
@@ -22,23 +22,25 @@ function AnimatedRoutes() {
     },
     {
       path: "/menupage",
-      element: <MenuPage/>
+      element: <MenuPage />,
     },
     {
       path: "/registrar-usuario",
-      element: <RegisterUser/>
+      element: <RegisterUser />,
     },
     {
       path: "/bitacoras",
-      element: <LogPage/>
+      element: <LogPage />,
     },
-
   ]);
 
   return (
     <AnimatePresence>
-      <Outlet />
-      {routing}
+      {/* Puedes agregar cualquier otro contenido que necesites antes de Outlet y routing */}
+      <>
+        <Outlet />
+        {routing}
+      </>
     </AnimatePresence>
   );
 }
