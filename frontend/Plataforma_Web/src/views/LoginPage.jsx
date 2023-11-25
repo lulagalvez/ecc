@@ -7,7 +7,6 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { loginUser } from "../functionsApi/UserApi";
 import Logo from "../image/shield-image.png";
-import axios from "axios";
 
 const LoginPage = () => {
   const [loginForm, setloginForm] = useState({

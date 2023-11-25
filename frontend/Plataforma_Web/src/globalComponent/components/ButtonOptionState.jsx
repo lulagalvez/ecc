@@ -11,7 +11,11 @@ import { CgUnavailable } from "react-icons/cg";
 function ToggleButtonExample({ radioValue, setRadioValue }) {
   const radios = [
     {
-      name: <TiThSmallOutline />,
+      name: (
+        <>
+          <TiThSmallOutline /> Todo el personal
+        </>
+      ),
       value: "1",
       badgeText: "Todo el personal",
     },
