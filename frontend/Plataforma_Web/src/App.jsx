@@ -1,6 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import AnimatedRoutes from "./routes/AnimatedRoute";
-import UserProvider from "./UseContextApi/UserProvider";
+import UserProvider from "./UserContextApi/UserProvider";
 import "./App.css";
 
 function App() {

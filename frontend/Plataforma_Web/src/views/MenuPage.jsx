@@ -1,62 +1,27 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { Container, Row, Col, Pagination } from "react-bootstrap";
 import { motion } from "framer-motion";
-import { getUsersByState, allUser } from "../functionsApi/UserApi.jsx";
 
 import NavBar from "../globalComponent/components/NavBar.jsx";
 import Cards from "../globalComponent/components/Cards.jsx";
-import ButtonOptionsState from "../globalComponent/components/ButtonOptionState.jsx";
+import UserContext from "../UserContextApi/UserContext.jsx";
 import "./style/MenuPage.css";
 
 const Menupage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [loadComplete, setLoadComplete] = useState(false);
-  const [radioValue, setRadioValue] = useState("5");
-
-  const [allUsers, setAllUsers] = useState([]); //1
-  const [activeUsers, setActiveUsers] = useState([]); //2
-  const [emergencyUsers, setEmergencyUsers] = useState([]); //3
-  const [driverUsers, setDriverUsers] = useState([]); //4
-  const [inactiveUsers, setInactiveUsers] = useState([]); //5
-
-  const pageSize = 12; // Cantidad de Cards por página
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    let isMounted = true;
+  const pageSize = 12; // Cantidad de Cards por página
 
-    const fetchData = async () => {
-      try {
-        const allUserResponse = await allUser();
-        isMounted && setAllUsers(allUserResponse);
+  const { loadComplete } = useContext(UserContext);
 
-        const inactiveResponse = await getUsersByState(0);
-        isMounted && setInactiveUsers(inactiveResponse);
+  const { allUsers } = useContext(UserContext); //1
+  const { activeUsers } = useContext(UserContext); //2
+  const { emergencyUsers } = useContext(UserContext); //3
+  const { driverUsers } = useContext(UserContext); //4
+  const { inactiveUsers } = useContext(UserContext); //5
 
-        const activeResponse = await getUsersByState(1);
-        isMounted && setActiveUsers(activeResponse);
-
-        const emergencyResponse = await getUsersByState(2);
-        isMounted && setEmergencyUsers(emergencyResponse);
-
-        const driverResponse = await getUsersByState(3);
-        isMounted && setDriverUsers(driverResponse);
-      } catch (error) {
-        console.error(
-          "Error al obtener la lista de bomberos por estado:",
-          error
-        );
-      } finally {
-        isMounted && setLoadComplete(true);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const { radioValue } = useContext(UserContext);
 
   useEffect(() => {
     if (loadComplete) {
@@ -94,16 +59,7 @@ const Menupage = () => {
 
       setTotalPages(calculateTotalPages(usersToRender));
     }
-  }, [
-    loadComplete,
-    inactiveUsers,
-    activeUsers,
-    emergencyUsers,
-    driverUsers,
-    allUsers,
-    radioValue,
-    pageSize,
-  ]);
+  }, [loadComplete, allUsers, radioValue]);
 
   const memoizedRenderCards = useMemo(() => {
     let usersToRender = [];
@@ -169,16 +125,7 @@ const Menupage = () => {
           <Col xs={12} md={12} className="p-0 col-1 my-5">
             <NavBar />
           </Col>
-          <Col
-            xs={12}
-            md={12}
-            className="col-4 my-0 py-4 d-flex align-items-center justify-content-between"
-          >
-            <ButtonOptionsState
-              radioValue={radioValue}
-              setRadioValue={setRadioValue}
-            ></ButtonOptionsState>
-          </Col>
+
           <Col
             xs={12}
             md={12}

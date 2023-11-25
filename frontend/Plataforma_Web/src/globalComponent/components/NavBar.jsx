@@ -4,6 +4,7 @@ import Logo from "../../image/shield-image.png";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
+import OffCanvas from "./OffCanvas";
 
 import { getUserById, logoutUser } from "../../functionsApi/UserApi";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,7 @@ import {
   NavDropdown,
   Form,
   Button,
+  NavLink,
 } from "react-bootstrap";
 import { FaBell, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa"; // Importa los íconos de FontAwesome
 
@@ -137,22 +139,23 @@ const NavBar = () => {
     <Navbar
       fluid
       as={Container}
-      className="barra-navegacion"
       variant="dark"
       fixed="top"
       expand="lg"
       bg="dark"
       data-bs-theme="dark"
     >
-      <Navbar.Brand as={Link} to={"/menupage"}>
+      <Navbar.Brand className="ms-3">
+        <OffCanvas></OffCanvas>
         <Image
           src={Logo}
           alt="Logo"
           style={{ maxWidth: "100%", maxHeight: "%100%" }}
-          className="logo-baner ms-4 me-4"
+          className="logo-baner ms-5 me-2"
         ></Image>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto ms-4 menus">
           <Nav.Link className="me-2" as={Link} to="/bitacoras">
@@ -225,4 +228,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default React.memo(NavBar);
