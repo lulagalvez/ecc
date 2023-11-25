@@ -9,8 +9,6 @@ import ButtonOptionsState from "../globalComponent/components/ButtonOptionState.
 import "./style/MenuPage.css";
 
 const Menupage = () => {
-  const pageSize = 12; // Cantidad de Cards por página
-
   const [currentPage, setCurrentPage] = useState(1);
   const [loadComplete, setLoadComplete] = useState(false);
   const [radioValue, setRadioValue] = useState("5");
@@ -21,10 +19,10 @@ const Menupage = () => {
   const [driverUsers, setDriverUsers] = useState([]); //4
   const [inactiveUsers, setInactiveUsers] = useState([]); //5
 
-  useEffect(() => {
-    // Realiza la solicitud HTTP para obtener la lista de bomberos por estado
+  const pageSize = 12; // Cantidad de Cards por página
+  const [totalPages, setTotalPages] = useState(1);
 
-    // Variable para indicar si la carga ha finalizado
+  useEffect(() => {
     let isMounted = true;
 
     const fetchData = async () => {
@@ -49,7 +47,6 @@ const Menupage = () => {
           error
         );
       } finally {
-        // Cuando la carga ha finalizado, actualiza el estado de carga
         isMounted && setLoadComplete(true);
       }
     };
@@ -59,11 +56,8 @@ const Menupage = () => {
     return () => {
       isMounted = false;
     };
-
-    // Se ejecuta solo al montar el componente
   }, []);
 
-  // Este useEffect se ejecutará una vez que la carga ha finalizado
   useEffect(() => {
     if (loadComplete) {
       console.log("Todos los usuarios", allUsers);
@@ -71,13 +65,35 @@ const Menupage = () => {
       console.log("Usuarios activos: ", activeUsers);
       console.log("Usuarios en emergencia: ", emergencyUsers);
       console.log("Usuarios conductores: ", driverUsers);
-    }
 
-    // Limpia la variable al desmontar el componente
-    return () => {
-      // Restablece loadComplete al desmontar
-      setLoadComplete(false);
-    };
+      // Recalcula el total de páginas cuando cambia la lista de usuarios
+      const calculateTotalPages = (usersList) =>
+        Math.ceil(usersList.length / pageSize);
+
+      let usersToRender = [];
+
+      switch (radioValue) {
+        case "1":
+          usersToRender = allUsers;
+          break;
+        case "2":
+          usersToRender = activeUsers;
+          break;
+        case "3":
+          usersToRender = emergencyUsers;
+          break;
+        case "4":
+          usersToRender = driverUsers;
+          break;
+        case "5":
+          usersToRender = inactiveUsers;
+          break;
+        default:
+          usersToRender = inactiveUsers;
+      }
+
+      setTotalPages(calculateTotalPages(usersToRender));
+    }
   }, [
     loadComplete,
     inactiveUsers,
@@ -85,9 +101,10 @@ const Menupage = () => {
     emergencyUsers,
     driverUsers,
     allUsers,
+    radioValue,
+    pageSize,
   ]);
 
-  // Función memoizada para renderizar las Cards según radioValue
   const memoizedRenderCards = useMemo(() => {
     let usersToRender = [];
 
@@ -108,19 +125,15 @@ const Menupage = () => {
         usersToRender = inactiveUsers;
         break;
       default:
-        usersToRender = inactiveUsers; // Por defecto, muestra inactivos
+        usersToRender = inactiveUsers;
     }
 
-    // Calcular la cantidad total de páginas para los usuarios específicos
-    const totalPages = Math.ceil(usersToRender.length / pageSize);
-
-    // Calcular el índice inicial y final de las Cards a mostrar en la página actual
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, usersToRender.length);
     const currentUsers = usersToRender.slice(startIndex, endIndex);
 
     return currentUsers.map((user) => (
-      <Col key={user.id} xs={12} md={4} lg={6} className="my-4">
+      <Col key={user.id} xs={12} md={4} lg={2} className="my-4">
         <Cards
           state={user.state}
           role={user.role}
@@ -140,12 +153,9 @@ const Menupage = () => {
     allUsers,
   ]);
 
-  // Función para manejar el cambio de página
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
-  const totalPages = Math.ceil(memoizedRenderCards.length / pageSize);
 
   return (
     <motion.div

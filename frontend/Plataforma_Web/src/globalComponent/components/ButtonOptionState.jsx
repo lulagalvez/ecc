@@ -23,13 +23,13 @@ function ToggleButtonExample({ radioValue, setRadioValue }) {
     {
       name: <MdOutlineEmergencyShare />,
       value: "3",
-      badgeText: "Personal en ausente",
+      badgeText: "Personal en emergencia",
     },
     { name: <GiPoliceCar />, value: "4", badgeText: "Personal en  emergencia" },
     {
       name: <CgUnavailable />,
       value: "5",
-      badgeText: "Personal en  conduccion",
+      badgeText: "Personal en ausente",
     },
   ];
 
@@ -56,7 +56,7 @@ function ToggleButtonExample({ radioValue, setRadioValue }) {
 
       <Badge
         bg="secondary"
-        text="light "
+        text="dark "
         style={{ padding: "0.8em", fontSize: "1.4em" }}
       >
         {selectedRadio?.badgeText}

@@ -1214,47 +1214,34 @@ function settle(resolve, reject, response) {
 // node_modules/axios/lib/helpers/cookies.js
 var cookies_default = platform_default.hasStandardBrowserEnv ? (
   // Standard browser envs support document.cookie
-  function standardBrowserEnv() {
-    return {
-      write: function write(name, value, expires, path, domain, secure) {
-        const cookie = [];
-        cookie.push(name + "=" + encodeURIComponent(value));
-        if (utils_default.isNumber(expires)) {
-          cookie.push("expires=" + new Date(expires).toGMTString());
-        }
-        if (utils_default.isString(path)) {
-          cookie.push("path=" + path);
-        }
-        if (utils_default.isString(domain)) {
-          cookie.push("domain=" + domain);
-        }
-        if (secure === true) {
-          cookie.push("secure");
-        }
-        document.cookie = cookie.join("; ");
-      },
-      read: function read(name) {
-        const match = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
-        return match ? decodeURIComponent(match[3]) : null;
-      },
-      remove: function remove(name) {
-        this.write(name, "", Date.now() - 864e5);
-      }
-    };
-  }()
+  {
+    write(name, value, expires, path, domain, secure) {
+      const cookie = [name + "=" + encodeURIComponent(value)];
+      utils_default.isNumber(expires) && cookie.push("expires=" + new Date(expires).toGMTString());
+      utils_default.isString(path) && cookie.push("path=" + path);
+      utils_default.isString(domain) && cookie.push("domain=" + domain);
+      secure === true && cookie.push("secure");
+      document.cookie = cookie.join("; ");
+    },
+    read(name) {
+      const match = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
+      return match ? decodeURIComponent(match[3]) : null;
+    },
+    remove(name) {
+      this.write(name, "", Date.now() - 864e5);
+    }
+  }
 ) : (
-  // Non standard browser env (web workers, react-native) lack needed support.
-  function nonStandardBrowserEnv() {
-    return {
-      write: function write() {
-      },
-      read: function read() {
-        return null;
-      },
-      remove: function remove() {
-      }
-    };
-  }()
+  // Non-standard browser env (web workers, react-native) lack needed support.
+  {
+    write() {
+    },
+    read() {
+      return null;
+    },
+    remove() {
+    }
+  }
 );
 
 // node_modules/axios/lib/helpers/isAbsoluteURL.js
@@ -1279,7 +1266,7 @@ function buildFullPath(baseURL, requestedURL) {
 var isURLSameOrigin_default = platform_default.hasStandardBrowserEnv ? (
   // Standard browser envs have full support of the APIs needed to test
   // whether the request URL is of the same origin as current location.
-  function standardBrowserEnv2() {
+  function standardBrowserEnv() {
     const msie = /(msie|trident)/i.test(navigator.userAgent);
     const urlParsingNode = document.createElement("a");
     let originURL;
@@ -1309,7 +1296,7 @@ var isURLSameOrigin_default = platform_default.hasStandardBrowserEnv ? (
   }()
 ) : (
   // Non standard browser envs (web workers, react-native) lack needed support.
-  function nonStandardBrowserEnv2() {
+  function nonStandardBrowserEnv() {
     return function isURLSameOrigin() {
       return true;
     };
@@ -1387,7 +1374,7 @@ var xhr_default = isXHRAdapterSupported && function(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
     let requestData = config.data;
     const requestHeaders = AxiosHeaders_default.from(config.headers).normalize();
-    const responseType = config.responseType;
+    let { responseType, withXSRFToken } = config;
     let onCanceled;
     function done() {
       if (config.cancelToken) {
@@ -1479,9 +1466,12 @@ var xhr_default = isXHRAdapterSupported && function(config) {
       request = null;
     };
     if (platform_default.hasStandardBrowserEnv) {
-      const xsrfValue = isURLSameOrigin_default(fullPath) && config.xsrfCookieName && cookies_default.read(config.xsrfCookieName);
-      if (xsrfValue) {
-        requestHeaders.set(config.xsrfHeaderName, xsrfValue);
+      withXSRFToken && utils_default.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(config));
+      if (withXSRFToken || withXSRFToken !== false && isURLSameOrigin_default(fullPath)) {
+        const xsrfValue = config.xsrfHeaderName && config.xsrfCookieName && cookies_default.read(config.xsrfCookieName);
+        if (xsrfValue) {
+          requestHeaders.set(config.xsrfHeaderName, xsrfValue);
+        }
       }
     }
     requestData === void 0 && requestHeaders.setContentType(null);
@@ -1675,6 +1665,7 @@ function mergeConfig(config1, config2) {
     timeout: defaultToConfig2,
     timeoutMessage: defaultToConfig2,
     withCredentials: defaultToConfig2,
+    withXSRFToken: defaultToConfig2,
     adapter: defaultToConfig2,
     responseType: defaultToConfig2,
     xsrfCookieName: defaultToConfig2,
@@ -1703,7 +1694,7 @@ function mergeConfig(config1, config2) {
 }
 
 // node_modules/axios/lib/env/data.js
-var VERSION = "1.6.1";
+var VERSION = "1.6.2";
 
 // node_modules/axios/lib/helpers/validator.js
 var validators = {};
