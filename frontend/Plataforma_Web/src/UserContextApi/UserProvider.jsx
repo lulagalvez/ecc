@@ -4,7 +4,6 @@ import { getUsersByState, allUser } from "../functionsApi/UserApi";
 
 const UserProvider = ({ children }) => {
   const [radioValue, setRadioValue] = useState("5"); //deafult opcion de inactivos
-  const [loadComplete, setLoadComplete] = useState(false); // para cargar , eliminar a fururo maybe
 
   const [allUsers, setAllUsers] = useState([]); //1
   const [activeUsers, setActiveUsers] = useState([]); //2
@@ -13,39 +12,39 @@ const UserProvider = ({ children }) => {
   const [inactiveUsers, setInactiveUsers] = useState([]); //5
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchData = async () => {
       try {
         const allUserResponse = await allUser();
-        isMounted && setAllUsers(allUserResponse);
+        setAllUsers(allUserResponse);
 
         const inactiveResponse = await getUsersByState(0);
-        isMounted && setInactiveUsers(inactiveResponse);
+        setInactiveUsers(inactiveResponse);
 
         const activeResponse = await getUsersByState(1);
-        isMounted && setActiveUsers(activeResponse);
+        setActiveUsers(activeResponse);
 
         const emergencyResponse = await getUsersByState(2);
-        isMounted && setEmergencyUsers(emergencyResponse);
+        setEmergencyUsers(emergencyResponse);
 
         const driverResponse = await getUsersByState(3);
-        isMounted && setDriverUsers(driverResponse);
+        setDriverUsers(driverResponse);
       } catch (error) {
         console.error(
           "Error al obtener la lista de bomberos por estado:",
           error
         );
       } finally {
-        isMounted && setLoadComplete(true);
+        console.log("Todos los usuarios", allUsers);
+        console.log("Usuarios inactivos: ", inactiveUsers);
+        console.log("Usuarios activos: ", activeUsers);
+        console.log("Usuarios en emergencia: ", emergencyUsers);
+        console.log("Usuarios conductores: ", driverUsers);
       }
     };
 
     fetchData();
 
-    return () => {
-      isMounted = false;
-    };
+    return () => {};
   }, []);
 
   return (
@@ -58,7 +57,6 @@ const UserProvider = ({ children }) => {
         emergencyUsers,
         driverUsers,
         inactiveUsers,
-        loadComplete,
       }}
     >
       {children}
