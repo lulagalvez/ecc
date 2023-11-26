@@ -11,12 +11,14 @@ import datetime
 def get_all_logs():
     isdescription = request.args.get('description')
     if isdescription:
-        logs = db.session.scalars(db.Select(Log)).filter(Log.description != "").all()
+        print("AAA")
+        logs = db.session.scalars(db.Select(Log).filter(Log.description != "")).all()
     else:
+        print("BBB")
         logs = db.session.scalars(db.Select(Log)).all()
     
     
-    return jsonify([log.serialize() for log in logs]), 200
+    return jsonify({'logs': [log.serialize() for log in logs]}), 200
 
 
 @bp.route('/<int:log_id>', methods=['GET'])
@@ -43,7 +45,7 @@ def post_log():
                 if level_value not in Log.LEVELS:
                     return jsonify({'error': f'El {level_name} debe estar en {Log.LEVELS}'}), 400
         
-        new_log = Log(date_time=datetime.datetime.now(), **data)
+        new_log = Log(data)
 
         db.session.add(new_log)
         db.session.commit()
