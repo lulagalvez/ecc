@@ -3,7 +3,7 @@ import "../styles/OffCanvas.css";
 import Logo from "../../image/shield-image.png";
 import UserContext from "../../UserContextApi/UserContext";
 import RegisterUser from "../../views/RegisterUser";
-import DeleteUser from "../components/DeleteUser";
+import EditeUser from "./EditeUser";
 
 import {
   Button,
@@ -35,10 +35,8 @@ import { CgUnavailable } from "react-icons/cg";
 
 import { FaUserPlus } from "react-icons/fa6";
 import { FaUserPen } from "react-icons/fa6";
-import { FaUserXmark } from "react-icons/fa6";
 
 import { useContext } from "react";
-import { deleteUser } from "../../functionsApi/UserApi";
 
 function OffCanvas() {
   const [show, setShow] = useState(false);
@@ -228,11 +226,6 @@ function OffCanvas() {
       setSelectedModal(null);
     };
 
-    const handleIconClick = (user) => {
-      // Lógica a ejecutar cuando se hace clic en el icono
-      console.log(`El id del usuario clickeado es : ${user.id}`);
-    };
-
     return (
       <>
         <ListGroup defaultActiveKey="false" variant="flush">
@@ -245,22 +238,14 @@ function OffCanvas() {
               <span className="ms-3">Crear Usuario</span>
             </div>
           </ListGroup.Item>
+
           <ListGroup.Item
             action
             onClick={() => handleItemClick("editarUsuario")}
           >
             <div className="d-flex align-items-center  justify-content-start ">
               <FaUserPen />
-              <span className="ms-3">Editar informacion de Usuario</span>
-            </div>
-          </ListGroup.Item>
-          <ListGroup.Item
-            action
-            onClick={() => handleItemClick("eliminarUsuario")}
-          >
-            <div className="d-flex align-items-center  justify-content-start ">
-              <FaUserXmark />
-              <span className="ms-3">Eliminar Usuario</span>
+              <span className="ms-3">Editar Usuario </span>
             </div>
           </ListGroup.Item>
         </ListGroup>
@@ -272,43 +257,23 @@ function OffCanvas() {
           <Modal.Body>
             <RegisterUser />
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal show={selectedModal === "editarUsuario"} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Editar Información de Usuario</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Contenido del modal para editar usuario.</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
+          <Modal.Footer></Modal.Footer>
         </Modal>
 
         <Modal
           centered
-          show={selectedModal === "eliminarUsuario"}
+          show={selectedModal === "editarUsuario"}
           onHide={handleClose}
           scrollable
           size="xl"
         >
           <Modal.Header closeButton>
-            <Modal.Title>Eliminar Usuario</Modal.Title>
+            <Modal.Title>Editar Usuario</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <DeleteUser users={allUsers} onIconClick={handleIconClick} />
+            <EditeUser users={allUsers} />
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );

@@ -3,13 +3,15 @@ import UserContext from "./UserContext";
 import { getUsersByState, allUser } from "../functionsApi/UserApi";
 
 const UserProvider = ({ children }) => {
-  const [radioValue, setRadioValue] = useState("5"); //deafult opcion de inactivos
+  const [radioValue, setRadioValue] = useState("1"); //deafult opcion de inactivos
 
   const [allUsers, setAllUsers] = useState([]); //1
   const [activeUsers, setActiveUsers] = useState([]); //2
   const [emergencyUsers, setEmergencyUsers] = useState([]); //3
   const [driverUsers, setDriverUsers] = useState([]); //4
   const [inactiveUsers, setInactiveUsers] = useState([]); //5
+
+  const [changue, setChangue] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +36,7 @@ const UserProvider = ({ children }) => {
           error
         );
       } finally {
+        console.log("Se a actualizado los datos :D");
         console.log("Todos los usuarios", allUsers);
         console.log("Usuarios inactivos: ", inactiveUsers);
         console.log("Usuarios activos: ", activeUsers);
@@ -45,7 +48,7 @@ const UserProvider = ({ children }) => {
     fetchData();
 
     return () => {};
-  }, []);
+  }, [changue]);
 
   return (
     <UserContext.Provider
@@ -57,6 +60,7 @@ const UserProvider = ({ children }) => {
         emergencyUsers,
         driverUsers,
         inactiveUsers,
+        setChangue,
       }}
     >
       {children}

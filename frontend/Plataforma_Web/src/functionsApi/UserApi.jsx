@@ -79,3 +79,34 @@ export const deleteUser = async (Id) => {
     throw error;
   }
 };
+
+export const updateUser = async (Id, updatedUserData) => {
+  try {
+    const response = await axios.patch(
+      `http://perrera.inf.udec.cl:1522/user/${Id}`,
+      updatedUserData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar usuario:", error);
+    throw error;
+  }
+};
+
+export const checkProtectedRoute = async () => {
+  try {
+    const response = await axios.get(
+      "http://perrera.inf.udec.cl:1522/user/protected-route",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error al verificar la ruta protegida:", error);
+    throw error;
+  }
+};

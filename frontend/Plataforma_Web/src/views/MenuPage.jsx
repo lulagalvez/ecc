@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext } from "react";
 import { Container, Row, Col, Pagination } from "react-bootstrap";
 import { motion } from "framer-motion";
 
@@ -63,16 +63,7 @@ const Menupage = () => {
         />
       </Col>
     ));
-  }, [
-    radioValue,
-    activeUsers,
-    emergencyUsers,
-    driverUsers,
-    inactiveUsers,
-    currentPage,
-    pageSize,
-    allUsers,
-  ]);
+  }, [radioValue, currentPage, totalPages, allUsers]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
