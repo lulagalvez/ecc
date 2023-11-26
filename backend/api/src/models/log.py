@@ -30,4 +30,7 @@ class Log(db.Model):
             'date_time': self.date_time,
             'user_id': self.user_id,
             'truck_patent': self.truck_patent,
+            'fuel_level': self.fuel_level,
+            'water_level': self.water_level,
+            'oil_level': self.oil_level,
         }
