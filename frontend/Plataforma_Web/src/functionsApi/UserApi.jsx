@@ -67,3 +67,15 @@ export const logoutUser = async () => {
     throw error;
   }
 };
+
+export const deleteUser = async (Id) => {
+  try {
+    const response = await axios.delete(
+      `http://perrera.inf.udec.cl:1522/user/${Id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    throw error;
+  }
+};

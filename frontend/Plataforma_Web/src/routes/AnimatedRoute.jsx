@@ -2,7 +2,7 @@ import { useRoutes, Outlet } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import LoginPage from "../views/LoginPage";
-import RegistroHoras from "../views/RegistroHoras";
+import RegistroHoras from "../views/HoursRecord";
 import MenuPage from "../views/MenuPage";
 import Support from "../views/Support";
 import HowWork from "../views/HowWork";

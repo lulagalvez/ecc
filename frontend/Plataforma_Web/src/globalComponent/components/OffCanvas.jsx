@@ -3,6 +3,7 @@ import "../styles/OffCanvas.css";
 import Logo from "../../image/shield-image.png";
 import UserContext from "../../UserContextApi/UserContext";
 import RegisterUser from "../../views/RegisterUser";
+import DeleteUser from "../components/DeleteUser";
 
 import {
   Button,
@@ -12,6 +13,7 @@ import {
   ToggleButton,
   ButtonGroup,
   Modal,
+  Alert,
 } from "react-bootstrap";
 
 import { useState } from "react";
@@ -36,6 +38,7 @@ import { FaUserPen } from "react-icons/fa6";
 import { FaUserXmark } from "react-icons/fa6";
 
 import { useContext } from "react";
+import { deleteUser } from "../../functionsApi/UserApi";
 
 function OffCanvas() {
   const [show, setShow] = useState(false);
@@ -215,6 +218,7 @@ function OffCanvas() {
 
   function GestionUsuarios() {
     const [selectedModal, setSelectedModal] = useState(null);
+    const { allUsers } = useContext(UserContext);
 
     const handleItemClick = (modalId) => {
       setSelectedModal(modalId);
@@ -222,6 +226,11 @@ function OffCanvas() {
 
     const handleClose = () => {
       setSelectedModal(null);
+    };
+
+    const handleIconClick = (user) => {
+      // Lógica a ejecutar cuando se hace clic en el icono
+      console.log(`El id del usuario clickeado es : ${user.id}`);
     };
 
     return (
@@ -282,11 +291,19 @@ function OffCanvas() {
           </Modal.Footer>
         </Modal>
 
-        <Modal show={selectedModal === "eliminarUsuario"} onHide={handleClose}>
+        <Modal
+          centered
+          show={selectedModal === "eliminarUsuario"}
+          onHide={handleClose}
+          scrollable
+          size="xl"
+        >
           <Modal.Header closeButton>
             <Modal.Title>Eliminar Usuario</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Contenido del modal para eliminar usuario.</Modal.Body>
+          <Modal.Body>
+            <DeleteUser users={allUsers} onIconClick={handleIconClick} />
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Cerrar
