@@ -15,7 +15,7 @@
   }
   
   .offcanvas-title {
-    font-size: 1.3rem; /* Tamaño del texto del título */
+    font-size: 1.0rem !important; /* Tamaño del texto del título */
     font-weight: bold; /* Peso de la fuente del título */
     color: #ffffffcc !important; /* Color del texto del título */
   }

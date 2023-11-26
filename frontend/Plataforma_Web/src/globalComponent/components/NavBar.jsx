@@ -141,9 +141,9 @@ const NavBar = () => {
       as={Container}
       variant="dark"
       fixed="top"
-      expand="lg"
       bg="dark"
       data-bs-theme="dark"
+      expand="md"
     >
       <Navbar.Brand className="ms-3">
         <OffCanvas></OffCanvas>
@@ -158,14 +158,11 @@ const NavBar = () => {
 
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto ms-4 menus">
-          <Nav.Link className="me-2" as={Link} to="/bitacoras">
-            Bitácora
+          <Nav.Link className="me-2" as={Link} to="/How-Work">
+            ¿Cómo funciona?
           </Nav.Link>
-          <Nav.Link className="me-2" as={Link} to="/registro-horas">
-            Historial
-          </Nav.Link>
-          <Nav.Link className="me-2" as={Link} to="/registrar-usuario">
-            Crear Usuario
+          <Nav.Link className="me-2" as={Link} to="/Support">
+            Soporte
           </Nav.Link>
         </Nav>
         <Nav className="me-auto">

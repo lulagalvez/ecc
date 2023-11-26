@@ -4,8 +4,8 @@ import { AnimatePresence } from "framer-motion";
 import LoginPage from "../views/LoginPage";
 import RegistroHoras from "../views/RegistroHoras";
 import MenuPage from "../views/MenuPage";
-import RegisterUser from "../views/RegisterUser";
-import LogPage from "../views/LogPage";
+import Support from "../views/Support";
+import HowWork from "../views/HowWork";
 
 function AnimatedRoutes() {
   //  Agregar rutas privadas , segun previa verificacion
@@ -17,7 +17,7 @@ function AnimatedRoutes() {
       element: <LoginPage />,
     },
     {
-      path: "/registro-horas",
+      path: "/registro-horas" /*falta esta por agregar*/,
       element: <RegistroHoras />,
     },
     {
@@ -25,12 +25,12 @@ function AnimatedRoutes() {
       element: <MenuPage />,
     },
     {
-      path: "/registrar-usuario",
-      element: <RegisterUser />,
+      path: "/How-Work",
+      element: <HowWork />,
     },
     {
-      path: "/bitacoras",
-      element: <LogPage />,
+      path: "/Support",
+      element: <Support />,
     },
   ]);
 
