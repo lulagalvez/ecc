@@ -202,19 +202,20 @@ def register():
     Returns:
         JSON response: Mensaje de éxito y código de estado HTTP.
     """
+    is_first_user = True
      # Verificar si hay usuarios en la base de datos
     if User.query.first():
         # Si hay usuarios, obtener la identidad del usuario autenticado
         user_id = get_jwt_identity()
         if not user_id:
             return jsonify({'error': 'Autenticación requerida'}), 401
+        
+        is_first_user = False
 
         current_user = User.query.get(user_id)
-
-        # Verificar si el usuario tiene el rol de "administrador"
         if current_user.role != "administrador":
             return jsonify({'error': 'No tienes permiso para realizar esta acción'}), 403
-
+        
 
     data = request.get_json()
     username = data.get('user_name')
@@ -229,7 +230,7 @@ def register():
                 email=data.get('email'),
                 first_name=data.get('first_name'),
                 last_name=data.get('last_name'), 
-                role=data.get('role')
+                role=data.get('role') if not is_first_user else "administrador"
             )
     user.set_password(password)
     db.session.add(user)
