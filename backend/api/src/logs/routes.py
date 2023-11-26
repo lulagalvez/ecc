@@ -11,7 +11,7 @@ import datetime
 def get_all_logs():
     isdescription = request.args.get('description')
     if isdescription:
-        logs = db.session.scalars(db.Select(Log)).filter(Log.description == "").all()
+        logs = db.session.scalars(db.Select(Log)).filter(Log.description != "").all()
     else:
         logs = db.session.scalars(db.Select(Log)).all()
     
