@@ -3,6 +3,22 @@ from src.extensions import db
 import bcrypt
 
 class User(db.Model):
+
+    """
+    Modelo de base de datos para usuarios.
+
+    Representa un usuario en el sistema, con atributos para autenticación y estado.
+
+    Attributes:
+        id (int): Identificador único del usuario.
+        first_name (str): Nombre del usuario.
+        last_name (str): Apellido del usuario.
+        role (str): Rol del usuario en el sistema.
+        user_name (str): Nombre de usuario para autenticación.
+        password (str): Contraseña hasheada del usuario.
+        email (str): Correo electrónico del usuario.
+        state (int): Estado actual del usuario (inactivo, activo, emergencia).
+    """
     STATES = {
     'Inactive': 0,
     'Active': 1,
@@ -23,10 +39,25 @@ class User(db.Model):
 
 
     def set_password(self, password):
+        """
+        Hashea la contraseña proporcionada y la almacena en el atributo de contraseña.
+
+        Args:
+            password (str): La contraseña en texto plano a hashear y almacenar.
+        """
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         self.password = hashed_password.decode('utf-8')
 
     def check_password(self, password):
+        """
+        Verifica si la contraseña proporcionada coincide con la contraseña hasheada almacenada.
+
+        Args:
+            password (str): La contraseña en texto plano a verificar.
+
+        Retorna:
+            bool: True si las contraseñas coinciden, False en caso contrario.
+        """
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     def __repr__(self):

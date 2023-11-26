@@ -3,12 +3,20 @@ from src.extensions import db
 
 from src.models.entrytime import EntryTime
 from src.models.user import User
-
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask import request, jsonify
 import datetime
 
 @bp.route('/', methods=['POST'])
+@jwt_required()
 def post_entrytime():
+    """
+    Crea un nuevo registro de entrytime para un usuario.
+
+    Requiere autenticación JWT y recibe el ID del usuario como parte de los datos
+    de la solicitud. Registra el momento actual como el tiempo de entrada del usuario.
+
+    """
     data = request.get_json()
     
     try:
@@ -33,6 +41,10 @@ def post_entrytime():
         }), 200
     
 def create_entrytime(user):
+    """
+    Crea un registro de entrytime para un usuario específico.
+
+    """
     entry_time = EntryTime(user_id=user.id, date_time=datetime.now())
     user.state = User.STATES['Active']
     
@@ -44,12 +56,20 @@ def create_entrytime(user):
 
 @bp.route('/all', methods=['GET'])
 def get_all_entrytimes():
+    """
+    Obtiene todos los registros de tiempos de entrada en la base de datos.
+
+    """
     entrytimes = db.session.query(EntryTime).order_by(EntryTime.date_time).all()
     
     return jsonify([entrytime.serialize() for entrytime in entrytimes]), 200
 
 @bp.route('/entrytimes_by_user/<int:user_id>', methods=['GET'])
 def get_entrytimes_by_user(user_id):
+    """
+    Obtiene los entrytime registrados para un usuario específico.
+
+    """
     user = User.query.get(user_id)
     if user is not None:
         entrytimes = user.entrytimes
@@ -68,9 +88,12 @@ def get_entrytimes_by_user(user_id):
         return jsonify({'message': 'User not found'}), 404
 
 
-# Obtener exittime de la entrytime entregada
 @bp.route('/exittime/<int:entrytime_id>', methods=['GET'])
 def get_exittime_by_entrytime(entrytime_id):
+    """
+    Obtiene exittime de la entrytime entregada
+
+    """
     entrytime = EntryTime.query.get(entrytime_id)
     
     if entrytime is not None:
@@ -98,6 +121,10 @@ from src.extensions import db
 
 @bp.route('/summary/<int:user_id>/<int:num_days>', methods=['GET'])
 def entrytimes_summary(user_id, num_days):
+    """
+    Proporciona un resumen de los tiempos de entrada y salida para un usuario en un período de tiempo.
+
+    """
     user = User.query.get(user_id)
     
     if user is not None:
@@ -110,29 +137,40 @@ def entrytimes_summary(user_id, num_days):
             .all()
 
         entrytime_list = []
-        total_hours = 0
+        total_seconds = 0
         entry_count = 0
+
+        # Inside the entrytimes_summary function
 
         for entrytime in entrytimes:
             if entrytime.exit_time:
+                exit_date_time = entrytime.exit_time.date_time.strftime('%Y-%m-%d %H:%M:%S')
                 time_difference = entrytime.exit_time.date_time - entrytime.date_time
-                total_hours += time_difference.total_seconds() / 3600
+                total_seconds += time_difference.total_seconds()
                 entry_count += 1
+            else:
+                exit_date_time = ''  # If there's no exit time, set the string as empty
 
             entrytime_list.append({
                 'id': entrytime.id,
-                'user_id': entrytime.user_id,
-                'date_time': entrytime.date_time.strftime('%Y-%m-%d %H:%M:%S')
+                'entry_date_time': entrytime.date_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'exit_date_time': exit_date_time  # Use the conditional string for exit time
             })
+
+
+        time_delta = timedelta(seconds=total_seconds)
+        base_date = datetime(1900, 1, 1)
+        result_datetime = base_date + time_delta
+        formatted_time = result_datetime.strftime("%H:%M:%S")
 
         summary = {
             'user_id': user_id,
             'entry_count': entry_count,
-            'total_hours_worked': total_hours,
-            'entrytimes': entrytime_list
+            'total_hours_worked': formatted_time,
+            'entries': entrytime_list
         }
 
         return jsonify(summary), 200
     else:
-        return jsonify({'message': 'User not found'}), 404
+        return jsonify({'message': 'Usuario no encontrado'}), 404
 

@@ -1,0 +1,33 @@
+.col-1
+{
+background-color: blanchedalmond;
+}
+
+.pagina
+{
+    background-color: #333 ;
+
+}
+
+.col-2
+{
+    background-color: #333 !important; /* O cualquier otro valor de gris oscuro que prefieras */
+    padding: 6vh 3vh 2vh 3vh; /* Relleno: arriba, derecha, abajo, izquierda */
+}
+
+.col-3
+{
+    background-color: #701515 !important; /* O cualquier otro valor de gris oscuro que prefieras */
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.col-4
+{
+    
+    background-color: #1c1c1db7 ;
+}
+
+  
+

@@ -1,0 +1,26 @@
+/* styles/OffCanvas.css */
+
+.custom-offcanvas {
+    background-color: #333; /* Color de fondo general */
+    color: #fff; /* Color de texto general */
+  }
+  
+  .offcanvas-header {
+    background-color: #333; /* Color de fondo del encabezado */
+  }
+  
+  .offcanvas-logo {
+    width: 5vh;
+    height: auto;
+  }
+  
+  .offcanvas-title {
+    font-size: 1.3rem; /* Tamaño del texto del título */
+    font-weight: bold; /* Peso de la fuente del título */
+    color: #ffffffcc !important; /* Color del texto del título */
+  }
+  
+  .offcanvas-body {
+    /* Puedes agregar estilos adicionales para el cuerpo según tus necesidades */
+  }
+  

@@ -3,6 +3,19 @@ from src.models.exittime import ExitTime
 import datetime
 
 class EntryTime(db.Model):
+
+    """
+    Modelo de base de datos para tiempos de entrada de usuarios.
+
+    Representa el momento en que un usuario registra una entrada en el sistema.
+    Se asocia con un usuario específico y puede tener un tiempo de salida relacionado.
+
+    Attributes:
+        id (int): Identificador único para el registro de tiempo de entrada.
+        user_id (int): Identificador del usuario asociado a este tiempo de entrada.
+        date_time (datetime): La fecha y hora exactas del registro de entrada.
+        exit_time (ExitTime): Tiempo de salida asociado a este tiempo de entrada.
+    """
     __tablename__ = 'entrytime'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -14,6 +27,11 @@ class EntryTime(db.Model):
         return f'<EntryTime {self.id}>'
     
     def serialize(self):
+
+        """
+        Serializa la información del tiempo de entrada para facilitar la respuesta JSON.
+        
+        """
         return {
             'id': self.id,
             'user_id': self.user_id,
