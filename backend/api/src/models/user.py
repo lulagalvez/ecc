@@ -35,10 +35,8 @@ class User(db.Model):
 
     email = db.Column(db.String(50), nullable=False)
     state = db.Column(db.Integer, nullable=False, default=STATES['Inactive'])
-    #TODO crear llamada para activo de activo a emergencia y viceversa
+    image = db.Column(db.String(150), nullable=True)
 
-
-    
 
     def set_password(self, password):
         """
