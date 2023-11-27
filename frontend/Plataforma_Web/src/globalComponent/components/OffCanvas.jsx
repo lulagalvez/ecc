@@ -56,7 +56,7 @@ function OffCanvas() {
     if (isNotInMenuPage && radioValue !== "1") {
       navigate("/menupage", { replace: true });
     }
-  }, [radioValue, location.pathname, navigate]);
+  }, [radioValue, location.pathname]);
 
   function AccordionSection({ title, icon, eventKey, content }) {
     return (

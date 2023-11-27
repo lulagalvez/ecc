@@ -7,7 +7,7 @@ import "../styles/Cards.css";
 
 function CardExample() {
   return (
-    <div className="d-flex justify-content-around">
+    <div className="d-flex ">
       <Card
         border="dark"
         bg="dark"
@@ -15,7 +15,11 @@ function CardExample() {
         style={{ width: "18rem" }}
         text="white"
       >
-        <Card.Img variant="top" src={ImagenHolder} />
+        <Card.Img
+          variant="top"
+          src={ImagenHolder}
+          style={{ width: "100%", height: "45%" }}
+        />
         <Card.Body>
           <Placeholder as={Card.Title} className="my-3 py-2" animation="glow">
             <Placeholder xs={10} />
@@ -28,9 +32,6 @@ function CardExample() {
             <Placeholder xs={6} />
           </Placeholder>
           <div className="mb-2 custom-divider border-top"></div>
-          <Placeholder as={Card.Text} className="mb-2" animation="glow">
-            <Placeholder xs={6} />
-          </Placeholder>
         </Card.Body>
       </Card>
     </div>

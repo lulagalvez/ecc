@@ -55,7 +55,7 @@ const Menupage = () => {
     setTotalPages(calculateTotalPages(usersToRender));
 
     const renderCards = currentUsers.map((user) => (
-      <Col key={user.id} xs={12} md={4} lg={2} className="my-4">
+      <Col key={user.id} xs={12} md={4} lg={2} className="my-3">
         <Cards
           state={user.state}
           role={user.role}
@@ -75,7 +75,7 @@ const Menupage = () => {
 
     for (let i = 0; i < remainingPlaceholderCount; i++) {
       renderCards.push(
-        <Col key={`placeholder-${i}`} xs={12} md={4} lg={2} className="my-4">
+        <Col key={`placeholder-${i}`} xs={12} md={4} lg={2} className="my-3">
           <CardExample />
         </Col>
       );
