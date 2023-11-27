@@ -18,7 +18,7 @@ def get_all_logs():
         logs = db.session.scalars(db.Select(Log)).all()
     
     
-    return jsonify({'logs': [log.serialize() for log in logs]}), 200
+    return jsonify([log.serialize() for log in logs]), 200
 
 #usuario
 @bp.route('/<int:log_id>', methods=['GET'])

@@ -103,10 +103,10 @@ def test_get_logs_with_description(test_client, create_data):
 
     response = test_client.get('/logs?description=0')
     assert response.status_code == 200
-    assert len(response.json['logs']) == 4
+    assert len(response.get_json()) == 4
     
     response = test_client.get('/logs') 
     assert response.status_code == 200
-    assert len(response.json['logs']) == 5
+    assert len(response.get_json()) == 5
 
     
