@@ -36,6 +36,10 @@ import { CgUnavailable } from "react-icons/cg";
 import { FaUserPlus } from "react-icons/fa6";
 import { FaUserPen } from "react-icons/fa6";
 
+import { BsFillEnvelopePlusFill } from "react-icons/bs";
+import { BsFillEnvelopePaperFill } from "react-icons/bs";
+import { BsFillEnvelopeXFill } from "react-icons/bs";
+
 import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -56,12 +60,12 @@ function OffCanvas() {
     if (isNotInMenuPage && radioValue !== "1") {
       navigate("/menupage", { replace: true });
     }
-  }, [radioValue, location.pathname]);
+  }, [radioValue, location.pathname, navigate]);
 
   function AccordionSection({ title, icon, eventKey, content }) {
     return (
       <Accordion.Item eventKey={eventKey}>
-        <Accordion.Header>
+        <Accordion.Header bsPrefix="custom-accordion-header">
           {icon && <span className="me-2">{icon}</span>}
           {title}
         </Accordion.Header>
@@ -200,7 +204,7 @@ function OffCanvas() {
             <GiPoliceCar className="mx-2" />
             Personal en conduccion
           </span>
-          <Badge bg="Warning" text="dark">
+          <Badge bg="warning" text="dark">
             {driverUsers.length}
           </Badge>
         </ListGroup.Item>
@@ -286,6 +290,7 @@ function OffCanvas() {
 
   function Registros() {
     const registroClick = () => {
+      setRadioValue("1");
       navigate("/registro-horas", { replace: true });
     };
 
@@ -302,6 +307,71 @@ function OffCanvas() {
       </>
     );
   }
+
+  function Bitacoras() {
+    const [selectedModal, setSelectedModal] = useState(null);
+
+    const handleItemClick = (modalId) => {
+      setSelectedModal(modalId);
+    };
+
+    const handleClose = () => {
+      setSelectedModal(null);
+    };
+
+    const bitacorasClickRegistro = () => {
+      setRadioValue("1");
+      navigate("/record-binnacle", { replace: true });
+    };
+    return (
+      <>
+        <ListGroup defaultActiveKey="false" variant="flush">
+          <ListGroup.Item
+            action
+            onClick={() => handleItemClick("crearbitacora")}
+          >
+            <div className="d-flex align-items-center justify-content-start">
+              <BsFillEnvelopePlusFill />
+              <span className="ms-3">Crear Bitacora</span>
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            onClick={() => handleItemClick("editarBitacora")}
+          >
+            <div className="d-flex align-items-center justify-content-start">
+              <BsFillEnvelopePaperFill />
+              <span className="ms-3">Editar Bitacora</span>
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item action onClick={bitacorasClickRegistro}>
+            <div className="d-flex align-items-center justify-content-start">
+              <BsFillEnvelopeXFill />
+              <span className="ms-3">Registros de Bitacoras</span>
+            </div>
+          </ListGroup.Item>
+        </ListGroup>
+
+        <Modal show={selectedModal === "crearbitacora"} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Crear Bitacora</Modal.Title>
+          </Modal.Header>
+          <Modal.Body></Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
+
+        <Modal show={selectedModal === "editarBitacora"} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Editar Bitacora</Modal.Title>
+          </Modal.Header>
+          <Modal.Body></Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+
+  const defaultActiveKeys = ["0", "2", "3"]; // Puedes ajustar las claves según tus necesidades
 
   return (
     <>
@@ -330,7 +400,7 @@ function OffCanvas() {
         </Offcanvas.Header>
 
         <Offcanvas.Body className="offcanvas-body">
-          <Accordion defaultActiveKey="0" flush alwaysOpen>
+          <Accordion defaultActiveKey={defaultActiveKeys} flush alwaysOpen>
             <AccordionSection
               title="Filtrado de Usuarios"
               icon={<AiOutlineUserSwitch />}
@@ -359,7 +429,7 @@ function OffCanvas() {
               title="Bitacoras"
               icon={<FaRegFileArchive />}
               eventKey={"4"}
-              content=""
+              content={<Bitacoras />}
             />
             <AccordionSection
               title="Ajustes"

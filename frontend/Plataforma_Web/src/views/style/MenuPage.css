@@ -1,20 +1,22 @@
+
+
+
 .col-1
 {
-background-color: blanchedalmond;
-}
-
-.pagina
-{
-    background-color: #333 ;
-
+background-color: blanchedalmond !important;
 }
 
 .col-2
 {
-    background-color: #333 !important; /* O cualquier otro valor de gris oscuro que prefieras */
+    background-color: #352c2c !important; /* O cualquier otro valor de gris oscuro que prefieras */
     padding: 6vh 3vh 2vh 3vh; /* Relleno: arriba, derecha, abajo, izquierda */
 }
 
+.col-53
+{
+    background-color: #292323;
+    border-radius: 1.5%;
+}
 .col-3
 {
     background-color: #701515 !important; /* O cualquier otro valor de gris oscuro que prefieras */
@@ -29,5 +31,6 @@ background-color: blanchedalmond;
     background-color: #1c1c1db7 ;
 }
 
+/* flex-column align-items-center justify-content-center*/
   
 

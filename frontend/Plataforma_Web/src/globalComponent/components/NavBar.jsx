@@ -136,28 +136,16 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar
-      fluid
-      as={Container}
-      variant="dark"
-      fixed="top"
-      bg="dark"
-      data-bs-theme="dark"
-      expand="md"
-    >
+    <Navbar variant="dark" fixed="top" bg="dark" data-bs-theme="dark" expand>
       <Navbar.Brand className="ms-3">
         <OffCanvas></OffCanvas>
-        <Image
-          src={Logo}
-          alt="Logo"
-          style={{ maxWidth: "100%", maxHeight: "%100%" }}
-          className="logo-baner ms-5 me-2"
-        ></Image>
+        <Image src={Logo} alt="Logo" className="logo-baner ms-5 "></Image>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto ms-4 menus">
+          <Nav.Link as={Link} to="/menupage"></Nav.Link>
           <Nav.Link className="me-2" as={Link} to="/How-Work">
             ¿Cómo funciona?
           </Nav.Link>

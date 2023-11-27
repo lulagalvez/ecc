@@ -1,5 +1,12 @@
 import React, { useState, useMemo, useContext, useEffect } from "react";
-import { Container, Row, Col, Pagination, Placeholder } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Pagination,
+  Placeholder,
+  Navbar,
+} from "react-bootstrap";
 import { motion } from "framer-motion";
 
 import NavBar from "../globalComponent/components/NavBar.jsx";
@@ -55,7 +62,10 @@ const Menupage = () => {
     setTotalPages(calculateTotalPages(usersToRender));
 
     const renderCards = currentUsers.map((user) => (
-      <Col key={user.id} xs={12} md={4} lg={2} className="my-3">
+      <Col
+        key={user.id}
+        className="my-4 d-flex align-items-center justify-content-center"
+      >
         <Cards
           state={user.state}
           role={user.role}
@@ -75,7 +85,10 @@ const Menupage = () => {
 
     for (let i = 0; i < remainingPlaceholderCount; i++) {
       renderCards.push(
-        <Col key={`placeholder-${i}`} xs={12} md={4} lg={2} className="my-3">
+        <Col
+          key={`placeholder-${i}`}
+          className="my-4 d-flex align-items-center justify-content-center"
+        >
           <CardExample />
         </Col>
       );
@@ -96,17 +109,16 @@ const Menupage = () => {
       transition={{ duration: 0.3 }}
     >
       <Container fluid className="pagina">
-        <Row className="d-flex">
-          <Col xs={12} md={12} className="p-0 col-1 my-5">
+        <Row className="d-flex flex-column">
+          <Col xs={12} md={12} className="col-1 my-5">
             <NavBar />
           </Col>
-
           <Col
             xs={12}
             md={12}
-            className="col-2 d-flex flex-column align-items-center justify-content-center"
+            className="col-2 p-4  d-flex  flex-column align-items-center justify-content-center"
           >
-            <Row className="mb-3">{memoizedRenderCards}</Row>
+            <Row className="mb-3 col-53">{memoizedRenderCards}</Row>
             <Pagination size="md">
               {[...Array(totalPages)].map((_, index) => (
                 <Pagination.Item
@@ -119,7 +131,6 @@ const Menupage = () => {
               ))}
             </Pagination>
           </Col>
-          <Col xs={12} md={12} className="p-0 col-3"></Col>
         </Row>
       </Container>
     </motion.div>
