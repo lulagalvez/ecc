@@ -93,10 +93,20 @@ def test_get_log(test_client, create_data):
     assert response.status_code == 200
     
 def test_get_logs_with_description(test_client, create_data):
-    response = test_client.post('/logs', json=log_data, content_type='application/json')
-    assert response.status_code == 201
+    no_description_log = log_data.copy()
+    no_description_log['description'] = ''
+    
 
-    response = test_client.get('/logs?description')
+    response = test_client.post('/logs', json=no_description_log, content_type='application/json')
+    assert response.status_code == 201
+    
+
+    response = test_client.get('/logs?description=0')
     assert response.status_code == 200
+    assert len(response.json['logs']) == 4
+    
+    response = test_client.get('/logs') 
+    assert response.status_code == 200
+    assert len(response.json['logs']) == 5
 
     
