@@ -1,11 +1,14 @@
 .page{
     display: flex;
 }
-
+.download-button-container {
+  text-align: right;
+  margin-bottom: 10px; /* Ajusta el margen superior según sea necesario */
+}
 /* Estilo para el contenedor de la tabla */
 /* Estilo para la tabla */
 .table-container {
-  margin: 10px auto; /* Margen superior e inferior establecido a 0 y margen izquierdo y derecho automático para centrar la tabla */
+  margin: auto auto; /* Margen superior e inferior establecido a 0 y margen izquierdo y derecho automático para centrar la tabla */
   width: 90%; /* Ancho del 90% para ocupar el 90% del ancho de la página */
 }
 
@@ -39,6 +42,7 @@
   border-radius: 0 10px 10px 0; /* Restablece el borde circular solo en las esquinas derechas de la última casilla */
 }
 
+
 .filter-button-container {
   display: flex;
   justify-content: flex-end; /* Alinea al extremo derecho */
@@ -56,12 +60,4 @@
 padding-inline:40%;
 }
 
-.fila-3 {
- display: flex;
- justify-content: center;
- align-items: right;
-}
 
-.margin {
-  padding-top:5%;
-}

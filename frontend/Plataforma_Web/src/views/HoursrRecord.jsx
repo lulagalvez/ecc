@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { AiFillEdit } from "react-icons/ai";
 import { motion } from "framer-motion";
+import { CSVLink } from "react-csv";
 import NavBar from "../globalComponent/components/NavBar";
 import "./style/RegistroHoras.css";
 import "./style/PaginationList.css";
@@ -10,6 +11,7 @@ const HoursrRecord = () => {
   const [exittimes, setExittimes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20); // Number of items to display per page
+
 
   useEffect(() => {
     fetchExittimes();
@@ -27,6 +29,7 @@ const HoursrRecord = () => {
     } catch (error) {
       console.error("Error:", error);
     }
+
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -35,6 +38,19 @@ const HoursrRecord = () => {
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+  const transformDataToCSV = () => {
+    const csvData = [
+      ["#", "Bombero", "Entrada", "Salida", "Tiempo"],
+      ...exittimes.map((exittime, index) => [
+        indexOfFirstItem + index + 1,
+        `${exittime.first_name} ${exittime.last_name}`,
+        exittime.entry_time_date_time,
+        exittime.exit_time_date_time,
+        exittime.time_spent
+      ])
+    ];
+    return csvData;
   };
 
   return (
@@ -57,9 +73,8 @@ const HoursrRecord = () => {
                   .map((_, index) => (
                     <li
                       key={index}
-                      className={`page-item ${
-                        currentPage === index + 1 ? "active" : ""
-                      }`}
+                      className={`page-item ${currentPage === index + 1 ? "active" : ""
+                        }`}
                     >
                       <button
                         onClick={() => paginate(index + 1)}
@@ -73,8 +88,17 @@ const HoursrRecord = () => {
             )}
           </div>
         </div>
-
         <div className="table-container">
+          <div className="download-button-container">
+            <CSVLink
+              data={transformDataToCSV()}
+              filename={"registro_horas.csv"}
+              className="btn btn-success"
+              separator={";"}
+            >
+              Descargar CSV
+            </CSVLink>
+          </div>
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -119,9 +143,8 @@ const HoursrRecord = () => {
                   .map((_, index) => (
                     <li
                       key={index}
-                      className={`page-item ${
-                        currentPage === index + 1 ? "active" : ""
-                      }`}
+                      className={`page-item ${currentPage === index + 1 ? "active" : ""
+                        }`}
                     >
                       <button
                         onClick={() => paginate(index + 1)}
