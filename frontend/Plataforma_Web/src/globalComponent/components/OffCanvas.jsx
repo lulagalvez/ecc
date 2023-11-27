@@ -259,12 +259,17 @@ function OffCanvas() {
           </ListGroup.Item>
         </ListGroup>
 
-        <Modal show={selectedModal === "crearUsuario"} onHide={handleClose}>
-          <Modal.Header closeButton>
+        <Modal
+          show={selectedModal === "crearUsuario"}
+          size="md"
+          centered
+          scrollable
+        >
+          <Modal.Header>
             <Modal.Title>Crear Usuario</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegisterUser />
+            <RegisterUser handleClose={handleClose} />
           </Modal.Body>
           <Modal.Footer></Modal.Footer>
         </Modal>

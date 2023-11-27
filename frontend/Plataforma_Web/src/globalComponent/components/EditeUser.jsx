@@ -1,8 +1,7 @@
 import { Table, Button, Modal, Form } from "react-bootstrap";
 import { MdDeleteForever } from "react-icons/md";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { deleteUser } from "../../functionsApi/UserApi";
-import { useContext } from "react";
 import { FcDataConfiguration } from "react-icons/fc";
 import { updateUser } from "../../functionsApi/UserApi";
 
@@ -22,7 +21,7 @@ function UserTable({ users }) {
 
   const [userEdite, setUserToEdite] = useState(null);
 
-  const { setChangue } = useContext(UserContext);
+  const { actualizarDatos } = useContext(UserContext);
 
   const handleShowEditeModal = (user) => {
     setUserToEdite(user);
@@ -68,7 +67,7 @@ function UserTable({ users }) {
       // Imprime por consola el mensaje de éxito
       console.log(`Usuario ${userEdite.user_name} actualizado exitosamente`);
 
-      setChangue(true);
+      actualizarDatos();
 
       handleCloseEditeModal();
     } catch (error) {
@@ -80,7 +79,7 @@ function UserTable({ users }) {
     try {
       await deleteUser(userEdite.id);
       console.log(`Usuario ${userEdite.user_name} eliminado exitosamente`);
-      setChangue((prevValue) => !prevValue);
+      actualizarDatos();
     } catch (error) {
       console.error("Error al eliminar usuario:", error);
       // Puedes manejar el error según tus necesidades

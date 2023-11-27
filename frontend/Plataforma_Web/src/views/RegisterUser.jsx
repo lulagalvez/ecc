@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { useContext } from "react";
+
+import UserContext from "../UserContextApi/UserContext";
 
 /**
  * Componente que representa el formulario de registro de usuarios.
  * @returns {JSX.Element} Elemento JSX del componente RegisterUser.
  */
-function RegisterUser() {
+function RegisterUser({ handleClose }) {
+  const { actualizarDatos } = useContext(UserContext);
+
   // Obtiene el token de acceso almacenado en el localStorage
   const token = localStorage.getItem("access_token");
 
@@ -50,6 +55,8 @@ function RegisterUser() {
       // Verifica el código de estado de la respuesta
       if (response.status === 201) {
         console.log("Usuario registrado exitosamente!");
+        handleClose();
+        actualizarDatos();
       } else {
         // Muestra un mensaje de error si el registro falla
         const data = await response.json();

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserContext from "./UserContext";
 import { getUsersByState, allUser } from "../functionsApi/UserApi";
+import { GiChaingun } from "react-icons/gi";
 
 /**
  * Componente proveedor que utiliza el contexto de usuario para proporcionar datos de usuarios a componentes secundarios.
@@ -18,8 +19,6 @@ const UserProvider = ({ children }) => {
   const [emergencyUsers, setEmergencyUsers] = useState([]); // Usuarios en emergencia (3)
   const [driverUsers, setDriverUsers] = useState([]); // Usuarios conductores (4)
   const [inactiveUsers, setInactiveUsers] = useState([]); // Usuarios inactivos (5)
-
-  // Estado para forzar la recarga de datos
   const [change, setChange] = useState(false);
 
   // Efecto que se ejecuta al montar y desmontar el componente
@@ -69,12 +68,17 @@ const UserProvider = ({ children }) => {
     return () => {};
   }, [change]); // Se ejecuta cuando 'change' cambia
 
+  const actualizarDatos = () => {
+    setChange((change) => !change);
+    console.log(change);
+  };
+
   return (
     <UserContext.Provider
       value={{
         radioValue,
         setRadioValue,
-        setChange,
+        actualizarDatos,
         allUsers,
         activeUsers,
         emergencyUsers,
