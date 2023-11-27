@@ -248,15 +248,19 @@ def protected_route():
 @bp.route('/<int:user_id>/emergency', methods=['PUT'])
 def change_emergency_state(user_id):
     user = db.get_or_404(User, user_id)    
-    current_state = user.state
     
+    current_state = user.state
+
     if current_state == User.STATES['Inactive']:
         return jsonify({'message': 'el usuario se encuentra inactivo'}), 200
     
-    user.state = User.STATES['Emergency'] if user.state == User.STATES['Active'] else User.STATES['ACTIVE']
-    db.commit()
+    user.state = User.STATES['Emergency'] if current_state == User.STATES['Active'] else User.STATES['Active']
+    db.session.commit()
 
-    return jsonify({'message': 'Se cambio el estado correctamente'}), 200
+    return jsonify({'message': 'Se cambio el estado correctamente',
+                    'user':{
+                        'id': user.id,
+                        'state': user.state}}), 200
 
 
 

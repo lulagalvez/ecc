@@ -45,7 +45,7 @@ def post_log():
                 if level_value not in Log.LEVELS:
                     return jsonify({'error': f'El {level_name} debe estar en {Log.LEVELS}'}), 400
         
-        new_log = Log(data)
+        new_log = Log(**data)
 
         db.session.add(new_log)
         db.session.commit()

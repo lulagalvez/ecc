@@ -83,3 +83,24 @@ def truck_fixture(test_client):
     db.session.commit()
 
     yield test_truck
+    
+@pytest.fixture(scope='function')
+def user_active(test_client):
+    test_user = User(
+        id = 999,
+        first_name='Sebastian', 
+        last_name='Sanhueza', 
+        role='firefighter', 
+        user_name='sebas', 
+        password='1234',
+        email = 'seba@sanhue.cl'
+        )
+    test_user.state = User.STATES['Active']
+    
+    db.session.add(test_user) 
+    db.session.commit()
+    
+    yield test_user
+    
+    db.session.delete(test_user)
+    db.session.commit()

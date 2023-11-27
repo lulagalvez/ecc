@@ -24,8 +24,6 @@ class Log(db.Model):
     oil_level = db.Column(db.Float, nullable=False)
     
     def __init__(self, **kwargs):
-        locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
-        
         self.type = kwargs.get('type', None)
         self.description = kwargs.get('description', None)
         self.date_time = datetime.datetime.now()
