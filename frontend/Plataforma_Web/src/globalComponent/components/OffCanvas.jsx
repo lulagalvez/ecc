@@ -13,10 +13,9 @@ import {
   ToggleButton,
   ButtonGroup,
   Modal,
-  Alert,
 } from "react-bootstrap";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdMenu } from "react-icons/md";
 import { Image } from "react-bootstrap";
 import { Accordion } from "react-bootstrap";
@@ -24,6 +23,7 @@ import { Accordion } from "react-bootstrap";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { FcStatistics } from "react-icons/fc";
 import { PiUsersFourLight } from "react-icons/pi";
+import { LuFiles } from "react-icons/lu";
 import { FaRegFileArchive } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
 
@@ -37,11 +37,26 @@ import { FaUserPlus } from "react-icons/fa6";
 import { FaUserPen } from "react-icons/fa6";
 
 import { useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function OffCanvas() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const { radioValue, setRadioValue } = useContext(UserContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    /* revisar despues para verificar el renderizado excesivo de offcanvas*/
+    const isNotInMenuPage = !location.pathname.includes("/menupage");
+
+    if (isNotInMenuPage && radioValue !== "1") {
+      navigate("/menupage", { replace: true });
+    }
+  }, [radioValue, location.pathname, navigate]);
 
   function AccordionSection({ title, icon, eventKey, content }) {
     return (
@@ -56,8 +71,6 @@ function OffCanvas() {
   }
 
   function FiltradoDeUsuarios() {
-    const { radioValue, setRadioValue } = useContext(UserContext);
-
     const radios = [
       {
         name: (
@@ -156,9 +169,7 @@ function OffCanvas() {
             {" "}
             <TiThSmallOutline className="mx-2" /> Personal registrado
           </span>
-          <Badge bg="dark" pill>
-            {allUsers.length}
-          </Badge>
+          <Badge bg="dark">{allUsers.length}</Badge>
         </ListGroup.Item>
         <ListGroup.Item
           as="li"
@@ -168,9 +179,7 @@ function OffCanvas() {
           <span>
             <MdOutlineEventAvailable className="mx-2" /> Personal en activo
           </span>
-          <Badge bg="dark" pill>
-            {activeUsers.length}
-          </Badge>
+          <Badge bg="success">{activeUsers.length}</Badge>
         </ListGroup.Item>
         <ListGroup.Item
           as="li"
@@ -180,9 +189,7 @@ function OffCanvas() {
           <span>
             <MdOutlineEmergencyShare className="mx-2" /> Personal en emergencia
           </span>
-          <Badge bg="dark" pill>
-            {emergencyUsers.length}
-          </Badge>
+          <Badge bg="danger">{emergencyUsers.length}</Badge>
         </ListGroup.Item>
         <ListGroup.Item
           as="li"
@@ -193,7 +200,7 @@ function OffCanvas() {
             <GiPoliceCar className="mx-2" />
             Personal en conduccion
           </span>
-          <Badge bg="dark" pill>
+          <Badge bg="Warning" text="dark">
             {driverUsers.length}
           </Badge>
         </ListGroup.Item>
@@ -206,9 +213,7 @@ function OffCanvas() {
             <CgUnavailable className="mx-2" />
             Personal en ausente
           </span>
-          <Badge bg="dark" pill>
-            {inactiveUsers.length}
-          </Badge>
+          <Badge bg="secondary">{inactiveUsers.length}</Badge>
         </ListGroup.Item>
       </ListGroup>
     );
@@ -279,6 +284,25 @@ function OffCanvas() {
     );
   }
 
+  function Registros() {
+    const registroClick = () => {
+      navigate("/registro-horas", { replace: true });
+    };
+
+    return (
+      <>
+        <ListGroup defaultActiveKey="false" variant="flush">
+          <ListGroup.Item action onClick={registroClick}>
+            <div className="d-flex align-items-center justify-content-start">
+              <FaUserPlus />
+              <span className="ms-3">Registros de personal</span>
+            </div>
+          </ListGroup.Item>
+        </ListGroup>
+      </>
+    );
+  }
+
   return (
     <>
       <Button variant="dark" onClick={handleShow} size="lg">
@@ -326,15 +350,21 @@ function OffCanvas() {
               content={<GestionUsuarios />}
             />
             <AccordionSection
+              title="Registros"
+              icon={<LuFiles />}
+              eventKey={"3"}
+              content={<Registros />}
+            />
+            <AccordionSection
               title="Bitacoras"
               icon={<FaRegFileArchive />}
-              eventKey={"3"}
+              eventKey={"4"}
               content=""
             />
             <AccordionSection
               title="Ajustes"
               icon={<CiSettings />}
-              eventKey={"4"}
+              eventKey={"5"}
               content=""
             />
           </Accordion>

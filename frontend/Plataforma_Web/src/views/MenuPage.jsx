@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useContext } from "react";
-import { Container, Row, Col, Pagination } from "react-bootstrap";
+import React, { useState, useMemo, useContext, useEffect } from "react";
+import { Container, Row, Col, Pagination, Placeholder } from "react-bootstrap";
 import { motion } from "framer-motion";
 
 import NavBar from "../globalComponent/components/NavBar.jsx";
 import Cards from "../globalComponent/components/Cards.jsx";
 import UserContext from "../UserContextApi/UserContext.jsx";
+import CardExample from "../globalComponent/components/CardExample.jsx";
 import "./style/MenuPage.css";
 
 const Menupage = () => {
@@ -53,7 +54,7 @@ const Menupage = () => {
 
     setTotalPages(calculateTotalPages(usersToRender));
 
-    return currentUsers.map((user) => (
+    const renderCards = currentUsers.map((user) => (
       <Col key={user.id} xs={12} md={4} lg={2} className="my-4">
         <Cards
           state={user.state}
@@ -63,6 +64,24 @@ const Menupage = () => {
         />
       </Col>
     ));
+
+    // Llenar el resto de las posiciones con Placeholder si no hay suficientes tarjetas
+    const remainingPlaceholderCount = pageSize - renderCards.length;
+
+    console.log(
+      "La cantidad de cartas faltantes son :",
+      remainingPlaceholderCount
+    );
+
+    for (let i = 0; i < remainingPlaceholderCount; i++) {
+      renderCards.push(
+        <Col key={`placeholder-${i}`} xs={12} md={4} lg={2} className="my-4">
+          <CardExample />
+        </Col>
+      );
+    }
+
+    return renderCards;
   }, [radioValue, currentPage, totalPages, allUsers]);
 
   const handlePageChange = (pageNumber) => {

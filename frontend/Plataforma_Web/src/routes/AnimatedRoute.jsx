@@ -4,7 +4,7 @@ import { checkProtectedRoute } from "../functionsApi/UserApi";
 import { useEffect } from "react";
 
 import LoginPage from "../views/LoginPage";
-import RegistroHoras from "../views/HoursRecord";
+import HoursrRecord from "../views/HoursrRecord";
 import MenuPage from "../views/MenuPage";
 import Support from "../views/Support";
 import HowWork from "../views/HowWork";
@@ -40,13 +40,22 @@ function AnimatedRoutes() {
         <LoginPage />
       ),
     },
-    { path: "/registro-horas", element: <RegistroHoras /> },
+    {
+      path: "/registro-horas",
+      element: isAuthenticated ? <HoursrRecord /> : <Navigate to="/" />,
+    },
     {
       path: "/menupage",
       element: isAuthenticated ? <MenuPage /> : <Navigate to="/" />,
     },
-    { path: "/How-Work", element: <HowWork /> },
-    { path: "/Support", element: <Support /> },
+    {
+      path: "/How-Work",
+      element: isAuthenticated ? <HowWork /> : <Navigate to="/" />,
+    },
+    {
+      path: "/Support",
+      element: isAuthenticated ? <Support /> : <Navigate to="/" />,
+    },
   ]);
 
   return (
