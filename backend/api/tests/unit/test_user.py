@@ -32,3 +32,19 @@ def test_role_assignment():
     )
     assert user.role == 'Admin'
 
+def test_change_state(test_client, user_active):
+    response = test_client.put(f'/user/{user_active.id}/emergency')
+    data = response.get_json()
+    assert response.status_code == 200
+    print(data)
+    assert data['user']['state'] == 2
+    
+    response = test_client.put(f'/user/{user_active.id}/emergency')
+    data = response.get_json()
+    
+    assert response.status_code == 200
+    assert data['user']['state'] == 1
+    
+    
+    
+    

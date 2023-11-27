@@ -6,26 +6,28 @@ from src.models.truck import Truck
 from src.models.user import User
 import datetime
 
-
+#usuario
 @bp.route('', methods=['GET'])
 def get_all_logs():
     isdescription = request.args.get('description')
     if isdescription:
-        logs = db.session.scalars(db.Select(Log)).filter(Log.description is not None).all()
+        print("AAA")
+        logs = db.session.scalars(db.Select(Log).filter(Log.description != "")).all()
     else:
+        print("BBB")
         logs = db.session.scalars(db.Select(Log)).all()
     
     
-    return jsonify([log.serialize() for log in logs]), 200
+    return jsonify({'logs': [log.serialize() for log in logs]}), 200
 
-
+#usuario
 @bp.route('/<int:log_id>', methods=['GET'])
 def get_log(log_id):
     log = db.get_or_404(Log, log_id)
     return jsonify(log.serialize()), 200
 
 
-
+#usuario
 @bp.route('', methods=['POST'])
 def post_log():
     data = request.get_json()
@@ -43,7 +45,7 @@ def post_log():
                 if level_value not in Log.LEVELS:
                     return jsonify({'error': f'El {level_name} debe estar en {Log.LEVELS}'}), 400
         
-        new_log = Log(date_time=datetime.datetime.now(), **data)
+        new_log = Log(**data)
 
         db.session.add(new_log)
         db.session.commit()
@@ -53,7 +55,7 @@ def post_log():
 
     return jsonify(new_log.serialize()), 201
 
-
+#admin y usuario que lo creo
 @bp.route('/<int:log_id>', methods=['PUT'])
 def update_log(log_id):
     log = Log.query.get_or_404(log_id)
@@ -79,6 +81,7 @@ def update_log(log_id):
 
     return jsonify(log.serialize()), 200
 
+#admin
 @bp.route('/<int:log_id>', methods=['DELETE'])
 def delete_log(log_id):
     log = Log.query.get_or_404(log_id)

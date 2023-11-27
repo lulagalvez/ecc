@@ -4,17 +4,19 @@ from src.models.truck import Truck
 
 from flask import request, jsonify
 
+#usuario
 @bp.route('', methods=['GET'])
 def get_all_trucks():
     trucks = db.session.scalars(db.Select(Truck)).all()
     return jsonify ({'trucks': [truck.serialize() for truck in trucks]}), 200
 
-
+#usuario
 @bp.route('/<patent>', methods=['GET'])
 def get_truck(patent):
     truck = db.get_or_404(Truck, patent, description='No existe el camion')
     return jsonify(truck.serialize()), 200
 
+#admin
 @bp.route('', methods=['POST'])
 def post_truck():
     data = request.get_json()
@@ -37,6 +39,7 @@ def post_truck():
 
     return jsonify({'message': 'Camión registrado con éxito', 'patent': truck.patent}), 201
 
+#admin
 @bp.route('/<patent>', methods=['DELETE'])
 def delete_truck(patent):
     truck = db.get_or_404(Truck, patent, description='No existe el camion')
@@ -44,6 +47,7 @@ def delete_truck(patent):
     db.session.commit()
     return jsonify({'message': 'Se ha eliminado el camion'}), 200
 
+#admin
 @bp.route('/<patent>', methods=['PUT'])
 def change_truck(patent):
     truck = db.get_or_404(Truck, patent, description='No existe el camion')
@@ -54,13 +58,6 @@ def change_truck(patent):
         if not new_patent.isalnum() or len(new_patent) != 6:
             return jsonify({'error': 'Formato de patente inválido'}), 400
         truck.patent = new_patent
-
-    for level_name in ['oil_level', 'water_level', 'fuel_level']:
-        if level_name in data:
-            level_value = data[level_name]
-            if level_value not in Truck.LEVELS:
-                return jsonify({'error': f'El {level_name} debe estar en {Truck.LEVELS}'}), 400
-            setattr(truck, level_name, level_value)
 
     db.session.commit()
     return jsonify({'message': 'Se ha modificado el camion'}), 200
