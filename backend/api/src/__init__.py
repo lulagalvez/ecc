@@ -43,8 +43,10 @@ def create_app(config_class=Config):
         }), 401
     
   # Inicialización y configuración del planificador de tareas APScheduler.
-    scheduler.init_app(app)
-    scheduler.start()
+    
+    if not scheduler.running:
+        scheduler.init_app(app)
+        scheduler.start()
 
     # Tarea programada para eliminar tokens JWT revocados y expirados.
     # Se ejecuta diariamente a medianoche.

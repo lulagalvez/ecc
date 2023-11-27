@@ -68,7 +68,7 @@ function UserTable({ users }) {
       // Imprime por consola el mensaje de éxito
       console.log(`Usuario ${userEdite.user_name} actualizado exitosamente`);
 
-      setChangue((prevValue) => !prevValue);
+      setChangue(true);
 
       handleCloseEditeModal();
     } catch (error) {

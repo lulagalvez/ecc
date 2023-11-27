@@ -1,4 +1,3 @@
-/* styles/OffCanvas.css */
 
 .custom-offcanvas {
     background-color: #333; /* Color de fondo general */
@@ -13,6 +12,12 @@
     width: 5vh;
     height: auto;
   }
+
+  .offcanvas-body
+  {
+    background-color: rgba(240, 240, 240, 0.048);
+  }
+
   
   .offcanvas-title {
     font-size: 1.0rem !important; /* Tamaño del texto del título */
@@ -20,4 +25,9 @@
     color: #ffffffcc !important; /* Color del texto del título */
   }
  
+
+  .custom-accordion-header.accordion-button-expanded {
+  
+    background-color: black;
+  }
   

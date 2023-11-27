@@ -1,7 +1,7 @@
 import NavBar from "../globalComponent/components/NavBar";
 import { motion } from "framer-motion";
 
-function Support() {
+function BinnacleRecord() {
   return (
     <>
       <motion.div
@@ -16,4 +16,4 @@ function Support() {
   );
 }
 
-export default Support;
+export default BinnacleRecord;

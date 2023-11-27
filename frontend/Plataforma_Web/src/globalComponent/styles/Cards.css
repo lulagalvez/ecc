@@ -1,11 +1,5 @@
-/* Cards.css */
-.card:hover {
-    transform: scale(1.05); /* Escalado del 5% al pasar el ratón por encima */
-    transition: transform 0.3s ease-in-out; /* Agrega una transición suave */
-  }
 
   /* Cards.css */
 .custom-divider {
     border-top: 1px solid #cddeee62; /* Puedes ajustar el color según tus necesidades */
   }
-  

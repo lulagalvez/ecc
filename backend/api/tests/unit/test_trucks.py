@@ -35,7 +35,6 @@ def test_delete_truck(test_client, truck_fixture):
     response = test_client.delete(f'/trucks/{truck_fixture.patent}')
     assert response.status_code == 200
 
-    
 def test_create_truck_invalid_data(test_client):
     response = test_client.post('/trucks', json={'patent': ''})
     assert response.status_code == 400
