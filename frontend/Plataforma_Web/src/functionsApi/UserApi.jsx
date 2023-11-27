@@ -1,5 +1,11 @@
 import axios from "axios";
 
+/**
+ * Inicia sesión de un usuario.
+ * @param {string} email - Correo electrónico del usuario.
+ * @param {string} password - Contraseña del usuario.
+ * @returns {object} - Datos del usuario después de iniciar sesión.
+ */
 export const loginUser = async (email, password) => {
   try {
     const response = await axios.post(
@@ -16,6 +22,11 @@ export const loginUser = async (email, password) => {
   }
 };
 
+/**
+ * Obtiene información de un usuario por su ID.
+ * @param {string} Id - ID del usuario.
+ * @returns {object} - Datos del usuario.
+ */
 export const getUserById = async (Id) => {
   try {
     const response = await axios.get(
@@ -31,6 +42,10 @@ export const getUserById = async (Id) => {
   }
 };
 
+/**
+ * Obtiene todos los usuarios registrados.
+ * @returns {array} - Lista de todos los usuarios.
+ */
 export const allUser = async () => {
   try {
     const response = await axios.get("http://perrera.inf.udec.cl:1522/user");
@@ -41,6 +56,11 @@ export const allUser = async () => {
   }
 };
 
+/**
+ * Obtiene la lista de usuarios para un estado específico.
+ * @param {string} state - Estado para el cual se desea obtener usuarios.
+ * @returns {array} - Lista de usuarios para el estado dado.
+ */
 export const getUsersByState = async (state) => {
   try {
     const response = await axios.get(
@@ -56,6 +76,10 @@ export const getUsersByState = async (state) => {
   }
 };
 
+/**
+ * Cierra la sesión del usuario actual.
+ * @returns {object} - Datos de confirmación de cierre de sesión.
+ */
 export const logoutUser = async () => {
   try {
     const response = await axios.post(
@@ -68,6 +92,11 @@ export const logoutUser = async () => {
   }
 };
 
+/**
+ * Elimina un usuario por su ID.
+ * @param {string} Id - ID del usuario a eliminar.
+ * @returns {object} - Datos de confirmación de eliminación.
+ */
 export const deleteUser = async (Id) => {
   try {
     const response = await axios.delete(
@@ -80,6 +109,12 @@ export const deleteUser = async (Id) => {
   }
 };
 
+/**
+ * Actualiza la información de un usuario por su ID.
+ * @param {string} Id - ID del usuario a actualizar.
+ * @param {object} updatedUserData - Datos actualizados del usuario.
+ * @returns {object} - Datos de confirmación de actualización.
+ */
 export const updateUser = async (Id, updatedUserData) => {
   try {
     const response = await axios.patch(
@@ -93,6 +128,10 @@ export const updateUser = async (Id, updatedUserData) => {
   }
 };
 
+/**
+ * Verifica una ruta protegida, requiere un token de acceso en las cabeceras.
+ * @returns {object} - Datos de la ruta protegida si la verificación es exitosa.
+ */
 export const checkProtectedRoute = async () => {
   try {
     const response = await axios.get(

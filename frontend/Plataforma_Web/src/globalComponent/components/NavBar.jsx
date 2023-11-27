@@ -8,17 +8,9 @@ import OffCanvas from "./OffCanvas";
 
 import { getUserById, logoutUser } from "../../functionsApi/UserApi";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import {
-  Container,
-  Image,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Form,
-  Button,
-  NavLink,
-} from "react-bootstrap";
+import { useContext } from "react";
+import UserContext from "../../UserContextApi/UserContext";
+import { Image, Nav, Navbar, NavDropdown, Form, Button } from "react-bootstrap";
 import { FaBell, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa"; // Importa los íconos de FontAwesome
 
 const CircleWithLetter = styled.div`
@@ -48,6 +40,8 @@ function CircleIcon({ letter }) {
 const NavBar = () => {
   const [userData, setUserData] = useState(null);
   const [loadComplete, setLoadComplete] = useState(false);
+
+  const { radioValue, setRadioValue } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -135,6 +129,16 @@ const NavBar = () => {
     }
   };
 
+  const navegarComofunciona = () => {
+    setRadioValue("1");
+    navigate("/How-Work", { replace: true });
+  };
+
+  const navegarSoporte = () => {
+    setRadioValue("1");
+    navigate("/Support", { replace: true });
+  };
+
   return (
     <Navbar variant="dark" fixed="top" bg="dark" data-bs-theme="dark" expand>
       <Navbar.Brand className="ms-3">
@@ -145,11 +149,10 @@ const NavBar = () => {
 
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto ms-4 menus">
-          <Nav.Link as={Link} to="/menupage"></Nav.Link>
-          <Nav.Link className="me-2" as={Link} to="/How-Work">
+          <Nav.Link className="me-2" onClick={navegarComofunciona}>
             ¿Cómo funciona?
           </Nav.Link>
-          <Nav.Link className="me-2" as={Link} to="/Support">
+          <Nav.Link className="me-2" onClick={navegarSoporte}>
             Soporte
           </Nav.Link>
         </Nav>

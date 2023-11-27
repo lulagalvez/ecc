@@ -5,6 +5,15 @@ import ImagenPrueba from "../../image/prueba-imagen.jpg";
 
 import "../styles/Cards.css";
 
+/**
+ * Componente que representa una tarjeta de usuario con información básica.
+ * @param {Object} props - Propiedades del componente.
+ * @param {number} props.state - Estado del usuario (0: Inactivo, 1: Activo, 2: En emergencia, 3: Conductor).
+ * @param {string} props.role - Rol del usuario.
+ * @param {string} props.fullName - Nombre completo del usuario.
+ * @param {string} props.email - Correo electrónico del usuario.
+ * @returns {JSX.Element} Elemento JSX del componente Cards.
+ */
 function Cards({ state, role, fullName, email }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -13,8 +22,10 @@ function Cards({ state, role, fullName, email }) {
 
   const controls = useAnimation(); // Inicializa el control de animación
 
+  /**
+   * Inicia la animación de tambaleo (wobble) al pasar el mouse sobre la tarjeta.
+   */
   const startWobbleAnimation = () => {
-    // Inicia la animación de tambaleo (wobble)
     controls.start({
       rotate: [0, -10, 10, -5, 5, 0], // Secuencia de rotación
       transition: { duration: 0.5, repeat: Infinity }, // Configuración de la animación
@@ -71,11 +82,12 @@ function Cards({ state, role, fullName, email }) {
         </Card>
       </motion.div>
 
+      {/* Modal para mostrar detalles adicionales del usuario */}
       <Modal centered size="lg" show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{fullName}</Modal.Title>
         </Modal.Header>
-        <Modal.Body></Modal.Body>
+        <Modal.Body>{/* Contenido del modal, si es necesario */}</Modal.Body>
         <Modal.Footer>
           <Button variant="dark" onClick={handleClose}>
             Cerrar

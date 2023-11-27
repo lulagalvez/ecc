@@ -1,3 +1,4 @@
+import NavBar from "../globalComponent/components/NavBar";
 import { motion } from "framer-motion";
 
 function HowWork() {
@@ -8,7 +9,9 @@ function HowWork() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-      ></motion.div>
+      >
+        <NavBar />
+      </motion.div>
     </>
   );
 }
