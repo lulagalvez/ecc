@@ -1,11 +1,18 @@
+import json
+import os
 from flask import request, jsonify
+from pyfcm import FCMNotification
 from src.extensions import db
 from src.models.log import Log
 from src.logs import bp
 from src.models.truck import Truck
 from src.models.user import User
 import datetime
+from dotenv import load_dotenv
+load_dotenv()
 
+# Inicializa el objeto FCMNotification
+push_service = FCMNotification(api_key= os.getenv("FIREBASE_KEY"))
 #usuario
 @bp.route('', methods=['GET'])
 def get_all_logs():
@@ -51,8 +58,9 @@ def post_log():
         db.session.commit()
     except KeyError as e:
         return jsonify({'error': f'Falta dato requerido: {str(e)}'}), 400
-
-
+    
+    tokens= ["eEGcNQ7MRw-NsYdT_WDvse:APA91bGhVVB4z3kBTwek1wenFdZf-WLu2GbM0AtxbCMS9oEJHNGxUe6DtEkOgL4YV1KKV8q3oFNZgSevQQH7cNh-1fkncfrCbiF61IAkF9836URUG1nM5UyXUet4XVBrKlXeUib7TyQH"]
+    if data['description'] != "" : push_service.notify_multiple_devices(registration_ids=tokens, message_title="Nueva bitacora", message_body=data["description"], data_message= json.loads(jsonify(new_log.serialize()).data))
     return jsonify(new_log.serialize()), 201
 
 #admin y usuario que lo creo
