@@ -35,7 +35,7 @@ class User(db.Model):
 
     email = db.Column(db.String(50), nullable=False)
     state = db.Column(db.Integer, nullable=False, default=STATES['Inactive'])
-    image = db.Column(db.String(150), nullable=True)
+    image = db.Column(db.String, nullable=True)
 
 
     def set_password(self, password):
