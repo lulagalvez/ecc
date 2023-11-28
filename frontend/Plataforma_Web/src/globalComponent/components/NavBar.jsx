@@ -97,6 +97,7 @@ const NavBar = () => {
   useEffect(() => {
     if (loadComplete) {
       console.log("Informacion del administrador ", userData);
+      console.log("Se renderuiza el navbar , ojooo");
     }
 
     // Limpia la variable al desmontar el componente

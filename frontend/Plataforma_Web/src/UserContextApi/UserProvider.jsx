@@ -70,7 +70,6 @@ const UserProvider = ({ children }) => {
 
   const actualizarDatos = () => {
     setChange((change) => !change);
-    console.log(change);
   };
 
   return (
