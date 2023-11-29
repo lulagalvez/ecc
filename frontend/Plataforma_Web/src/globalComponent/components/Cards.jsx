@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Card, Modal, Button } from "react-bootstrap";
 import { motion, useAnimation } from "framer-motion"; // Importa motion de Framer Motion
 import ImagenPrueba from "../../image/prueba-imagen.jpg";
-
+import EntriesTable from "./EntriesTable";
+import TimeSpentGraph from './TimeSpentGraph';
+import axios from 'axios';
 import "../styles/Cards.css";
 
 /**
@@ -14,11 +16,37 @@ import "../styles/Cards.css";
  * @param {string} props.email - Correo electrónico del usuario.
  * @returns {JSX.Element} Elemento JSX del componente Cards.
  */
-function Cards({ state, role, fullName, email }) {
+function Cards({ id, state, role, fullName, email }) {
+  const [summaryData, setSummaryData] = useState(null);
+  const [selectedTimeframe, setSelectedTimeframe] = useState(30);
   const [showModal, setShowModal] = useState(false);
-
-  const handleShow = () => setShowModal(true);
+  const [loading, setLoading] = useState(false);
+  const handleShow = () => {
+    setShowModal(true);
+    fetchSummaryData(selectedTimeframe); // Fetch summary data when modal is shown
+  };
   const handleClose = () => setShowModal(false);
+
+  const fetchSummaryData = (timeframe) => {
+    setLoading(true);
+    // Replace with your actual API endpoint
+    axios
+      .get(`http://perrera.inf.udec.cl:1522/entrytime/summary/${id}/${timeframe}`)
+      .then(response => {
+        setSummaryData(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+  };
+
+  const handleTimeframeChange = (event) => {
+    const newTimeframe = parseInt(event.target.value);
+    setSelectedTimeframe(newTimeframe);
+    fetchSummaryData(newTimeframe); // Fetch summary data for the selected timeframe
+  };
 
   const controls = useAnimation(); // Inicializa el control de animación
 
@@ -83,16 +111,47 @@ function Cards({ state, role, fullName, email }) {
       </motion.div>
 
       {/* Modal para mostrar detalles adicionales del usuario */}
-      <Modal centered size="lg" show={showModal} onHide={handleClose}>
+      <Modal centered size="xl" show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{fullName}</Modal.Title>
+          <Modal.Title>Detalles del bombero</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{/* Contenido del modal, si es necesario */}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="dark" onClick={handleClose}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
+        <Modal.Body>
+          {loading ? (
+            <p>Cargando...</p>
+          ) : summaryData ? (
+            <div className="d-flex">
+              <div style={{ width: '50%' }}>
+                <div className="d-flex align-items-center mb-3">
+                  <label htmlFor="timeframeDropdown" className="mr-2">Ultimos:</label>
+                  <select
+                    id="timeframeDropdown"
+                    className="form-control"
+                    value={selectedTimeframe}
+                    onChange={handleTimeframeChange}
+                  >
+                    <option value={7}>7 días</option>
+                    <option value={14}>14 días</option>
+                    <option value={30}>30 días</option>
+                  </select>
+                </div>
+                <p>Ingresos en los últimos 30 días: {summaryData.entry_count}</p>
+                <p>Total de horas trabajadas: {summaryData.total_hours_worked}</p>
+              </div>
+              <div style={{ width: '50%' }}>
+                <EntriesTable entries={summaryData.entries} />
+              </div>
+            </div>
+          ) : (
+            <p>No hay información disponible</p>
+          )}
+
+          {/* Insert the TimeSpentGraph component here */}
+          {summaryData && (
+            <TimeSpentGraph
+              entries={summaryData.entries}
+            />
+          )}
+        </Modal.Body>
       </Modal>
     </>
   );
