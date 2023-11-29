@@ -58,8 +58,7 @@ def post_log():
         db.session.commit()
     except KeyError as e:
         return jsonify({'error': f'Falta dato requerido: {str(e)}'}), 400
-    
-    tokens= ["eEGcNQ7MRw-NsYdT_WDvse:APA91bGhVVB4z3kBTwek1wenFdZf-WLu2GbM0AtxbCMS9oEJHNGxUe6DtEkOgL4YV1KKV8q3oFNZgSevQQH7cNh-1fkncfrCbiF61IAkF9836URUG1nM5UyXUet4XVBrKlXeUib7TyQH"]
+    tokens = ["eEGcNQ7MRw-NsYdT_WDvse:APA91bGhVVB4z3kBTwek1wenFdZf-WLu2GbM0AtxbCMS9oEJHNGxUe6DtEkOgL4YV1KKV8q3oFNZgSevQQH7cNh-1fkncfrCbiF61IAkF9836URUG1nM5UyXUet4XVBrKlXeUib7TyQH","dRmrqb4JQGyghC7DVTz1Ng:APA91bEC5XbgRdYeaYe20dk3B_Ymu3wvL4fgsOXjR5t3fxvP1h61uc9Zj7bJwwUoBTuu5Rz__51-zNRzjLIQ_JuPyh1DS3YuDaSOi6Hktd1wC70ibX4tR2ysdMsZR5VmRrAzpmbhyHYQ"]
     if data['description'] != "" : push_service.notify_multiple_devices(registration_ids=tokens, message_title="Nueva bitacora", message_body=data["description"], data_message= json.loads(jsonify(new_log.serialize()).data))
     return jsonify(new_log.serialize()), 201
 
