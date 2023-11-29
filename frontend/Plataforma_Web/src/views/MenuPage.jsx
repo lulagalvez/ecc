@@ -74,6 +74,7 @@ const Menupage = () => {
         className="my-4 d-flex align-items-center justify-content-center"
       >
         <Cards
+          id={user.id}
           state={user.state}
           role={user.role}
           fullName={`${user.first_name} ${user.last_name}`}
