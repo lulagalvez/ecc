@@ -3,6 +3,21 @@ from src.models.user import User
 import locale
 import datetime
 class Log(db.Model):
+    """
+    Cada registro (`Log`) documenta un tipo específico de actividad y el estado de varios niveles
+    del camión al momento de la actividad.
+
+    Attributes:
+        id (int): Identificador único del registro.
+        type (int): Tipo de actividad registrada (Uso único, Mantenimiento, Reparación, etc.).
+        description (str): Descripción detallada de la actividad.
+        date_time (datetime): Fecha y hora en que se registró la actividad.
+        user_id (int): Identificador del usuario que registra la actividad.
+        truck_patent (str): Patente del camión relacionado con la actividad.
+        fuel_level (float): Nivel de combustible del camión al momento de la actividad.
+        water_level (float): Nivel de agua del camión al momento de la actividad.
+        oil_level (float): Nivel de aceite del camión al momento de la actividad.
+    """
     TYPE_CHOICES = {
         'Single_use': 1,
         'Maintenance': 2,
@@ -24,6 +39,12 @@ class Log(db.Model):
     oil_level = db.Column(db.Float, nullable=False)
     
     def __init__(self, **kwargs):
+        """
+        Inicializa una nueva instancia del modelo Log.
+
+        Args:
+            kwargs: Argumentos clave-valor para la inicialización del modelo.
+        """
         self.type = kwargs.get('type', None)
         self.description = kwargs.get('description', None)
         self.date_time = datetime.datetime.now()
@@ -34,6 +55,12 @@ class Log(db.Model):
         self.oil_level = kwargs.get('oil_level', None)
     
     def serialize(self):
+        """
+        Serializa la información del registro para facilitar la respuesta JSON.
+
+        Returns:
+            dict: Diccionario con datos serializados del registro.
+        """
         user = db.get_or_404(User, self.user_id)
         
         return {

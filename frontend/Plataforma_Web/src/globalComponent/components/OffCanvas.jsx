@@ -3,6 +3,7 @@ import "../styles/OffCanvas.css";
 import Logo from "../../image/shield-image.png";
 import UserContext from "../../UserContextApi/UserContext";
 import RegisterUser from "../../views/RegisterUser";
+import EditeUser from "./EditeUser";
 
 import {
   Button,
@@ -14,7 +15,7 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdMenu } from "react-icons/md";
 import { Image } from "react-bootstrap";
 import { Accordion } from "react-bootstrap";
@@ -22,6 +23,7 @@ import { Accordion } from "react-bootstrap";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { FcStatistics } from "react-icons/fc";
 import { PiUsersFourLight } from "react-icons/pi";
+import { LuFiles } from "react-icons/lu";
 import { FaRegFileArchive } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
 
@@ -33,19 +35,37 @@ import { CgUnavailable } from "react-icons/cg";
 
 import { FaUserPlus } from "react-icons/fa6";
 import { FaUserPen } from "react-icons/fa6";
-import { FaUserXmark } from "react-icons/fa6";
+
+import { BsFillEnvelopePlusFill } from "react-icons/bs";
+import { BsFillEnvelopePaperFill } from "react-icons/bs";
+import { BsFillEnvelopeXFill } from "react-icons/bs";
 
 import { useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function OffCanvas() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const { radioValue, setRadioValue } = useContext(UserContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    /* revisar despues para verificar el renderizado excesivo de offcanvas*/
+    const isNotInMenuPage = !location.pathname.includes("/menupage");
+
+    if (isNotInMenuPage && radioValue !== "1") {
+      navigate("/menupage", { replace: true });
+    }
+  }, [radioValue, location.pathname, navigate]);
+
   function AccordionSection({ title, icon, eventKey, content }) {
     return (
       <Accordion.Item eventKey={eventKey}>
-        <Accordion.Header>
+        <Accordion.Header bsPrefix="custom-accordion-header">
           {icon && <span className="me-2">{icon}</span>}
           {title}
         </Accordion.Header>
@@ -55,8 +75,6 @@ function OffCanvas() {
   }
 
   function FiltradoDeUsuarios() {
-    const { radioValue, setRadioValue } = useContext(UserContext);
-
     const radios = [
       {
         name: (
@@ -155,9 +173,7 @@ function OffCanvas() {
             {" "}
             <TiThSmallOutline className="mx-2" /> Personal registrado
           </span>
-          <Badge bg="dark" pill>
-            {allUsers.length}
-          </Badge>
+          <Badge bg="dark">{allUsers.length}</Badge>
         </ListGroup.Item>
         <ListGroup.Item
           as="li"
@@ -167,9 +183,7 @@ function OffCanvas() {
           <span>
             <MdOutlineEventAvailable className="mx-2" /> Personal en activo
           </span>
-          <Badge bg="dark" pill>
-            {activeUsers.length}
-          </Badge>
+          <Badge bg="success">{activeUsers.length}</Badge>
         </ListGroup.Item>
         <ListGroup.Item
           as="li"
@@ -179,9 +193,7 @@ function OffCanvas() {
           <span>
             <MdOutlineEmergencyShare className="mx-2" /> Personal en emergencia
           </span>
-          <Badge bg="dark" pill>
-            {emergencyUsers.length}
-          </Badge>
+          <Badge bg="danger">{emergencyUsers.length}</Badge>
         </ListGroup.Item>
         <ListGroup.Item
           as="li"
@@ -192,7 +204,7 @@ function OffCanvas() {
             <GiPoliceCar className="mx-2" />
             Personal en conduccion
           </span>
-          <Badge bg="dark" pill>
+          <Badge bg="warning" text="dark">
             {driverUsers.length}
           </Badge>
         </ListGroup.Item>
@@ -205,9 +217,7 @@ function OffCanvas() {
             <CgUnavailable className="mx-2" />
             Personal en ausente
           </span>
-          <Badge bg="dark" pill>
-            {inactiveUsers.length}
-          </Badge>
+          <Badge bg="secondary">{inactiveUsers.length}</Badge>
         </ListGroup.Item>
       </ListGroup>
     );
@@ -215,6 +225,7 @@ function OffCanvas() {
 
   function GestionUsuarios() {
     const [selectedModal, setSelectedModal] = useState(null);
+    const { allUsers } = useContext(UserContext);
 
     const handleItemClick = (modalId) => {
       setSelectedModal(modalId);
@@ -236,66 +247,136 @@ function OffCanvas() {
               <span className="ms-3">Crear Usuario</span>
             </div>
           </ListGroup.Item>
+
           <ListGroup.Item
             action
             onClick={() => handleItemClick("editarUsuario")}
           >
             <div className="d-flex align-items-center  justify-content-start ">
               <FaUserPen />
-              <span className="ms-3">Editar informacion de Usuario</span>
-            </div>
-          </ListGroup.Item>
-          <ListGroup.Item
-            action
-            onClick={() => handleItemClick("eliminarUsuario")}
-          >
-            <div className="d-flex align-items-center  justify-content-start ">
-              <FaUserXmark />
-              <span className="ms-3">Eliminar Usuario</span>
+              <span className="ms-3">Editar Usuario </span>
             </div>
           </ListGroup.Item>
         </ListGroup>
 
-        <Modal show={selectedModal === "crearUsuario"} onHide={handleClose}>
-          <Modal.Header closeButton>
+        <Modal
+          show={selectedModal === "crearUsuario"}
+          size="md"
+          centered
+          scrollable
+        >
+          <Modal.Header>
             <Modal.Title>Crear Usuario</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegisterUser />
+            <RegisterUser handleClose={handleClose} />
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
+          <Modal.Footer></Modal.Footer>
         </Modal>
 
-        <Modal show={selectedModal === "editarUsuario"} onHide={handleClose}>
+        <Modal
+          centered
+          show={selectedModal === "editarUsuario"}
+          onHide={handleClose}
+          scrollable
+          size="xl"
+        >
           <Modal.Header closeButton>
-            <Modal.Title>Editar Información de Usuario</Modal.Title>
+            <Modal.Title>Editar Usuario</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Contenido del modal para editar usuario.</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal show={selectedModal === "eliminarUsuario"} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Eliminar Usuario</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Contenido del modal para eliminar usuario.</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
+          <Modal.Body>
+            <EditeUser users={allUsers} />
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );
   }
+
+  function Registros() {
+    const registroClick = () => {
+      setRadioValue("1");
+      navigate("/registro-horas", { replace: true });
+    };
+
+    return (
+      <>
+        <ListGroup defaultActiveKey="false" variant="flush">
+          <ListGroup.Item action onClick={registroClick}>
+            <div className="d-flex align-items-center justify-content-start">
+              <FaUserPlus />
+              <span className="ms-3">Registros de personal</span>
+            </div>
+          </ListGroup.Item>
+        </ListGroup>
+      </>
+    );
+  }
+
+  function Bitacoras() {
+    const [selectedModal, setSelectedModal] = useState(null);
+
+    const handleItemClick = (modalId) => {
+      setSelectedModal(modalId);
+    };
+
+    const handleClose = () => {
+      setSelectedModal(null);
+    };
+
+    const bitacorasClickRegistro = () => {
+      setRadioValue("1");
+      navigate("/record-binnacle", { replace: true });
+    };
+    return (
+      <>
+        <ListGroup defaultActiveKey="false" variant="flush">
+          <ListGroup.Item
+            action
+            onClick={() => handleItemClick("crearbitacora")}
+          >
+            <div className="d-flex align-items-center justify-content-start">
+              <BsFillEnvelopePlusFill />
+              <span className="ms-3">Crear Bitacora</span>
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            onClick={() => handleItemClick("editarBitacora")}
+          >
+            <div className="d-flex align-items-center justify-content-start">
+              <BsFillEnvelopePaperFill />
+              <span className="ms-3">Editar Bitacora</span>
+            </div>
+          </ListGroup.Item>
+          <ListGroup.Item action onClick={bitacorasClickRegistro}>
+            <div className="d-flex align-items-center justify-content-start">
+              <BsFillEnvelopeXFill />
+              <span className="ms-3">Registros de Bitacoras</span>
+            </div>
+          </ListGroup.Item>
+        </ListGroup>
+
+        <Modal show={selectedModal === "crearbitacora"} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Crear Bitacora</Modal.Title>
+          </Modal.Header>
+          <Modal.Body></Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
+
+        <Modal show={selectedModal === "editarBitacora"} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Editar Bitacora</Modal.Title>
+          </Modal.Header>
+          <Modal.Body></Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+
+  const defaultActiveKeys = ["0", "2", "3"]; // Puedes ajustar las claves según tus necesidades
 
   return (
     <>
@@ -324,7 +405,7 @@ function OffCanvas() {
         </Offcanvas.Header>
 
         <Offcanvas.Body className="offcanvas-body">
-          <Accordion defaultActiveKey="0" flush alwaysOpen>
+          <Accordion defaultActiveKey={defaultActiveKeys} flush alwaysOpen>
             <AccordionSection
               title="Filtrado de Usuarios"
               icon={<AiOutlineUserSwitch />}
@@ -344,15 +425,21 @@ function OffCanvas() {
               content={<GestionUsuarios />}
             />
             <AccordionSection
+              title="Registros"
+              icon={<LuFiles />}
+              eventKey={"3"}
+              content={<Registros />}
+            />
+            <AccordionSection
               title="Bitacoras"
               icon={<FaRegFileArchive />}
-              eventKey={"3"}
-              content=""
+              eventKey={"4"}
+              content={<Bitacoras />}
             />
             <AccordionSection
               title="Ajustes"
               icon={<CiSettings />}
-              eventKey={"4"}
+              eventKey={"5"}
               content=""
             />
           </Accordion>
