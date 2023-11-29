@@ -66,7 +66,7 @@ def get_user_by_id(user_id):
         'email': user.email,
         'state': user.state
     }
-    return jsonify(user_data)
+    return jsonify(user_data), 200
 
 # Parchear bombero
 @bp.route('/<int:user_id>', methods=['PATCH'])
