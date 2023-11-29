@@ -1,0 +1,51 @@
+/* Estilo para el contenedor de la tabla de logs */
+.table-container {
+    margin: auto;
+    width: 90%;
+    overflow-x: auto;
+  }
+  
+  /* Estilo para las celdas de la tabla de logs */
+  .table-container td,
+  .table-container th {
+    width: auto;
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Estilo para las filas impares */
+  .table-container tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Estilo para las filas pares */
+  .table-container tbody tr:nth-child(even) {
+    background-color: #ccc;
+  }
+  
+  /* Estilo para las celdas de encabezado de la tabla de logs */
+  .table-container th {
+    font-weight: normal;
+    padding: 10px;
+  }
+  
+  /* Estilo para las esquinas de las celdas de encabezado */
+  .table-container th:first-child {
+    border-top-left-radius: 10px;
+  }
+  
+  .table-container th:last-child {
+    border-top-right-radius: 10px;
+  }
+  
+  /* Estilo para la fila expandida con la descripción */
+  .table-container .expanded-row td {
+    padding: 15px;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+  

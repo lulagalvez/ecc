@@ -10,7 +10,7 @@ import "./style/PaginationList.css";
 const HoursrRecord = () => {
   const [exittimes, setExittimes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(20); // Number of items to display per page
+  const [itemsPerPage] = useState(20); // Numero de items para mostrar por pagina
 
 
   useEffect(() => {
