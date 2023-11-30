@@ -1,4 +1,8 @@
+import json
+import os
 from flask import request, jsonify
+
+from pyfcm import FCMNotification
 from sqlalchemy import desc
 from src.extensions import db
 from src.models.log import Log
@@ -6,7 +10,15 @@ from src.logs import bp
 from src.models.truck import Truck
 from src.models.user import User
 import datetime
+
+from dotenv import load_dotenv
+load_dotenv()
+
+# Inicializa el objeto FCMNotification
+push_service = FCMNotification(api_key= os.getenv("FIREBASE_KEY"))
+
 from flask_jwt_extended import get_jwt_identity, jwt_required
+
 #usuario
 @bp.route('', methods=['GET'])
 @jwt_required()
@@ -26,7 +38,7 @@ def get_all_logs():
         logs = db.session.scalars(db.Select(Log)).all()
     
     
-    return jsonify({'logs': [log.serialize() for log in logs]}), 200
+    return jsonify([log.serialize() for log in logs]), 200
 
 #usuario
 
@@ -79,8 +91,8 @@ def post_log():
         db.session.commit()
     except KeyError as e:
         return jsonify({'error': f'Falta dato requerido: {str(e)}'}), 400
-
-
+    tokens = ["eEGcNQ7MRw-NsYdT_WDvse:APA91bGhVVB4z3kBTwek1wenFdZf-WLu2GbM0AtxbCMS9oEJHNGxUe6DtEkOgL4YV1KKV8q3oFNZgSevQQH7cNh-1fkncfrCbiF61IAkF9836URUG1nM5UyXUet4XVBrKlXeUib7TyQH","dRmrqb4JQGyghC7DVTz1Ng:APA91bEC5XbgRdYeaYe20dk3B_Ymu3wvL4fgsOXjR5t3fxvP1h61uc9Zj7bJwwUoBTuu5Rz__51-zNRzjLIQ_JuPyh1DS3YuDaSOi6Hktd1wC70ibX4tR2ysdMsZR5VmRrAzpmbhyHYQ"]
+    if data['description'] != "" : push_service.notify_multiple_devices(registration_ids=tokens, message_title="Nueva bitacora", message_body=data["description"], data_message= json.loads(jsonify(new_log.serialize()).data))
     return jsonify(new_log.serialize()), 201
 
 #admin y usuario que lo creo

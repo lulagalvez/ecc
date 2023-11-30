@@ -8,14 +8,16 @@ import "./style/RegistroHoras.css";
 import "./style/PaginationList.css";
 
 const HoursrRecord = () => {
-  const [exittimes, setExittimes] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(20); // Number of items to display per page
+  const [exittimes, setExittimes] = useState([]); // Almacena los datos de las salidas
+  const [currentPage, setCurrentPage] = useState(1); // Almacena el número de página actual
+  const [itemsPerPage] = useState(20); // Numero de items para mostrar por pagina
 
+  // Efecto secundario que se ejecuta al montar el componente
   useEffect(() => {
     fetchExittimes();
   }, []);
 
+  // Función asincrónica para realizar la solicitud de datos
   const fetchExittimes = async () => {
     try {
       const response = await fetch("http://perrera.inf.udec.cl:1522/exittime/");
@@ -30,13 +32,16 @@ const HoursrRecord = () => {
     }
   };
 
+  // Se calcula los índices para la paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = exittimes.slice(indexOfFirstItem, indexOfLastItem);
 
+  // Función que maneja el cambio de página
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  // Función para convertir los datos de exittimes a un formato adecuado para exportar como un archivo CSV
   const transformDataToCSV = () => {
     const csvData = [
       ["#", "Bombero", "Entrada", "Salida", "Tiempo"],
@@ -53,6 +58,7 @@ const HoursrRecord = () => {
 
   return (
     <>
+      {/* Contenedor animado con efectos de transición */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -62,10 +68,12 @@ const HoursrRecord = () => {
         <NavBar />
 
         {/* Pagination */}
-        <div className="pagination-container" style={{ marginTop: "140px" }}>
+        <div className="pagination-container" style={{ marginTop: "160px" }}>
           <div className="pagination">
+            {/* Renderiza la paginación si hay más elementos que el límite por página */}
             {exittimes.length > itemsPerPage && (
               <ul className="pagination-list">
+                {/* Genera botones de página según la cantidad de elementos y el límite por página */}
                 {Array(Math.ceil(exittimes.length / itemsPerPage))
                   .fill()
                   .map((_, index) => (
@@ -75,6 +83,7 @@ const HoursrRecord = () => {
                         currentPage === index + 1 ? "active" : ""
                       }`}
                     >
+                      {/* Botón de página que ejecuta la función paginate al hacer clic */}
                       <button
                         onClick={() => paginate(index + 1)}
                         className="page-link"
@@ -87,8 +96,11 @@ const HoursrRecord = () => {
             )}
           </div>
         </div>
+        {/* Contenedor de la tabla */}
         <div className="table-container">
+          {/* Contenedor del botón de descarga CSV */}
           <div className="download-button-container">
+            {/* Enlace CSV que utiliza los datos transformados y configura opciones */}
             <CSVLink
               data={transformDataToCSV()}
               filename={"registro_horas.csv"}
@@ -110,6 +122,7 @@ const HoursrRecord = () => {
               </tr>
             </thead>
             <tbody>
+              {/* Mapea y renderiza las filas de la tabla con los datos actuales */}
               {currentItems.map((exittime, index) => (
                 <tr key={exittime.id}>
                   <td>{indexOfFirstItem + index + 1}</td>
@@ -119,6 +132,7 @@ const HoursrRecord = () => {
                   <td>{exittime.entry_time_date_time}</td>
                   <td>{exittime.exit_time_date_time}</td>
                   <td>{exittime.time_spent}</td>
+                  {/* Celda de la tabla con un botón de edición */}
                   <td className="table-cell button-cell">
                     <Button variant="primary" type="reset" size="sm">
                       <span>
@@ -132,11 +146,11 @@ const HoursrRecord = () => {
           </Table>
         </div>
 
-        {/* Pagination */}
-        <div className="pagination-container ">
+        {/* Paginación adicional al final del componente */}
+        <div className="pagination-container">
           <div className="pagination">
             {exittimes.length > itemsPerPage && (
-              <ul className="pagination-list ">
+              <ul className="pagination-list">
                 {Array(Math.ceil(exittimes.length / itemsPerPage))
                   .fill()
                   .map((_, index) => (
