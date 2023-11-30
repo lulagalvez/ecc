@@ -116,7 +116,6 @@ const BinnacleRecord = () => {
       >
         <NavBar />
 
-        {/* Pagination */}
         <div className="pagination-container" style={{ marginTop: "160px" }}>
           <div className="pagination">
             {logs.length > itemsPerPage && (
@@ -140,7 +139,6 @@ const BinnacleRecord = () => {
           </div>
         </div>
 
-        {/* Table */}
         <div className="table-container" style={{ marginTop: "20px" }}>
           <Table striped bordered hover>
             <thead>
