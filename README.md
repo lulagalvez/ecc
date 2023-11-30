@@ -21,12 +21,12 @@ para la debida ejecución de la api del proyecto se tienen que seguir los siguie
 Para la creación del admin se tiene que llamar a la ruta '/user/register' y utilizar el json requerido.
 
 Ejemplo:
-{
+`{
 "user_name": "admin_user",
 "email": "admin@email.cl",
 "first_name": "Soila",
 "last_name": "Admin"
-}
+}`
 
 la contraseña por defecto para cada usuario es:
 `ecc`+`user_name`
