@@ -18,7 +18,18 @@ para la debida ejecución de la api del proyecto se tienen que seguir los siguie
 4. `pip install -r requirements.txt`
 5. `set FLASK_APP=src`
 
-Para la creación del admin se tiene que llamar a la ruta '/user/register' y dar la información necesaria
+Para la creación del admin se tiene que llamar a la ruta '/user/register' y utilizar el json requerido.
+
+Ejemplo:
+{
+"user_name": "admin_user",
+"email": "admin@email.cl",
+"first_name": "Soila",
+"last_name": "Admin"
+}
+
+la contraseña por defecto para cada usuario es:
+`ecc`+`user_name`
 
 ### Integrantes:
  - José Rojas
