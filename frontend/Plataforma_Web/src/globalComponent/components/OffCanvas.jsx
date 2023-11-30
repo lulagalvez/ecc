@@ -156,7 +156,9 @@ function OffCanvas() {
     );
   }
 
+  // Componente funcional para la sección de Estadísticas de Usuarios
   function EstadisticasUsuarios() {
+    // Obtención de datos del contexto de usuarios
     const { allUsers } = useContext(UserContext); //1
     const { activeUsers } = useContext(UserContext); //2
     const { emergencyUsers } = useContext(UserContext); //3
@@ -223,10 +225,15 @@ function OffCanvas() {
     );
   }
 
+  // Componente funcional para la sección de Gestión de Usuarios
   function GestionUsuarios() {
+    // Estado para manejar el modal seleccionado
     const [selectedModal, setSelectedModal] = useState(null);
+
+    // Obtención de datos del contexto de usuarios
     const { allUsers } = useContext(UserContext);
 
+    // Función para manejar la selección de ítems y cerrar el modal
     const handleItemClick = (modalId) => {
       setSelectedModal(modalId);
     };
@@ -293,6 +300,7 @@ function OffCanvas() {
     );
   }
 
+  // Componente funcional para la sección de Registros
   function Registros() {
     const registroClick = () => {
       setRadioValue("1");
@@ -313,9 +321,12 @@ function OffCanvas() {
     );
   }
 
+  // Componente funcional para la sección de Bitácoras
   function Bitacoras() {
+    // Estado para manejar el modal seleccionado
     const [selectedModal, setSelectedModal] = useState(null);
 
+    // Función para manejar la selección de ítems y cerrar el modal
     const handleItemClick = (modalId) => {
       setSelectedModal(modalId);
     };
@@ -324,6 +335,7 @@ function OffCanvas() {
       setSelectedModal(null);
     };
 
+    // Función para redirigir a la página de registros de bitácoras
     const bitacorasClickRegistro = () => {
       setRadioValue("1");
       navigate("/record-binnacle", { replace: true });
@@ -384,7 +396,7 @@ function OffCanvas() {
         <MdMenu />
       </Button>
 
-      <Offcanvas
+      <Offcanvas /*Creacion del offcanvas , se ajustan los parametros*/
         show={show}
         onHide={handleClose}
         scroll="true"
@@ -404,6 +416,7 @@ function OffCanvas() {
           </Offcanvas.Title>
         </Offcanvas.Header>
 
+        {/*Creacion de cada submenu del offcanvas , cada uno recibe distintos componentes a renderizar , los cuales iran dentro de un componente acordeon*/}
         <Offcanvas.Body className="offcanvas-body">
           <Accordion defaultActiveKey={defaultActiveKeys} flush alwaysOpen>
             <AccordionSection

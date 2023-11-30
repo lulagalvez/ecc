@@ -12,7 +12,6 @@ const HoursrRecord = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20); // Number of items to display per page
 
-
   useEffect(() => {
     fetchExittimes();
   }, []);
@@ -29,7 +28,6 @@ const HoursrRecord = () => {
     } catch (error) {
       console.error("Error:", error);
     }
-
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -47,8 +45,8 @@ const HoursrRecord = () => {
         `${exittime.first_name} ${exittime.last_name}`,
         exittime.entry_time_date_time,
         exittime.exit_time_date_time,
-        exittime.time_spent
-      ])
+        exittime.time_spent,
+      ]),
     ];
     return csvData;
   };
@@ -64,7 +62,7 @@ const HoursrRecord = () => {
         <NavBar />
 
         {/* Pagination */}
-        <div className="pagination-container" style={{ marginTop: "160px" }}>
+        <div className="pagination-container" style={{ marginTop: "140px" }}>
           <div className="pagination">
             {exittimes.length > itemsPerPage && (
               <ul className="pagination-list">
@@ -73,8 +71,9 @@ const HoursrRecord = () => {
                   .map((_, index) => (
                     <li
                       key={index}
-                      className={`page-item ${currentPage === index + 1 ? "active" : ""
-                        }`}
+                      className={`page-item ${
+                        currentPage === index + 1 ? "active" : ""
+                      }`}
                     >
                       <button
                         onClick={() => paginate(index + 1)}
@@ -134,17 +133,18 @@ const HoursrRecord = () => {
         </div>
 
         {/* Pagination */}
-        <div className="pagination-container">
+        <div className="pagination-container ">
           <div className="pagination">
             {exittimes.length > itemsPerPage && (
-              <ul className="pagination-list">
+              <ul className="pagination-list ">
                 {Array(Math.ceil(exittimes.length / itemsPerPage))
                   .fill()
                   .map((_, index) => (
                     <li
                       key={index}
-                      className={`page-item ${currentPage === index + 1 ? "active" : ""
-                        }`}
+                      className={`page-item ${
+                        currentPage === index + 1 ? "active" : ""
+                      }`}
                     >
                       <button
                         onClick={() => paginate(index + 1)}

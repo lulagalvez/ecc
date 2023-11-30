@@ -8,6 +8,7 @@ import { updateUser } from "../../functionsApi/UserApi";
 import UserContext from "../../UserContextApi/UserContext";
 
 function UserTable({ users }) {
+  // Estados y funciones para el modal de edición y eliminación
   const [showEditeModal, setShowEditeModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [updatedUserData, setUpdatedUserData] = useState({
@@ -19,10 +20,13 @@ function UserTable({ users }) {
     state: "",
   });
 
+  // Usuario seleccionado para edición o eliminación
   const [userEdite, setUserToEdite] = useState(null);
 
+  // Contexto para actualizar datos después de la edición o eliminación
   const { actualizarDatos } = useContext(UserContext);
 
+  // Funciones para mostrar y ocultar modales de edición y eliminación
   const handleShowEditeModal = (user) => {
     setUserToEdite(user);
     setUpdatedUserData({
@@ -51,6 +55,7 @@ function UserTable({ users }) {
     setShowDeleteModal(false);
   };
 
+  // Función para manejar cambios en los campos de edición
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedUserData((prevData) => ({
@@ -75,10 +80,16 @@ function UserTable({ users }) {
       // Puedes manejar el error según tus necesidades
     }
   };
+  // Función para eliminar un usuario
   const handleDeleteClick = async () => {
     try {
+      // Realiza la eliminación del usuario en el servidor
       await deleteUser(userEdite.id);
+
+      // Imprime por consola el mensaje de éxito
       console.log(`Usuario ${userEdite.user_name} eliminado exitosamente`);
+
+      // Actualiza los datos en el contexto
       actualizarDatos();
     } catch (error) {
       console.error("Error al eliminar usuario:", error);
