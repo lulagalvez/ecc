@@ -6,9 +6,8 @@
   margin-bottom: 10px; /* Ajusta el margen superior según sea necesario */
 }
 /* Estilo para el contenedor de la tabla */
-/* Estilo para la tabla */
 .table-container {
-  margin: auto auto; /* Margen superior e inferior establecido a 0 y margen izquierdo y derecho automático para centrar la tabla */
+  margin: auto auto; /* Margen automático para centrar la tabla */
   width: 90%; /* Ancho del 90% para ocupar el 90% del ancho de la página */
 }
 
