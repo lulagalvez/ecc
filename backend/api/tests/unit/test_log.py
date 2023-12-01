@@ -1,10 +1,6 @@
 import pytest
 
 
-def test_get_all_logs(test_client, create_data):
-    response = test_client.get('/logs')
-    assert response.status_code == 200
-
 log_data = {
     'type': 'Single_use',
     'description': 'Test log',

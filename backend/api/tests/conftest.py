@@ -30,9 +30,9 @@ def create_data(test_client):
         last_name='Sanhueza', 
         role='firefighter', 
         user_name='sebas', 
-        password='1234',
         email = 'seba@sanhue.cl'
         )
+    test_user.set_password('eccsebas')
     db.session.add(test_user) 
     db.session.commit()
 
