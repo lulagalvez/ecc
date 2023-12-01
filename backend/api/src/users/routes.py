@@ -321,6 +321,22 @@ def change_password():
 
     return jsonify({'message': 'Contraseña cambiada con éxito'}), 200
 
+@bp.route('/<int:user_id>/image', methods=['PUT'])
+def upload_image(user_id):
+    user = db.get_or_404(User, user_id)
+    
+    data = request.get_json()
+    
+    try:
+        user.image = data['image']
+    except KeyError:
+        return jsonify({'error': 'No se ha enviado ninguna imagen'}), 400
+    except TypeError:
+        return jsonify({'error': 'No se envio en el formato correcto'}), 400
+    
+    db.session.commit()
+    return jsonify({'message': 'Imagen subida exitosamente'}), 200
+    
 def is_valid_password(password):
 
     """
@@ -338,3 +354,5 @@ def is_valid_password(password):
 
     # Verifica que haya al menos una letra mayúscula
     return any(char.isupper() for char in password)
+
+

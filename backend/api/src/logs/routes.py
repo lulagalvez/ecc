@@ -21,7 +21,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 #usuario
 @bp.route('', methods=['GET'])
-@jwt_required()
+
 def get_all_logs():
     """
     Obtiene todos los registros de logs, opcionalmente filtrados por descripción.
