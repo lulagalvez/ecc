@@ -162,7 +162,8 @@ def get_users_by_state(state):
             'role': user.role,
             'user_name': user.user_name,
             'email': user.email,
-            'state': user.state
+            'state': user.state,
+            'image': user.image
         })
     
     return jsonify(user_list)
