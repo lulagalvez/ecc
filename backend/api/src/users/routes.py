@@ -43,7 +43,8 @@ def get_users():
             'role': user.role,
             'user_name': user.user_name,
             'email': user.email,
-            'state': user.state
+            'state': user.state,
+            'image': user.image
         })
     return jsonify(user_list)
 
@@ -64,7 +65,8 @@ def get_user_by_id(user_id):
         'role': user.role,
         'user_name': user.user_name,
         'email': user.email,
-        'state': user.state
+        'state': user.state,
+        'image': user.image
     }
     return jsonify(user_data)
 
